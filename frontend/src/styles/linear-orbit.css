@@ -1,0 +1,408 @@
+/* ==========================================================================
+   Linear Orbit Design System (Admin Dashboard & Workspaces)
+   Aesthetic: Minimal Dark Hairline / SaaS
+   Default Mode: Dark
+   ========================================================================== */
+
+.theme-linear-orbit,
+.dark.theme-linear-orbit {
+  /* Fonts */
+  --font-display: "Inter Tight", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-mono: "Fira Code", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* Typography Scales */
+  --type-display-size: clamp(36px, 25.60px + 2.667vw, 64px);
+  --type-display-leading: 1.04;
+  --type-display-weight: 600;
+  --type-display-tracking: -0.04em;
+
+  --type-h1-size: clamp(27px, 22.17px + 1.238vw, 40px);
+  --type-h1-leading: 1.1;
+  --type-h1-weight: 600;
+  --type-h1-tracking: -0.03em;
+
+  --type-h2-size: clamp(19px, 17.14px + 0.476vw, 24px);
+  --type-h2-leading: 1.25;
+  --type-h2-weight: 600;
+  --type-h2-tracking: -0.02em;
+
+  --type-h3-size: 17px;
+  --type-h3-leading: 1.35;
+  --type-h3-weight: 500;
+  --type-h3-tracking: -0.01em;
+
+  --type-body-size: 14px;
+  --type-body-leading: 1.55;
+  --type-body-weight: 400;
+  --type-body-tracking: -0.006em;
+
+  --type-small-size: 13px;
+  --type-small-leading: 1.45;
+  --type-small-weight: 400;
+  --type-small-tracking: 0em;
+
+  --type-label-size: 12px;
+  --type-label-leading: 1.3;
+  --type-label-weight: 500;
+  --type-label-tracking: 0em;
+
+  --type-mono-size: 12px;
+  --type-mono-leading: 1.5;
+  --type-mono-weight: 400;
+  --type-mono-tracking: 0em;
+
+  /* Spacing */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-24: 96px;
+
+  /* Corners */
+  --radius: 6px;
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 10px;
+  --radius-xl: 14px;
+  --radius-full: 9999px;
+
+  /* Motion */
+  --duration-instant: 80ms;
+  --duration-fast: 120ms;
+  --duration-base: 180ms;
+  --duration-slow: 320ms;
+  --ease-standard: cubic-bezier(0.25, 0.1, 0.25, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --reveal-distance: 8px;
+  --reveal-stagger: 40ms;
+
+  /* Layout */
+  --container-max: 1200px;
+  --gutter: 24px;
+  --section-y: 96px;
+  --section-y-mobile: 56px;
+  --measure: 64ch;
+
+  /* Linear Orbit Default Mode (Dark: near-black, indigo, 8% white hairlines) */
+  --background: #08090a;
+  --foreground: #f7f8f8;
+  --card: #101113;
+  --card-foreground: #f7f8f8;
+  --muted: #18191c;
+  --muted-foreground: #8f949c;
+  --primary: #5e6ad2;
+  --primary-foreground: #ffffff;
+  --secondary: #1c1d21;
+  --secondary-foreground: #e6e7ea;
+  --accent: #1d1f2b;
+  --accent-foreground: #d2d6ff;
+  --border: rgba(255, 255, 255, 0.08);
+  --input: rgba(255, 255, 255, 0.12);
+  --ring: #7c86e6;
+  --destructive: #e5484d;
+  --destructive-foreground: #08090a;
+  --success: #4cb782;
+  --success-foreground: #08090a;
+  --warning: #f2c94c;
+  --warning-foreground: #08090a;
+
+  --chart-1: #7c86e6;
+  --chart-2: #26b5ce;
+  --chart-3: #4cb782;
+  --chart-4: #f2994a;
+  --chart-5: #bb87fc;
+
+  --shadow-sm: 0 0 0 1px rgba(255, 255, 255, 0.06);
+  --shadow-md: 0 0 0 1px rgba(255, 255, 255, 0.08), 0 8px 24px -8px rgba(0, 0, 0, 0.6);
+  --shadow-lg: 0 0 0 1px rgba(255, 255, 255, 0.1), 0 32px 80px -16px rgba(0, 0, 0, 0.8);
+}
+
+/* Linear Orbit Light Mode Override */
+.theme-linear-orbit.light,
+html:not(.dark) .theme-linear-orbit.light {
+  --background: #fbfbfc;
+  --foreground: #16171a;
+  --card: #ffffff;
+  --card-foreground: #16171a;
+  --muted: #f1f2f4;
+  --muted-foreground: #5d6168;
+  --primary: #5e6ad2;
+  --primary-foreground: #ffffff;
+  --secondary: #eff0f3;
+  --secondary-foreground: #16171a;
+  --accent: #ececf9;
+  --accent-foreground: #2e3480;
+  --border: rgba(22, 23, 26, 0.09);
+  --input: rgba(22, 23, 26, 0.14);
+  --ring: #5e6ad2;
+  --destructive: #c42b2b;
+  --destructive-foreground: #ffffff;
+  --success: #1f7a4d;
+  --success-foreground: #ffffff;
+  --warning: #f2c94c;
+  --warning-foreground: #2b2300;
+
+  --chart-1: #5e6ad2;
+  --chart-2: #26b5ce;
+  --chart-3: #4cb782;
+  --chart-4: #f2994a;
+  --chart-5: #bb87fc;
+
+  --shadow-sm: 0 1px 2px rgba(16, 17, 20, 0.06);
+  --shadow-md: 0 4px 16px -4px rgba(16, 17, 20, 0.12), 0 1px 2px rgba(16, 17, 20, 0.06);
+  --shadow-lg: 0 24px 64px -16px rgba(16, 17, 20, 0.28), 0 0 0 1px rgba(16, 17, 20, 0.06);
+}
+
+/* ==========================================================================
+   Linear Orbit Component Classes
+   ========================================================================== */
+
+/* Button */
+.lo-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 32px;
+  padding: 0 12px;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: -0.006em;
+  border-radius: var(--radius-md);
+  border: 1px solid transparent;
+  white-space: nowrap;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color var(--duration-fast) var(--ease-standard),
+              border-color var(--duration-fast) var(--ease-standard),
+              color var(--duration-fast) var(--ease-standard),
+              box-shadow var(--duration-fast) var(--ease-standard),
+              transform var(--duration-fast) var(--ease-standard);
+}
+
+.lo-btn-primary {
+  background: var(--primary);
+  color: var(--primary-foreground);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16);
+}
+
+.lo-btn-primary:hover:not(:disabled) {
+  background: color-mix(in oklab, var(--primary) 88%, white);
+}
+
+.lo-btn-primary:active:not(:disabled) {
+  background: color-mix(in oklab, var(--primary) 90%, black);
+  transform: translateY(0.5px);
+}
+
+.lo-btn-secondary {
+  background: var(--secondary);
+  color: var(--secondary-foreground);
+  border-color: var(--border);
+}
+
+.lo-btn-secondary:hover:not(:disabled) {
+  background: var(--accent);
+  color: var(--accent-foreground);
+}
+
+.lo-btn-secondary:active:not(:disabled) {
+  background: var(--muted);
+}
+
+.lo-btn-outline {
+  background: transparent;
+  color: var(--foreground);
+  border-color: var(--input);
+}
+
+.lo-btn-outline:hover:not(:disabled) {
+  border-color: var(--muted-foreground);
+  background: var(--muted);
+}
+
+.lo-btn-ghost {
+  background: transparent;
+  color: var(--muted-foreground);
+}
+
+.lo-btn-ghost:hover:not(:disabled) {
+  background: var(--muted);
+  color: var(--foreground);
+}
+
+.lo-btn:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+.lo-btn:disabled, .lo-btn[aria-disabled="true"] {
+  opacity: 0.45;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* Input */
+.lo-input {
+  display: block;
+  width: 100%;
+  height: 32px;
+  padding: 0 10px;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  color: var(--foreground);
+  background: var(--card);
+  border: 1px solid var(--input);
+  border-radius: var(--radius-md);
+  outline: none;
+  transition: border-color var(--duration-fast) var(--ease-standard),
+              box-shadow var(--duration-fast) var(--ease-standard),
+              background-color var(--duration-fast) var(--ease-standard);
+}
+
+.lo-input::placeholder {
+  color: var(--muted-foreground);
+  opacity: 1;
+}
+
+.lo-input:hover:not(:disabled):not(:focus) {
+  border-color: var(--muted-foreground);
+}
+
+.lo-input:focus, .lo-input:focus-visible {
+  border-color: var(--ring);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--ring) 24%, transparent);
+}
+
+.lo-input[aria-invalid="true"] {
+  border-color: var(--destructive);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--destructive) 22%, transparent);
+}
+
+/* Card */
+.lo-card {
+  background: var(--card);
+  color: var(--card-foreground);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  transition: border-color var(--duration-fast) var(--ease-standard),
+              box-shadow var(--duration-fast) var(--ease-standard);
+}
+
+.lo-card-interactive:hover {
+  border-color: var(--input);
+  box-shadow: var(--shadow-md);
+}
+
+/* Badge (Linear Orbit uses 6px dots + text) */
+.lo-badge {
+  --tone: var(--primary);
+  --tone-foreground: var(--primary-foreground);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 20px;
+  padding: 0 8px;
+  border-radius: var(--radius-full);
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1;
+}
+
+.lo-badge[data-tone="success"] {
+  --tone: var(--success);
+  --tone-foreground: var(--success-foreground);
+}
+
+.lo-badge[data-tone="warning"] {
+  --tone: var(--warning);
+  --tone-foreground: var(--warning-foreground);
+}
+
+.lo-badge[data-tone="destructive"] {
+  --tone: var(--destructive);
+  --tone-foreground: var(--destructive-foreground);
+}
+
+.lo-badge-soft {
+  background: color-mix(in oklab, var(--tone) 16%, transparent);
+  color: var(--foreground);
+}
+
+.lo-badge-outline {
+  border: 1px solid var(--border);
+  color: var(--muted-foreground);
+  background: transparent;
+}
+
+/* Navigation bar */
+.lo-nav {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  height: 48px;
+  padding: 0 16px;
+  background: color-mix(in oklab, var(--background) 82%, transparent);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+
+.lo-nav-link {
+  padding: 6px 10px;
+  border-radius: var(--radius-md);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--muted-foreground);
+  text-decoration: none;
+  transition: color var(--duration-fast) var(--ease-standard),
+              background-color var(--duration-fast) var(--ease-standard);
+}
+
+.lo-nav-link:hover {
+  color: var(--foreground);
+  background: var(--muted);
+}
+
+.lo-nav-link[aria-current="page"] {
+  color: var(--foreground);
+  background: var(--secondary);
+}
+
+/* Table */
+.lo-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.lo-table th {
+  text-align: left;
+  height: 32px;
+  padding: 0 12px;
+  font-weight: 500;
+  font-size: 12px;
+  color: var(--muted-foreground);
+  border-bottom: 1px solid var(--border);
+}
+
+.lo-table td {
+  height: 40px;
+  padding: 0 12px;
+  border-bottom: 1px solid var(--border);
+  color: var(--foreground);
+  transition: background-color var(--duration-instant) var(--ease-standard);
+}
+
+.lo-table tbody tr:hover td {
+  background: var(--muted);
+}

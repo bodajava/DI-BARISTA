@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 800" fill="none">
+  <rect width="640" height="800" fill="#EFE6D6"/>
+  <rect x="28" y="28" width="584" height="744" stroke="#26211F" stroke-width="2" fill="#F6EFE0"/>
+  <rect x="44" y="44" width="552" height="712" stroke="#26211F" stroke-width="0.75" stroke-opacity="0.35"/>
+  <!-- Precision Gooseneck Spout -->
+  <path d="M254 488 C210 486 176 420 156 296 C151 272 136 254 122 250" stroke="#26211F" stroke-width="16" stroke-linecap="round" fill="none"/>
+  <path d="M254 488 C210 486 176 420 156 296 C151 272 136 254 122 250" stroke="#3D3633" stroke-width="7" stroke-linecap="round" fill="none"/>
+  <!-- Kettle Matte Black Steel Body -->
+  <path d="M256 268 L412 268 L442 522 L226 522 Z" fill="#26211F"/>
+  <!-- Wood / Brass Lid Knob -->
+  <rect x="266" y="246" width="136" height="22" rx="4" fill="#3D3633" stroke="#26211F" stroke-width="2"/>
+  <rect x="314" y="224" width="40" height="22" rx="6" fill="#B5573A" stroke="#26211F" stroke-width="2"/>
+  <!-- Ergonomic Counterbalanced Handle -->
+  <path d="M416 292 L486 306 C508 312 512 465 480 488 L434 494" stroke="#26211F" stroke-width="18" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <!-- PID Base Plate -->
+  <rect x="200" y="532" width="268" height="44" rx="6" fill="#1B1817" stroke="#26211F" stroke-width="2"/>
+  <circle cx="244" cy="554" r="10" fill="#B5573A"/>
+  <rect x="280" y="544" width="96" height="20" rx="2" fill="#0E0D0C" stroke="#B5573A" stroke-width="1"/>
+  <text x="328" y="558" text-anchor="middle" font-family="monospace" font-size="12" fill="#F6EFE0">93.0°C PID</text>
+  <circle cx="426" cy="554" r="8" fill="#F6EFE0" fill-opacity="0.25"/>
+  <!-- Caption -->
+  <text x="320" y="688" text-anchor="middle" font-family="Georgia, serif" font-size="22" font-weight="bold" fill="#26211F">GOOSENECK KETTLE</text>
+  <text x="320" y="714" text-anchor="middle" font-family="monospace" font-size="11" letter-spacing="3" fill="#B5573A">900ML · VARIABLE PID · 304 STEEL</text>
+</svg>

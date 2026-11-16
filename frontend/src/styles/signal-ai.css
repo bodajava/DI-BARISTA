@@ -1,0 +1,365 @@
+/* ==========================================================================
+   Signal AI Design System (AI Chat & Agent Consoles)
+   Aesthetic: Minimal AI Chat
+   Default Mode: Light
+   ========================================================================== */
+
+.theme-signal-ai {
+  /* Fonts */
+  --font-display: "Geist", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-sans: "Geist", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* Typography Scales */
+  --type-display-size: clamp(34px, 24.34px + 2.476vw, 60px);
+  --type-display-leading: 1.05;
+  --type-display-weight: 600;
+  --type-display-tracking: -0.045em;
+
+  --type-h1-size: clamp(24px, 19.54px + 1.143vw, 36px);
+  --type-h1-leading: 1.12;
+  --type-h1-weight: 600;
+  --type-h1-tracking: -0.035em;
+
+  --type-h2-size: clamp(18px, 16.51px + 0.381vw, 22px);
+  --type-h2-leading: 1.25;
+  --type-h2-weight: 600;
+  --type-h2-tracking: -0.02em;
+
+  --type-h3-size: 16px;
+  --type-h3-leading: 1.4;
+  --type-h3-weight: 500;
+  --type-h3-tracking: -0.01em;
+
+  --type-body-size: 15px;
+  --type-body-leading: 1.65;
+  --type-body-weight: 400;
+  --type-body-tracking: -0.006em;
+
+  --type-small-size: 13px;
+  --type-small-leading: 1.5;
+  --type-small-weight: 400;
+  --type-small-tracking: 0em;
+
+  --type-label-size: 12px;
+  --type-label-leading: 1.3;
+  --type-label-weight: 500;
+  --type-label-tracking: 0.01em;
+
+  --type-mono-size: 12px;
+  --type-mono-leading: 1.55;
+  --type-mono-weight: 400;
+  --type-mono-tracking: 0em;
+
+  /* Spacing */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-24: 96px;
+
+  /* Corners */
+  --radius: 10px;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-xl: 22px;
+  --radius-full: 9999px;
+
+  /* Motion */
+  --duration-instant: 90ms;
+  --duration-fast: 140ms;
+  --duration-base: 220ms;
+  --duration-slow: 480ms;
+  --ease-standard: cubic-bezier(0.32, 0.72, 0, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in: cubic-bezier(0.5, 0, 0.75, 0);
+  --reveal-distance: 10px;
+  --reveal-stagger: 50ms;
+
+  /* Layout */
+  --container-max: 1080px;
+  --gutter: 24px;
+  --section-y: 88px;
+  --section-y-mobile: 52px;
+  --measure: 68ch;
+
+  /* Colors (Light Mode Default) */
+  --background: #f9fafb;
+  --foreground: #14161a;
+  --card: #ffffff;
+  --card-foreground: #14161a;
+  --muted: #eff1f4;
+  --muted-foreground: #5b616b;
+  --primary: #14161a;
+  --primary-foreground: #f9fafb;
+  --secondary: #e9ecf0;
+  --secondary-foreground: #14161a;
+  --accent: #ffeadb;
+  --accent-foreground: #8a3200;
+  --border: rgba(20, 22, 26, 0.09);
+  --input: rgba(20, 22, 26, 0.16);
+  --ring: #e8590c;
+  --destructive: #c9302c;
+  --destructive-foreground: #ffffff;
+  --success: #17794a;
+  --success-foreground: #ffffff;
+  --warning: #e8590c;
+  --warning-foreground: #1a0a00;
+
+  --chart-1: #e8590c;
+  --chart-2: #14161a;
+  --chart-3: #6b7380;
+  --chart-4: #17794a;
+  --chart-5: #3b6fd8;
+
+  --shadow-sm: 0 1px 2px rgba(20, 22, 26, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  --shadow-md: 0 8px 24px -8px rgba(20, 22, 26, 0.14), 0 1px 2px rgba(20, 22, 26, 0.06);
+  --shadow-lg: 0 32px 80px -20px rgba(20, 22, 26, 0.3), 0 0 0 1px rgba(20, 22, 26, 0.06);
+
+  /* The Live State Signal Color */
+  --signal: #e8590c;
+}
+
+/* Signal AI Dark Mode */
+.theme-signal-ai.dark,
+.dark .theme-signal-ai {
+  --background: #0e0f12;
+  --foreground: #ececef;
+  --card: #16181c;
+  --card-foreground: #ececef;
+  --muted: #1c1e23;
+  --muted-foreground: #9298a3;
+  --primary: #ececef;
+  --primary-foreground: #0e0f12;
+  --secondary: #23262b;
+  --secondary-foreground: #ececef;
+  --accent: #33200f;
+  --accent-foreground: #ffc9a0;
+  --border: rgba(255, 255, 255, 0.08);
+  --input: rgba(255, 255, 255, 0.15);
+  --ring: #ff7a2e;
+  --destructive: #ff6b66;
+  --destructive-foreground: #1e0302;
+  --success: #4cc38a;
+  --success-foreground: #04170d;
+  --warning: #ff7a2e;
+  --warning-foreground: #1a0a00;
+
+  --chart-1: #ff7a2e;
+  --chart-2: #ececef;
+  --chart-3: #8a919d;
+  --chart-4: #4cc38a;
+  --chart-5: #7a9cf0;
+
+  --shadow-sm: 0 0 0 1px rgba(255, 255, 255, 0.06);
+  --shadow-md: 0 0 0 1px rgba(255, 255, 255, 0.08), 0 12px 32px -12px rgba(0, 0, 0, 0.6);
+  --shadow-lg: 0 0 0 1px rgba(255, 255, 255, 0.1), 0 40px 90px -20px rgba(0, 0, 0, 0.8);
+
+  --signal: #ff7a2e;
+}
+
+/* ==========================================================================
+   Signal AI Component Classes
+   ========================================================================== */
+
+/* Button */
+.ai-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 36px;
+  padding: 0 16px;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: -0.006em;
+  border-radius: var(--radius-full);
+  border: 1px solid transparent;
+  white-space: nowrap;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color var(--duration-fast) var(--ease-standard),
+              border-color var(--duration-fast) var(--ease-standard),
+              color var(--duration-fast) var(--ease-standard),
+              box-shadow var(--duration-fast) var(--ease-standard),
+              transform var(--duration-fast) var(--ease-standard);
+}
+
+.ai-btn-primary {
+  background: var(--primary);
+  color: var(--primary-foreground);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14);
+}
+
+.ai-btn-primary:hover:not(:disabled) {
+  background: color-mix(in oklab, var(--primary) 86%, var(--background));
+}
+
+.ai-btn-primary:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.ai-btn-secondary {
+  background: var(--secondary);
+  color: var(--secondary-foreground);
+}
+
+.ai-btn-secondary:hover:not(:disabled) {
+  background: color-mix(in oklab, var(--secondary) 80%, var(--foreground));
+}
+
+.ai-btn-outline {
+  background: transparent;
+  color: var(--foreground);
+  border-color: var(--input);
+}
+
+.ai-btn-outline:hover:not(:disabled) {
+  background: var(--muted);
+}
+
+.ai-btn-ghost {
+  background: transparent;
+  color: var(--muted-foreground);
+}
+
+.ai-btn-ghost:hover:not(:disabled) {
+  background: var(--muted);
+  color: var(--foreground);
+}
+
+.ai-btn-signal {
+  background: var(--signal);
+  color: #ffffff;
+}
+
+.ai-btn-signal:hover:not(:disabled) {
+  background: color-mix(in oklab, var(--signal) 88%, white);
+}
+
+.ai-btn:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+.ai-btn:disabled, .ai-btn[aria-disabled="true"] {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* Floating AI Chat Composer */
+.ai-composer {
+  background: var(--card);
+  color: var(--card-foreground);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  padding: 12px 16px;
+  transition: border-color var(--duration-fast) var(--ease-standard),
+              box-shadow var(--duration-fast) var(--ease-standard);
+}
+
+.ai-composer:focus-within {
+  border-color: var(--ring);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--ring) 18%, transparent), var(--shadow-md);
+}
+
+/* Conversation Turns */
+.ai-turn-user {
+  background: var(--muted);
+  color: var(--foreground);
+  border-radius: var(--radius-lg);
+  padding: 12px 18px;
+  max-width: 80%;
+  margin-left: auto;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.ai-turn-assistant {
+  color: var(--foreground);
+  padding: 8px 0;
+  max-width: 100%;
+  margin-right: auto;
+  font-size: 15px;
+  line-height: 1.65;
+}
+
+/* Live Streaming Caret */
+.ai-caret {
+  display: inline-block;
+  width: 7px;
+  height: 15px;
+  background-color: var(--signal);
+  margin-left: 3px;
+  vertical-align: middle;
+  animation: ai-pulse 1s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes ai-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* Thinking Indicator Dots */
+.ai-thinking-dots {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 0;
+}
+
+.ai-thinking-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 9999px;
+  background-color: var(--signal);
+  animation: ai-bounce 1.4s infinite ease-in-out both;
+}
+
+.ai-thinking-dot:nth-child(1) { animation-delay: -0.32s; }
+.ai-thinking-dot:nth-child(2) { animation-delay: -0.16s; }
+
+@keyframes ai-bounce {
+  0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
+  40% { transform: scale(1); opacity: 1; }
+}
+
+/* Tool Call Collapsible Row */
+.ai-tool-call {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  background: var(--muted);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--muted-foreground);
+  cursor: pointer;
+  transition: background-color var(--duration-fast) var(--ease-standard);
+}
+
+.ai-tool-call:hover {
+  background: var(--secondary);
+  color: var(--foreground);
+}
+
+.ai-tool-status {
+  width: 6px;
+  height: 6px;
+  border-radius: 9999px;
+  background: var(--signal);
+}
+
+.ai-tool-status.done {
+  background: var(--success);
+}

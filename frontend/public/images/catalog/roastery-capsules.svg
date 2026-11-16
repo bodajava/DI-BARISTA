@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 800" fill="none">
+  <rect width="640" height="800" fill="#EFE6D6"/>
+  <rect x="28" y="28" width="584" height="744" stroke="#26211F" stroke-width="2" fill="#F6EFE0"/>
+  <rect x="44" y="44" width="552" height="712" stroke="#26211F" stroke-width="0.75" stroke-opacity="0.35"/>
+  <!-- Capsule Sleeve Box -->
+  <rect x="176" y="220" width="288" height="336" fill="#26211F"/>
+  <rect x="196" y="240" width="248" height="296" fill="none" stroke="#B5573A" stroke-width="1.5"/>
+  <!-- Three Aluminum Espresso Pods -->
+  <path d="M225 320 L275 320 L264 384 L236 384 Z" fill="#B5573A"/>
+  <path d="M295 312 L345 312 L334 384 L306 384 Z" fill="#EFE6D6"/>
+  <path d="M365 320 L415 320 L404 384 L376 384 Z" fill="#C5A059"/>
+  <rect x="220" y="384" width="60" height="6" rx="2" fill="#EFE6D6"/>
+  <rect x="290" y="384" width="60" height="6" rx="2" fill="#B5573A"/>
+  <rect x="360" y="384" width="60" height="6" rx="2" fill="#EFE6D6"/>
+  <text x="320" y="454" text-anchor="middle" font-family="Georgia, serif" font-size="22" font-weight="bold" fill="#F6EFE0">ATELIER PODS</text>
+  <text x="320" y="482" text-anchor="middle" font-family="monospace" font-size="11" letter-spacing="3" fill="#B5573A">NITROGEN SEALED</text>
+  <text x="320" y="688" text-anchor="middle" font-family="Georgia, serif" font-size="20" font-weight="bold" fill="#26211F">DIBARESTA CAPSULES</text>
+  <text x="320" y="714" text-anchor="middle" font-family="monospace" font-size="11" letter-spacing="3" fill="#B5573A">SPECIALTY ESPRESSO EXTRACTION</text>
+</svg>

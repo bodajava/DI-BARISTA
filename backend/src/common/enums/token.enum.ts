@@ -1,0 +1,10 @@
+export enum TokenType {
+  ACCESS = 'ACCESS',
+  REFRESH = 'REFRESH',
+  GUEST_SESSION = 'GUEST_SESSION',
+}
+
+export enum OtpPurpose {
+  EMAIL_VERIFICATION = 'EMAIL_VERIFICATION',
+  PASSWORD_RESET = 'PASSWORD_RESET',
+}

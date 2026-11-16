@@ -1,0 +1,27 @@
+# OS / editor
+.DS_Store
+.claude/
+.idea/
+.vscode/*
+!.vscode/extensions.json
+
+# Secrets: never commit real environment files (use the .env.example files)
+.env
+.env.*
+!.env.example
+**/.env
+**/.env.*
+!**/.env.example
+
+# Dependencies and build output
+node_modules/
+**/node_modules/
+backend/dist/
+frontend/.next/
+frontend/out/
+*.tsbuildinfo
+coverage/
+
+# Runtime data
+backend/uploads/
+*.log

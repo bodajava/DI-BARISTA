@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 800" fill="none">
+  <rect width="640" height="800" fill="#EFE6D6"/>
+  <rect x="28" y="28" width="584" height="744" stroke="#26211F" stroke-width="2" fill="#F6EFE0"/>
+  <rect x="44" y="44" width="552" height="712" stroke="#26211F" stroke-width="0.75" stroke-opacity="0.35"/>
+  <!-- Pouch -->
+  <path d="M180 185 L460 185 L485 235 L496 615 C496 625 488 632 478 632 L162 632 C152 632 144 625 144 615 L155 235 Z" fill="#B5573A"/>
+  <path d="M180 185 L460 185 L472 222 L168 222 Z" fill="#98452B"/>
+  <line x1="165" y1="224" x2="475" y2="224" stroke="#F6EFE0" stroke-width="2.5"/>
+  <!-- Label -->
+  <rect x="195" y="268" width="250" height="304" fill="#F6EFE0" stroke="#26211F" stroke-width="2"/>
+  <rect x="205" y="278" width="230" height="284" fill="none" stroke="#B5573A" stroke-width="1"/>
+  <!-- Pink Bourbon Cherry Graphic -->
+  <circle cx="305" cy="348" r="19" fill="#B5573A" fill-opacity="0.85" stroke="#26211F" stroke-width="1.5"/>
+  <circle cx="337" cy="354" r="17" fill="#D47458" stroke="#26211F" stroke-width="1.5"/>
+  <path d="M306 328 Q322 308 338 336" stroke="#26211F" stroke-width="1.8" fill="none"/>
+  <text x="320" y="418" text-anchor="middle" font-family="Georgia, serif" font-size="13" letter-spacing="4" fill="#B5573A">RARE VARIETAL</text>
+  <text x="320" y="452" text-anchor="middle" font-family="Georgia, serif" font-size="25" font-weight="bold" fill="#26211F">COLOMBIA</text>
+  <text x="320" y="482" text-anchor="middle" font-family="Georgia, serif" font-size="16" font-style="italic" fill="#26211F">Huila Pink Bourbon</text>
+  <line x1="245" y1="502" x2="395" y2="502" stroke="#26211F" stroke-width="1" stroke-opacity="0.4"/>
+  <text x="320" y="528" text-anchor="middle" font-family="monospace" font-size="11" letter-spacing="2" fill="#26211F">1,800 - 1,950 MASL</text>
+  <text x="320" y="546" text-anchor="middle" font-family="monospace" font-size="10" letter-spacing="2" fill="#B5573A">ANAEROBIC WASHED · 89.0</text>
+  <circle cx="320" cy="692" r="24" stroke="#26211F" stroke-width="1.5" fill="none"/>
+  <text x="320" y="696" text-anchor="middle" font-family="monospace" font-size="10" fill="#26211F">HUILA</text>
+</svg>

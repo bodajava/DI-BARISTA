@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 800" fill="none">
+  <rect width="640" height="800" fill="#EFE6D6"/>
+  <rect x="28" y="28" width="584" height="744" stroke="#26211F" stroke-width="2" fill="#F6EFE0"/>
+  <rect x="44" y="44" width="552" height="712" stroke="#26211F" stroke-width="0.75" stroke-opacity="0.35"/>
+  <!-- Copper Kanaka / Cezve + Tin Silhouette -->
+  <rect x="195" y="220" width="250" height="360" rx="8" fill="#26211F" stroke="#B5573A" stroke-width="2"/>
+  <rect x="206" y="210" width="228" height="22" rx="4" fill="#B5573A"/>
+  <!-- Geometric Heritage Ornament -->
+  <rect x="220" y="268" width="200" height="270" fill="#F6EFE0" stroke="#B5573A" stroke-width="1.5"/>
+  <polygon points="320,305 348,342 320,379 292,342" fill="#B5573A" fill-opacity="0.25" stroke="#26211F" stroke-width="1.5"/>
+  <circle cx="320" cy="342" r="10" fill="#B5573A"/>
+  <text x="320" y="422" text-anchor="middle" font-family="Georgia, serif" font-size="13" letter-spacing="4" fill="#B5573A">HERITAGE RESERVE</text>
+  <text x="320" y="454" text-anchor="middle" font-family="Georgia, serif" font-size="23" font-weight="bold" fill="#26211F">ORIENTAL ROAST</text>
+  <text x="320" y="482" text-anchor="middle" font-family="Georgia, serif" font-size="15" font-style="italic" fill="#26211F">Stone-Milled Arabica</text>
+  <line x1="255" y1="500" x2="385" y2="500" stroke="#26211F" stroke-width="1" stroke-opacity="0.4"/>
+  <text x="320" y="522" text-anchor="middle" font-family="monospace" font-size="10" letter-spacing="2" fill="#26211F">CARDAMOM · MASTIKA · VELVET</text>
+  <text x="320" y="688" text-anchor="middle" font-family="Georgia, serif" font-size="20" font-weight="bold" fill="#26211F">TURKISH &amp; ARABIC</text>
+  <text x="320" y="714" text-anchor="middle" font-family="monospace" font-size="11" letter-spacing="3" fill="#B5573A">STONE-GROUND HERITAGE SERIES</text>
+</svg>

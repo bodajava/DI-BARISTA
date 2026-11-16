@@ -1,0 +1,126 @@
+/* ==========================================================================
+   Admin in the storefront's palette: espresso / milk / crema (logo orange).
+   Theme is html[data-admin-theme] ("light" | "dark"), set before paint.
+   ========================================================================== */
+
+html[data-admin-theme] .theme-linear-orbit.admin-coffee {
+  --background: #0c0907;
+  --foreground: #f3ede4;
+  --card: #17110d;
+  --card-foreground: #f3ede4;
+  --muted: #221a15;
+  --muted-foreground: #b9a390;
+  --primary: #f99d58;
+  --primary-foreground: #120d0a;
+  --secondary: #221a15;
+  --secondary-foreground: #f3ede4;
+  --accent: rgba(249, 157, 88, 0.14);
+  --accent-foreground: #f9b27c;
+  --border: rgba(243, 237, 228, 0.1);
+  --input: rgba(243, 237, 228, 0.16);
+  --ring: #f99d58;
+  --destructive: #ff8f84;
+  --destructive-foreground: #120d0a;
+  --success: #8fd19e;
+  --success-foreground: #120d0a;
+  --warning: #f2c94c;
+  --warning-foreground: #120d0a;
+  --chart-1: #f99d58;
+  --chart-2: #c77d4a;
+  --chart-3: #8fd19e;
+  --chart-4: #e6c79c;
+  --chart-5: #9c6b4e;
+  --brand-ink-on-media: #fbf6ef;
+  color-scheme: dark;
+}
+
+html[data-admin-theme="light"] .theme-linear-orbit.admin-coffee {
+  --background: #f3ede4;
+  --foreground: #120d0a;
+  --card: #faf6f0;
+  --card-foreground: #120d0a;
+  --muted: #eae3d9;
+  --muted-foreground: #6b5646;
+  --primary: #f99d58;
+  --primary-foreground: #120d0a;
+  --secondary: #eae3d9;
+  --secondary-foreground: #120d0a;
+  --accent: rgba(249, 157, 88, 0.18);
+  --accent-foreground: #8a4b1e;
+  --border: rgba(18, 13, 10, 0.1);
+  --input: rgba(18, 13, 10, 0.16);
+  --ring: #c46a2a;
+  --destructive: #b42318;
+  --destructive-foreground: #ffffff;
+  --success: #3f7d4f;
+  --success-foreground: #ffffff;
+  --warning: #9a6b00;
+  --warning-foreground: #ffffff;
+  --chart-1: #c46a2a;
+  --chart-2: #6b4a35;
+  --chart-3: #3f7d4f;
+  --chart-4: #d9a066;
+  --chart-5: #2b1e16;
+  color-scheme: light;
+}
+
+/* Arabic: Readex Pro everywhere, mirrored layout */
+html[lang="ar"] .theme-linear-orbit.admin-coffee {
+  --font-sans: "Readex Pro", "Inter", system-ui, sans-serif;
+  --font-display: "Readex Pro", "Inter Tight", system-ui, sans-serif;
+}
+
+html[lang="ar"] .theme-linear-orbit.admin-coffee .lo-table th,
+html[lang="ar"] .theme-linear-orbit.admin-coffee .lo-table td {
+  text-align: start;
+}
+
+html[lang="ar"] .theme-linear-orbit.admin-coffee .text-right {
+  text-align: left;
+}
+
+.admin-coffee .admin-wordmark {
+  font-family: "Archivo", var(--font-sans);
+  font-stretch: 125%;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+
+.admin-coffee .admin-strip {
+  height: 4px;
+  background: #f99d58;
+}
+
+/* Small inline bar used by the analytics breakdowns */
+.admin-coffee .admin-bar {
+  height: 6px;
+  border-radius: 999px;
+  background: var(--muted);
+  overflow: hidden;
+}
+
+.admin-coffee .admin-bar > span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--primary);
+}
+
+.admin-coffee .admin-delta[data-trend="up"] {
+  color: var(--success);
+}
+
+.admin-coffee .admin-delta[data-trend="down"] {
+  color: var(--destructive);
+}
+
+.admin-coffee .admin-heat {
+  display: grid;
+  gap: 3px;
+}
+
+.admin-coffee .admin-heat > span {
+  aspect-ratio: 1;
+  border-radius: 4px;
+  background: var(--primary);
+}

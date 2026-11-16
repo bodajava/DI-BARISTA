@@ -1,0 +1,72 @@
+/* ==========================================================================
+   Liquid Glass Material System (Shared Across All Design Systems)
+   Apple-Grade Specular Optics, Backdrop Blur & Refraction
+   ========================================================================== */
+
+:root {
+  --glass-bg: rgba(255, 255, 255, 0.65);
+  --glass-border: rgba(255, 255, 255, 0.6);
+  --glass-border-outer: rgba(0, 0, 0, 0.08);
+  --glass-highlight: rgba(255, 255, 255, 0.85);
+  --glass-shadow: 0 20px 48px -12px rgba(0, 0, 0, 0.12), 0 4px 12px -2px rgba(0, 0, 0, 0.04);
+  --glass-blur: blur(28px) saturate(190%) brightness(102%);
+}
+
+.dark,
+html.dark {
+  --glass-bg: rgba(20, 22, 28, 0.72);
+  --glass-border: rgba(255, 255, 255, 0.14);
+  --glass-border-outer: rgba(0, 0, 0, 0.5);
+  --glass-highlight: rgba(255, 255, 255, 0.2);
+  --glass-shadow: 0 24px 56px -12px rgba(0, 0, 0, 0.65), 0 4px 16px -2px rgba(0, 0, 0, 0.4);
+  --glass-blur: blur(32px) saturate(200%) brightness(105%);
+}
+
+/* Base Liquid Glass Panel */
+.liquid-glass {
+  position: relative;
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  box-shadow: 
+    inset 0 1px 1px 0 var(--glass-highlight),
+    inset 0 -1px 2px 0 rgba(0, 0, 0, 0.08),
+    var(--glass-shadow);
+  transition: all var(--duration-base, 200ms) var(--ease-standard, ease);
+}
+
+/* Floating Navigation / Toolbar Dock */
+.liquid-glass-dock {
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  box-shadow: 
+    inset 0 1.5px 1.5px 0 var(--glass-highlight),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.15),
+    0 24px 60px -12px rgba(0, 0, 0, 0.25),
+    0 0 0 1px var(--glass-border-outer);
+}
+
+/* Compact Glass Pill Badge */
+.liquid-glass-pill {
+  background: color-mix(in oklab, var(--glass-bg) 80%, transparent);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid var(--glass-border);
+  box-shadow: inset 0 1px 0 var(--glass-highlight), 0 2px 8px rgba(0, 0, 0, 0.06);
+  border-radius: var(--radius-full, 9999px);
+  transition: all var(--duration-fast, 140ms) var(--ease-standard, ease);
+}
+
+/* Modal Dialog Glass Surface */
+.liquid-glass-dialog {
+  background: var(--glass-bg);
+  backdrop-filter: blur(36px) saturate(210%);
+  -webkit-backdrop-filter: blur(36px) saturate(210%);
+  border: 1px solid var(--glass-border);
+  box-shadow: 
+    inset 0 1.5px 1.5px 0 var(--glass-highlight),
+    0 32px 80px -16px rgba(0, 0, 0, 0.4);
+}

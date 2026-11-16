@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 800" fill="none">
+  <rect width="640" height="800" fill="#EFE6D6"/>
+  <rect x="28" y="28" width="584" height="744" stroke="#26211F" stroke-width="2" fill="#F6EFE0"/>
+  <rect x="44" y="44" width="552" height="712" stroke="#26211F" stroke-width="0.75" stroke-opacity="0.35"/>
+  <!-- Architectural Cone V60 Ceramic Dripper -->
+  <path d="M180 220 L460 220 L355 465 L285 465 Z" fill="#FFFDF8" stroke="#26211F" stroke-width="2.5" stroke-linejoin="round"/>
+  <!-- Spiral Ribs inside cone -->
+  <path d="M206 238 Q268 335 304 452" stroke="#26211F" stroke-width="1.2" stroke-opacity="0.45"/>
+  <path d="M244 234 Q292 340 315 452" stroke="#26211F" stroke-width="1.2" stroke-opacity="0.45"/>
+  <path d="M286 232 Q314 342 325 452" stroke="#26211F" stroke-width="1.2" stroke-opacity="0.45"/>
+  <path d="M332 232 Q338 340 334 452" stroke="#26211F" stroke-width="1.2" stroke-opacity="0.45"/>
+  <path d="M378 234 Q362 340 342 452" stroke="#26211F" stroke-width="1.2" stroke-opacity="0.45"/>
+  <path d="M420 238 Q380 335 348 452" stroke="#26211F" stroke-width="1.2" stroke-opacity="0.45"/>
+  <!-- Ceramic Handle -->
+  <path d="M448 258 C515 258 518 370 402 385" stroke="#26211F" stroke-width="14" stroke-linecap="round" fill="none"/>
+  <path d="M448 258 C515 258 518 370 402 385" stroke="#FFFDF8" stroke-width="9" stroke-linecap="round" fill="none"/>
+  <!-- Ceramic Base Saucer -->
+  <ellipse cx="320" cy="472" rx="112" ry="18" fill="#FFFDF8" stroke="#26211F" stroke-width="2.5"/>
+  <ellipse cx="320" cy="468" rx="68" ry="8" fill="#EFE6D6" stroke="#26211F" stroke-width="1.2"/>
+  <!-- Glass Server Shadow Silhouette Below -->
+  <path d="M246 490 L394 490 L416 610 C416 626 378 634 320 634 C262 634 224 626 224 610 Z" fill="#EFE6D6" fill-opacity="0.6" stroke="#26211F" stroke-width="1.5" stroke-dasharray="4 4"/>
+  <!-- Typographic Caption -->
+  <text x="320" y="688" text-anchor="middle" font-family="Georgia, serif" font-size="22" font-weight="bold" fill="#26211F">V60 CERAMIC DRIPPER</text>
+  <text x="320" y="714" text-anchor="middle" font-family="monospace" font-size="11" letter-spacing="3" fill="#B5573A">60° CONE · ARITA PORCELAIN · SIZE 02</text>
+</svg>
