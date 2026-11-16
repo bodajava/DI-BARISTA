@@ -5,13 +5,11 @@
 .vscode/*
 !.vscode/extensions.json
 
-# Secrets: never commit real environment files (use the .env.example files)
+# Environment files (real and example) stay on the machine, never in Git
 .env
 .env.*
-!.env.example
 **/.env
 **/.env.*
-!**/.env.example
 
 # Dependencies and build output
 node_modules/
