@@ -220,6 +220,27 @@ export default function AdminDashboardPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [menuOpen, setMenuOpen] = useState(false);
 
+  // Phones show table rows as cards: copy each column header onto its cells as a label
+  useEffect(() => {
+    const main = document.querySelector("main");
+    if (!main) return;
+    const label = () => {
+      main.querySelectorAll<HTMLTableElement>("table.lo-table").forEach((table) => {
+        const heads = [...table.querySelectorAll("thead th")].map((th) => th.textContent?.trim() || "");
+        table.querySelectorAll("tbody tr").forEach((tr) => {
+          [...tr.children].forEach((td, i) => {
+            const text = heads[i];
+            if (text && td.getAttribute("data-label") !== text) td.setAttribute("data-label", text);
+          });
+        });
+      });
+    };
+    label();
+    const observer = new MutationObserver(label);
+    observer.observe(main, { childList: true, subtree: true });
+    return () => observer.disconnect();
+  }, []);
+
   // Close the phone menu with Escape and lock page scroll while it is open
   useEffect(() => {
     if (!menuOpen) return;

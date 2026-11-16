@@ -124,3 +124,93 @@ html[lang="ar"] .theme-linear-orbit.admin-coffee .text-right {
   border-radius: 4px;
   background: var(--primary);
 }
+
+/* ---------- Phones: every table row becomes a card (labels come from data-label) ---------- */
+@media (max-width: 640px) {
+  .admin-coffee .lo-card:has(> .lo-table),
+  .admin-coffee .lo-card:has(> div > .lo-table) {
+    overflow: visible;
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+  }
+
+  .admin-coffee .lo-table,
+  .admin-coffee .lo-table tbody,
+  .admin-coffee .lo-table tr,
+  .admin-coffee .lo-table td {
+    display: block;
+    width: 100%;
+  }
+
+  .admin-coffee .lo-table thead {
+    display: none;
+  }
+
+  .admin-coffee .lo-table tr {
+    margin-bottom: 10px;
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    background: var(--card);
+  }
+
+  .admin-coffee .lo-table td {
+    /* label on the left, the cell's content on the right, wrapping when it doesn't fit */
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-end;
+    column-gap: 10px;
+    row-gap: 2px;
+    min-height: 34px;
+    padding: 6px 0 !important;
+    border: 0 !important;
+    text-align: end !important;
+    white-space: normal;
+    word-break: break-word;
+  }
+
+  .admin-coffee .lo-table td + td {
+    border-top: 1px dashed var(--border) !important;
+  }
+
+  .admin-coffee .lo-table td > * {
+    max-width: 100%;
+  }
+
+  .admin-coffee .lo-table td[data-label]::before {
+    content: attr(data-label);
+    order: -1;
+    margin-inline-end: auto;
+    padding-inline-end: 8px;
+    color: var(--muted-foreground);
+    font-size: 11px;
+    text-align: start;
+  }
+
+  /* first cell = the row's title: full width, no label */
+  .admin-coffee .lo-table td:first-child {
+    display: block;
+    text-align: start !important;
+    font-weight: 600;
+  }
+
+  .admin-coffee .lo-table td:first-child::before {
+    display: none;
+  }
+
+  /* "no data" rows */
+  .admin-coffee .lo-table td[colspan] {
+    display: block;
+    text-align: center !important;
+  }
+
+  .admin-coffee .lo-table td[colspan]::before {
+    display: none;
+  }
+
+  .admin-coffee .lo-table select {
+    max-width: 60%;
+  }
+}

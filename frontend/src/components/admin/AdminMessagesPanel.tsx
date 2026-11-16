@@ -82,7 +82,7 @@ export function AdminMessagesPanel({ searchFilter }: { searchFilter: string }) {
             {t("Sent from the contact form in the store footer. Opening a message marks it as read.")}
           </p>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           {(["ALL", "NEW", "READ", "ARCHIVED"] as Filter[]).map((f) => (
             <button
               key={f}
@@ -128,7 +128,7 @@ export function AdminMessagesPanel({ searchFilter }: { searchFilter: string }) {
                     }`}
                   />
                   <span className="flex-1 min-w-0">
-                    <span className="flex items-center justify-between gap-3">
+                    <span className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1">
                       <span className={`font-mono text-xs ${m.status === "NEW" ? "font-semibold" : ""}`}>
                         {m.email}
                       </span>
