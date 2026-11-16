@@ -34,6 +34,7 @@ const AR: Record<string, string> = {
   "Refresh": "تحديث",
   "Refresh live data": "تحديث البيانات",
   "Storefront": "المتجر",
+  "Menu": "القائمة",
   "Sign out": "تسجيل الخروج",
   "Light mode": "الوضع الفاتح",
   "Dark mode": "الوضع الداكن",

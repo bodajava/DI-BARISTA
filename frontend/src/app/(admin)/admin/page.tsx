@@ -3,7 +3,25 @@
 import React, { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Coffee, Languages, LogOut, Moon, RefreshCw, Search, Sun } from "lucide-react";
+import {
+  BarChart3,
+  Coffee,
+  Inbox,
+  Languages,
+  LayoutDashboard,
+  LogOut,
+  Mail,
+  Menu,
+  Moon,
+  Package,
+  Receipt,
+  RefreshCw,
+  Search,
+  Sparkles,
+  Sun,
+  TicketPercent,
+  X,
+} from "lucide-react";
 import { AdminCouponsPanel } from "@/components/admin/AdminCouponsPanel";
 import { AdminSubscribersPanel } from "@/components/admin/AdminSubscribersPanel";
 import { AdminMessagesPanel } from "@/components/admin/AdminMessagesPanel";
@@ -59,6 +77,15 @@ const TAB_LABEL: Record<AdminTab, string> = {
   messages: "Messages",
   subscribers: "Subscribers",
   insights: "Insights",
+};
+const TAB_ICON: Record<AdminTab, typeof Package> = {
+  overview: LayoutDashboard,
+  orders: Receipt,
+  products: Package,
+  coupons: TicketPercent,
+  messages: Inbox,
+  subscribers: Mail,
+  insights: BarChart3,
 };
 const WEEKDAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
@@ -191,6 +218,20 @@ export default function AdminDashboardPage() {
   const { t, lang, theme, setLang, setTheme, money, num, pct } = useAdmin();
   const [activeTab, setActiveTab] = useState<AdminTab>("overview");
   const [searchQuery, setSearchQuery] = useState("");
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  // Close the phone menu with Escape and lock page scroll while it is open
+  useEffect(() => {
+    if (!menuOpen) return;
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setMenuOpen(false);
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", onKey);
+    return () => {
+      document.body.style.overflow = prev;
+      window.removeEventListener("keydown", onKey);
+    };
+  }, [menuOpen]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -268,22 +309,22 @@ export default function AdminDashboardPage() {
     <div className="flex flex-col min-h-screen">
       <div className="admin-strip" aria-hidden="true" />
       <header className="lo-nav sticky top-0 z-30 justify-between gap-3">
-        <div className="flex items-center gap-3 overflow-x-auto">
+        <div className="flex items-center gap-3 min-w-0">
           <Link href="/admin" className="flex items-center gap-2 shrink-0" aria-label="DI BARISTA">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src="/media/brand-mark.png" alt="" width={22} height={22} className="h-[22px] w-[22px]" />
             <span className="admin-wordmark text-[11px] text-[var(--foreground)]">DI BARISTA</span>
-            <span className="text-[11px] text-[var(--muted-foreground)]">{t("Admin")}</span>
+            <span className="hidden sm:inline text-[11px] text-[var(--muted-foreground)]">{t("Admin")}</span>
           </Link>
 
-          <span className="text-[var(--border)]">/</span>
+          <span className="hidden lg:inline text-[var(--border)]">/</span>
 
-          <nav className="flex items-center gap-1">
+          <nav className="hidden lg:flex items-center gap-1 overflow-x-auto">
             {TABS.map((tab) => (
               <button
                 key={tab}
                 type="button"
-                className="lo-nav-link"
+                className="lo-nav-link shrink-0"
                 aria-current={activeTab === tab ? "page" : undefined}
                 onClick={() => setActiveTab(tab)}
               >
@@ -301,65 +342,196 @@ export default function AdminDashboardPage() {
         </div>
 
         <div className="flex items-center gap-2 shrink-0">
-          <div className="relative hidden md:flex items-center">
+          <div className="relative hidden xl:flex items-center">
             <Search className="absolute start-2.5 h-3.5 w-3.5 text-[var(--muted-foreground)]" />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder={t("Filter records…")}
-              className="lo-input ps-8 pe-3 h-7 text-xs w-48 bg-[var(--card)]"
+              className="lo-input pe-3 h-7 text-xs w-48 bg-[var(--card)]"
+              style={{ paddingInlineStart: 32 }}
             />
           </div>
 
           <button
             type="button"
-            onClick={() => setLang(lang === "ar" ? "en" : "ar")}
-            className="lo-btn lo-btn-outline h-7 text-xs px-2"
-            title={lang === "ar" ? "English" : "العربية"}
-          >
-            <Languages className="h-3.5 w-3.5" />
-            <span>{lang === "ar" ? "EN" : "عربي"}</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-            className="lo-btn lo-btn-outline h-7 text-xs px-2"
-            title={t(theme === "dark" ? "Light mode" : "Dark mode")}
-            aria-label={t(theme === "dark" ? "Light mode" : "Dark mode")}
-          >
-            {theme === "dark" ? <Sun className="h-3.5 w-3.5" /> : <Moon className="h-3.5 w-3.5" />}
-          </button>
-
-          <button
-            type="button"
             onClick={() => void loadWorkspaceData(true)}
-            className="lo-btn lo-btn-outline h-7 text-xs px-2"
+            className="lo-btn lo-btn-outline h-8 lg:h-7 text-xs px-2"
             title={t("Refresh live data")}
             aria-label={t("Refresh live data")}
           >
             <RefreshCw className={`h-3.5 w-3.5 ${loading ? "animate-spin" : ""}`} />
           </button>
 
-          <Link href={`/${lang}`} className="lo-btn lo-btn-secondary h-7 text-xs px-2.5" title={t("Storefront")}>
-            <Coffee className="h-3.5 w-3.5 text-[var(--primary)]" />
-            <span className="hidden lg:inline">{t("Storefront")}</span>
-          </Link>
+          <div className="hidden lg:flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => setLang(lang === "ar" ? "en" : "ar")}
+              className="lo-btn lo-btn-outline h-7 text-xs px-2"
+              title={lang === "ar" ? "English" : "العربية"}
+            >
+              <Languages className="h-3.5 w-3.5" />
+              <span>{lang === "ar" ? "EN" : "عربي"}</span>
+            </button>
 
-          <button
-            type="button"
-            onClick={handleLogout}
-            className="lo-btn lo-btn-ghost h-7 text-xs px-2"
-            title={t("Sign out")}
-            aria-label={t("Sign out")}
-          >
-            <LogOut className="h-3.5 w-3.5 rtl:-scale-x-100" />
-          </button>
+            <button
+              type="button"
+              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+              className="lo-btn lo-btn-outline h-7 text-xs px-2"
+              title={t(theme === "dark" ? "Light mode" : "Dark mode")}
+              aria-label={t(theme === "dark" ? "Light mode" : "Dark mode")}
+            >
+              {theme === "dark" ? <Sun className="h-3.5 w-3.5" /> : <Moon className="h-3.5 w-3.5" />}
+            </button>
+
+            <Link
+              href={`/${lang}`}
+              className="lo-btn lo-btn-secondary h-7 text-xs px-2.5"
+              title={t("Storefront")}
+            >
+              <Coffee className="h-3.5 w-3.5 text-[var(--primary)]" />
+              <span className="hidden xl:inline">{t("Storefront")}</span>
+            </Link>
+
+            <button
+              type="button"
+              onClick={handleLogout}
+              className="lo-btn lo-btn-ghost h-7 text-xs px-2"
+              title={t("Sign out")}
+              aria-label={t("Sign out")}
+            >
+              <LogOut className="h-3.5 w-3.5 rtl:-scale-x-100" />
+            </button>
+          </div>
+
+          {/* Phone / tablet: everything lives in the menu */}
+          <div className="lg:hidden">
+            <button
+              type="button"
+              onClick={() => setMenuOpen(true)}
+              className="lo-btn lo-btn-outline h-8 px-2"
+              aria-label={t("Menu")}
+              aria-expanded={menuOpen}
+              aria-controls="admin-mobile-menu"
+            >
+              <Menu className="h-4 w-4" />
+            </button>
+          </div>
         </div>
       </header>
 
-      <main className="flex-1 max-w-[1240px] w-full mx-auto p-6 space-y-6">
+      {menuOpen && (
+        <div className="lg:hidden fixed inset-0 z-50" role="dialog" aria-modal="true" aria-label={t("Menu")}>
+          <button
+            type="button"
+            className="absolute inset-0 bg-black/55"
+            aria-label={t("Close")}
+            onClick={() => setMenuOpen(false)}
+          />
+          <aside
+            id="admin-mobile-menu"
+            className="absolute inset-y-0 start-0 w-[min(84vw,320px)] bg-[var(--card)] border-e border-[var(--border)] flex flex-col shadow-xl"
+          >
+            <div className="flex items-center justify-between h-14 px-4 border-b border-[var(--border)]">
+              <span className="flex items-center gap-2">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src="/media/brand-mark.png" alt="" width={24} height={24} className="h-6 w-6" />
+                <span className="admin-wordmark text-[12px]">DI BARISTA</span>
+              </span>
+              <button
+                type="button"
+                onClick={() => setMenuOpen(false)}
+                className="lo-btn lo-btn-ghost h-8 px-2"
+                aria-label={t("Close")}
+              >
+                <X className="h-4 w-4" />
+              </button>
+            </div>
+
+            <div className="p-3 border-b border-[var(--border)]">
+              <div className="relative flex items-center">
+                <Search className="absolute start-2.5 h-4 w-4 text-[var(--muted-foreground)]" />
+                <input
+                  type="search"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder={t("Filter records…")}
+                  className="lo-input pe-3 h-10 text-sm w-full bg-[var(--background)]"
+                  style={{ paddingInlineStart: 36 }}
+                />
+              </div>
+            </div>
+
+            <nav className="flex-1 overflow-y-auto p-2" aria-label={t("Admin")}>
+              {TABS.map((tab) => {
+                const Icon = TAB_ICON[tab];
+                const active = activeTab === tab;
+                return (
+                  <button
+                    key={tab}
+                    type="button"
+                    onClick={() => {
+                      setActiveTab(tab);
+                      setMenuOpen(false);
+                      window.scrollTo({ top: 0 });
+                    }}
+                    aria-current={active ? "page" : undefined}
+                    className={`w-full flex items-center gap-3 h-11 px-3 rounded-lg text-sm text-start transition-colors ${
+                      active
+                        ? "bg-[var(--accent)] text-[var(--foreground)] font-semibold"
+                        : "text-[var(--muted-foreground)] hover:bg-[var(--muted)] hover:text-[var(--foreground)]"
+                    }`}
+                  >
+                    <Icon className={`h-4 w-4 ${active ? "text-[var(--primary)]" : ""}`} />
+                    <span>{t(TAB_LABEL[tab])}</span>
+                  </button>
+                );
+              })}
+              <Link
+                href="/admin/ai-analyst"
+                className="w-full flex items-center gap-3 h-11 px-3 rounded-lg text-sm font-semibold text-[var(--primary)] hover:bg-[var(--muted)]"
+              >
+                <Sparkles className="h-4 w-4" />
+                <span>{t("AI Analyst")}</span>
+              </Link>
+            </nav>
+
+            <div className="p-3 border-t border-[var(--border)] grid grid-cols-2 gap-2">
+              <button
+                type="button"
+                onClick={() => setLang(lang === "ar" ? "en" : "ar")}
+                className="lo-btn lo-btn-outline h-10 text-sm justify-center"
+              >
+                <Languages className="h-4 w-4" />
+                <span>{lang === "ar" ? "English" : "العربية"}</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+                className="lo-btn lo-btn-outline h-10 text-sm justify-center"
+              >
+                {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+                <span>{t(theme === "dark" ? "Light mode" : "Dark mode")}</span>
+              </button>
+              <Link href={`/${lang}`} className="lo-btn lo-btn-secondary h-10 text-sm justify-center">
+                <Coffee className="h-4 w-4 text-[var(--primary)]" />
+                <span>{t("Storefront")}</span>
+              </Link>
+              <button
+                type="button"
+                onClick={handleLogout}
+                className="lo-btn lo-btn-ghost h-10 text-sm justify-center text-[var(--destructive)]"
+              >
+                <LogOut className="h-4 w-4 rtl:-scale-x-100" />
+                <span>{t("Sign out")}</span>
+              </button>
+            </div>
+          </aside>
+        </div>
+      )}
+
+      <main className="flex-1 max-w-[1240px] w-full mx-auto p-4 sm:p-6 space-y-6">
         {error && (
           <div className="p-3 rounded border border-[var(--destructive)]/40 bg-[var(--destructive)]/10 text-xs text-[var(--destructive)]">
             {t(error)}
@@ -368,7 +540,7 @@ export default function AdminDashboardPage() {
 
         {activeTab === "overview" && (
           <>
-            <div className="flex items-center justify-between pb-3 border-b border-[var(--border)]">
+            <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-[var(--border)]">
               <div>
                 <div className="text-xs text-[var(--muted-foreground)] mb-1">{t("Live store data · Cairo")}</div>
                 <h1 className="text-xl font-semibold tracking-tight text-[var(--foreground)]">{t("Store overview")}</h1>
@@ -556,7 +728,7 @@ export default function AdminDashboardPage() {
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-              <div className="lo-card overflow-hidden">
+              <div className="lo-card overflow-x-auto">
                 <div className="px-4 py-3 border-b border-[var(--border)]">
                   <span className="text-xs font-semibold uppercase tracking-wider text-[var(--success)]">
                     {t("Best sellers")}
@@ -585,7 +757,7 @@ export default function AdminDashboardPage() {
                 </table>
               </div>
 
-              <div className="lo-card overflow-hidden">
+              <div className="lo-card overflow-x-auto">
                 <div className="px-4 py-3 border-b border-[var(--border)]">
                   <span className="text-xs font-semibold uppercase tracking-wider text-[var(--warning)]">
                     {t("Slow movers (many views, few sales)")}
@@ -619,7 +791,7 @@ export default function AdminDashboardPage() {
               </div>
             </div>
 
-            <div className="lo-card overflow-hidden">
+            <div className="lo-card overflow-x-auto">
               <div className="px-4 py-3 border-b border-[var(--border)]">
                 <span className="text-xs font-semibold uppercase tracking-wider text-[var(--muted-foreground)]">
                   {t("Product views & conversion")}
@@ -649,7 +821,7 @@ export default function AdminDashboardPage() {
               </table>
             </div>
 
-            <div className="lo-card overflow-hidden">
+            <div className="lo-card overflow-x-auto">
               <div className="px-4 py-3 border-b border-[var(--border)] flex items-center justify-between">
                 <span className="text-xs font-semibold uppercase tracking-wider text-[var(--muted-foreground)]">
                   {t("Top customers")}

@@ -23,3 +23,7 @@ coverage/
 # Runtime data
 backend/uploads/
 *.log
+
+# Vercel CLI link
+.vercel/
+**/.vercel/
