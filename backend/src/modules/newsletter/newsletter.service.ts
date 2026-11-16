@@ -1,3 +1,4 @@
+import { runInBackground } from '../../common/utilities/background';
 import { Injectable } from '@nestjs/common';
 import { assertDeliverableEmail } from '../../common/utilities/email';
 import { EmailService } from '../../common/utilities/emails';
@@ -25,7 +26,7 @@ export class NewsletterService {
     );
     // Welcome only brand-new subscribers (fire-and-forget, never blocks the form)
     if (created) {
-      void this.emailService.sendNewsletterWelcome(email, dto.locale === 'ar' ? 'ar' : 'en');
+      runInBackground(this.emailService.sendNewsletterWelcome(email, dto.locale === 'ar' ? 'ar' : 'en'), 'email');
     }
     // Same answer for new and existing emails, so the form can't be used to probe the list
     return { message: 'Subscribed' };

@@ -1,3 +1,4 @@
+import { runInBackground } from '../../common/utilities/background';
 import {
   BadRequestException,
   ForbiddenException,
@@ -347,7 +348,7 @@ export class OrderService {
     ]);
     // Not awaited: SMTP can take seconds and must never slow down or fail the checkout
     if (updatedOrder) {
-      void this.emailService.sendOrderConfirmation(this.toEmailOrder(updatedOrder), false);
+      runInBackground(this.emailService.sendOrderConfirmation(this.toEmailOrder(updatedOrder), false), 'email');
     }
 
     return {
@@ -497,7 +498,7 @@ export class OrderService {
       this.cacheService.delByPattern('products:*'),
     ]);
 
-    void this.emailService.sendOrderConfirmation(this.toEmailOrder(claimed), true);
+    runInBackground(this.emailService.sendOrderConfirmation(this.toEmailOrder(claimed), true), 'email');
 
     this.notificationService.emit(
       AppEvents.PAYMENT_COMPLETED,
@@ -762,7 +763,7 @@ export class OrderService {
     }
 
     // Let the customer know their coffee moved forward (fire-and-forget)
-    void this.emailService.sendOrderStatusUpdate(this.toEmailOrder(updated), String(next));
+    runInBackground(this.emailService.sendOrderStatusUpdate(this.toEmailOrder(updated), String(next)), 'email');
 
     return this.toEntity(updated);
   }

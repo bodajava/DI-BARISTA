@@ -11,7 +11,7 @@ import { join, resolve, sep } from 'path';
 import { IStorageService, IUploadedFileResult } from '../../interfaces';
 
 /** Real image type from the file's first bytes (never trust the name or browser mime type) */
-function sniffImage(buffer: Buffer): { mime: string; ext: string } | null {
+export function sniffImage(buffer: Buffer): { mime: string; ext: string } | null {
   if (buffer.length < 12) return null;
   if (buffer[0] === 0xff && buffer[1] === 0xd8 && buffer[2] === 0xff) {
     return { mime: 'image/jpeg', ext: '.jpg' };

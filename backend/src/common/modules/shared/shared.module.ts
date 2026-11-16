@@ -7,7 +7,12 @@ import {
 } from '../../services/notification';
 import { RateLimitService } from '../../services/rate-limit';
 import { ConfigService } from '@nestjs/config';
-import { LocalStorageService, S3Service, STORAGE_SERVICE_TOKEN } from '../../services/s3';
+import {
+  BlobStorageService,
+  LocalStorageService,
+  S3Service,
+  STORAGE_SERVICE_TOKEN,
+} from '../../services/s3';
 import { SecurityService } from '../../services/security';
 import { TokenService } from '../../services/token';
 import { CacheService } from '../../utilities/caching';
@@ -21,16 +26,19 @@ const SHARED_PROVIDERS = [
   RateLimitService,
   /**
    * File storage. Default: the server's own disk (STORAGE_DRIVER=local).
-   * Set STORAGE_DRIVER=s3 (+ S3_* keys) to use an S3-compatible bucket instead.
+   * STORAGE_DRIVER=blob uses Vercel Blob (for Vercel, whose disk is temporary);
+   * STORAGE_DRIVER=s3 (+ S3_* keys) an S3-compatible bucket.
    * Services keep injecting `S3Service`; this token decides what they actually get.
    */
   {
     provide: S3Service,
     inject: [ConfigService],
-    useFactory: (config: ConfigService) =>
-      (config.get<string>('STORAGE_DRIVER') || 'local').toLowerCase() === 's3'
-        ? new S3Service(config)
-        : new LocalStorageService(config),
+    useFactory: (config: ConfigService) => {
+      const driver = (config.get<string>('STORAGE_DRIVER') || 'local').toLowerCase();
+      if (driver === 's3') return new S3Service(config);
+      if (driver === 'blob') return new BlobStorageService(config);
+      return new LocalStorageService(config);
+    },
   },
   {
     provide: STORAGE_SERVICE_TOKEN,

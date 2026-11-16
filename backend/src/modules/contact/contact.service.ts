@@ -1,3 +1,4 @@
+import { runInBackground } from '../../common/utilities/background';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PaginationQueryDto } from '../../common/dto';
 import { IPaginatedResult } from '../../common/interfaces';
@@ -25,11 +26,11 @@ export class ContactService {
       locale: dto.locale ?? 'en',
       status: 'NEW',
     });
-    void this.emailService.notifyAdminNewMessage({
+    runInBackground(this.emailService.notifyAdminNewMessage({
       email: dto.email,
       message: dto.message,
       locale: dto.locale,
-    });
+    }), 'email');
     return { message: 'Message received' };
   }
 

@@ -25,26 +25,34 @@ async function bootstrap(): Promise<void> {
 
   app.setGlobalPrefix(apiPrefix);
 
-  // Uploaded images (local storage driver): served from /uploads, before any other middleware.
-  // Files are only ever JPG/PNG/WEBP/AVIF (checked by content on upload); the headers below
-  // stop the browser from treating anything here as a page or script.
-  const uploadDir = resolve(
-    configService.get<string>('UPLOAD_DIR') || join(process.cwd(), 'uploads'),
-  );
-  mkdirSync(uploadDir, { recursive: true });
-  app.useStaticAssets(uploadDir, {
-    prefix: '/uploads/',
-    index: false,
-    dotfiles: 'deny',
-    maxAge: '365d',
-    immutable: true,
-    setHeaders: (res) => {
-      res.setHeader('X-Content-Type-Options', 'nosniff');
-      res.setHeader('Content-Security-Policy', "default-src 'none'; sandbox");
-      // The storefront may live on another domain than the API
-      res.setHeader('Cross-Origin-Resource-Policy', 'cross-origin');
-    },
-  });
+  // Uploaded images (local storage driver only): served from /uploads, before any other
+  // middleware. Files are only ever JPG/PNG/WEBP/AVIF (checked by content on upload); the
+  // headers below stop the browser from treating anything here as a page or script.
+  // On Vercel (STORAGE_DRIVER=blob) images live in Vercel Blob and the disk is read-only.
+  const storageDriver = (configService.get<string>('STORAGE_DRIVER') || 'local').toLowerCase();
+  if (storageDriver === 'local') {
+    const uploadDir = resolve(
+      configService.get<string>('UPLOAD_DIR') || join(process.cwd(), 'uploads'),
+    );
+    try {
+      mkdirSync(uploadDir, { recursive: true });
+      app.useStaticAssets(uploadDir, {
+        prefix: '/uploads/',
+        index: false,
+        dotfiles: 'deny',
+        maxAge: '365d',
+        immutable: true,
+        setHeaders: (res) => {
+          res.setHeader('X-Content-Type-Options', 'nosniff');
+          res.setHeader('Content-Security-Policy', "default-src 'none'; sandbox");
+          // The storefront may live on another domain than the API
+          res.setHeader('Cross-Origin-Resource-Policy', 'cross-origin');
+        },
+      });
+    } catch (error) {
+      logger.error(`Upload folder ${uploadDir} is not writable: ${(error as Error).message}`);
+    }
+  }
 
   const isProduction =
     configService.get<string>('NODE_ENV', 'development') === 'production';
