@@ -29,6 +29,7 @@ export type OrderStatus =
   | 'ROASTING_AND_PREPARING'
   | 'PACKING'
   | 'PROCESSING'
+  | 'PREPARING'
   | 'SHIPPED'
   | 'ON_WAY'
   | 'OUT_FOR_DELIVERY'
@@ -52,8 +53,11 @@ export type PaymentStatus =
   | 'PENDING'
   | 'INITIATED'
   | 'SUCCESS'
+  | 'PAID'
+  | 'UNPAID'
   | 'FAILED'
-  | 'REFUNDED';
+  | 'REFUNDED'
+  | 'PARTIALLY_REFUNDED';
 
 export type CouponDiscountType =
   | 'PERCENTAGE'
@@ -731,7 +735,7 @@ export function normalizeOrderStage(
   if (s === 'OUT_FOR_DELIVERY' || s === 'SHIPPED' || s === 'ON_WAY') {
     return 'OUT_FOR_DELIVERY';
   }
-  if (s === 'PACKING' || s === 'PROCESSING') return 'PACKING';
+  if (s === 'PACKING' || s === 'PROCESSING' || s === 'PREPARING') return 'PACKING';
   if (
     s === 'ROASTING' ||
     s === 'ROASTING_AND_PREPARING' ||
