@@ -1,4 +1,7 @@
-import { Type } from 'class-transformer';
+import { Transform, Type } from 'class-transformer';
+
+const toNullableInt = ({ value }: { value: unknown }) =>
+  value === '' || value === null || value === undefined ? null : Number(value);
 import {
   IsArray,
   IsBoolean,
@@ -8,18 +11,28 @@ import {
   IsInt,
   IsOptional,
   IsString,
+  Matches,
   MaxLength,
   Min,
-  MinLength,
 } from 'class-validator';
 import { CouponDiscountType } from '../../../common/enums';
 
 export class UpdateCouponDto {
   @IsOptional()
-  @IsString()
-  @MinLength(3)
-  @MaxLength(32)
+  @Transform(({ value }) => (typeof value === 'string' ? value.trim().toUpperCase() : value))
+  @Matches(/^[A-Z0-9_-]{3,32}$/, { message: 'Use 3 to 32 letters, numbers, - or _' })
   code?: string;
+
+  @IsOptional()
+  @IsString()
+  @MaxLength(300)
+  note?: string;
+
+  @IsOptional()
+  @Transform(toNullableInt)
+  @IsInt()
+  @Min(1)
+  perCustomerLimit?: number | null;
 
   @IsOptional()
   @IsEnum(CouponDiscountType)
@@ -38,10 +51,10 @@ export class UpdateCouponDto {
   minOrderAmountCents?: number;
 
   @IsOptional()
-  @Type(() => Number)
+  @Transform(toNullableInt)
   @IsInt()
   @Min(1)
-  maxDiscountAmountCents?: number;
+  maxDiscountAmountCents?: number | null;
 
   @IsOptional()
   @IsDateString()
@@ -52,10 +65,10 @@ export class UpdateCouponDto {
   endDate?: string;
 
   @IsOptional()
-  @Type(() => Number)
+  @Transform(toNullableInt)
   @IsInt()
   @Min(1)
-  usageLimit?: number;
+  usageLimit?: number | null;
 
   @IsOptional()
   @IsArray()

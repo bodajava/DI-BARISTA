@@ -22,8 +22,10 @@ import { SecurityService } from '../../common/services/security';
 import { TokenService } from '../../common/services/token';
 import { RateLimitService } from '../../common/services/rate-limit';
 import { CacheService } from '../../common/utilities/caching';
-import { UserRepository } from '../../models/repositories';
-import { UserDocument } from '../../models/schemas';
+import { Address, Prisma, User } from '@prisma/client';
+import { PrismaService } from '../../database/prisma.service';
+
+type UserWithAddress = User & { addresses?: Address[] };
 import {
   AdminLoginDto,
   CreateStaffDto,
@@ -50,7 +52,7 @@ export class AuthService implements OnModuleInit {
   private static readonly KNOWN_DEFAULT_ADMIN_PASSWORD = 'Admin@123456';
 
   constructor(
-    private readonly userRepository: UserRepository,
+    private readonly prisma: PrismaService,
     private readonly configService: ConfigService,
     private readonly securityService: SecurityService,
     private readonly tokenService: TokenService,
@@ -68,8 +70,8 @@ export class AuthService implements OnModuleInit {
 
   async seedSuperAdmin(): Promise<void> {
     try {
-      const existingSuperAdmin = await this.userRepository.findOne({
-        role: UserRole.SUPER_ADMIN,
+      const existingSuperAdmin = await this.prisma.user.findFirst({
+        where: { role: UserRole.SUPER_ADMIN, deletedAt: null },
       });
 
       if (existingSuperAdmin) {
@@ -110,7 +112,7 @@ export class AuthService implements OnModuleInit {
         Promise.resolve(this.securityService.encrypt(phone)),
       ]);
 
-      await this.userRepository.create({
+      await this.createUser({
         fullName,
         email,
         password: hashedPassword,
@@ -130,7 +132,7 @@ export class AuthService implements OnModuleInit {
   }
 
   private async warnIfDefaultAdminPassword(email: string): Promise<void> {
-    const user = await this.userRepository.findByEmailWithSecrets(email);
+    const user = await this.findUserByEmail(email);
     if (
       user?.password &&
       (await this.securityService.comparePassword(
@@ -147,16 +149,14 @@ export class AuthService implements OnModuleInit {
   /**
    * Issue a token pair and store only a SHA-256 hash of the refresh token
    */
-  private async issueSession(user: UserDocument): Promise<AuthResponseEntity> {
+  private async issueSession(user: UserWithAddress): Promise<AuthResponseEntity> {
     const tokens = await this.tokenService.generateTokenPair({
       id: user.id,
       email: user.email,
       role: user.role,
     });
 
-    await this.userRepository.findByIdAndUpdate(user.id, {
-      $set: { refreshTokenHash: this.securityService.hashToken(tokens.refreshToken) },
-    });
+    await this.updateUser(user.id, { refreshTokenHash: this.securityService.hashToken(tokens.refreshToken) });
 
     return new AuthResponseEntity({
       user: this.toUserProfileEntity(user),
@@ -168,7 +168,7 @@ export class AuthService implements OnModuleInit {
    * Check an OTP with a hard cap on wrong guesses; the code is burned after MAX_OTP_ATTEMPTS
    */
   private async verifyOtpWithAttemptLimit(
-    user: UserDocument,
+    user: UserWithAddress,
     otpCode: string,
     purpose: 'verify' | 'reset',
   ): Promise<boolean> {
@@ -187,9 +187,7 @@ export class AuthService implements OnModuleInit {
       10 * 60,
     );
     if (!attempt.allowed) {
-      await this.userRepository.findByIdAndUpdate(user.id, {
-        $set: { otpHash: null, otpExpiresAt: null },
-      });
+      await this.updateUser(user.id, { otpHash: null, otpExpiresAt: null });
       throw new BadRequestException(
         'Too many wrong codes. Please request a new code.',
       );
@@ -211,7 +209,7 @@ export class AuthService implements OnModuleInit {
    * and signs tokens using SYSTEM_ACCESS_TOKE_SIGNATURE / SYSTEM_REFRISH_TOKE_SIGNATURE.
    */
   async adminLogin(dto: AdminLoginDto): Promise<AuthResponseEntity> {
-    const user = await this.userRepository.findByEmailWithSecrets(dto.email);
+    const user = await this.findUserByEmail(dto.email);
     if (!user || !user.password) {
       throw new UnauthorizedException('Invalid administrative credentials');
     }
@@ -245,13 +243,13 @@ export class AuthService implements OnModuleInit {
     creatorRole: UserRole,
   ): Promise<UserProfileEntity> {
     // Only a SUPER_ADMIN may create ADMIN/SUPER_ADMIN accounts; an ADMIN can add baristas only
-    if (creatorRole !== UserRole.SUPER_ADMIN && dto.role !== UserRole.BARISTA) {
+    if (creatorRole !== UserRole.SUPER_ADMIN && dto.role !== UserRole.STAFF) {
       throw new ForbiddenException(
         'Only a Super Admin can create Admin or Super Admin accounts',
       );
     }
 
-    const existing = await this.userRepository.findByEmail(dto.email);
+    const existing = await this.findUserByEmail(dto.email);
     if (existing) {
       throw new ConflictException('A user with this email already exists');
     }
@@ -263,7 +261,7 @@ export class AuthService implements OnModuleInit {
       ? this.securityService.encrypt(dto.phone)
       : null;
 
-    const staffUser = await this.userRepository.create({
+    const staffUser = await this.createUser({
       fullName: dto.fullName,
       email: dto.email.toLowerCase().trim(),
       password: hashedPassword,
@@ -314,7 +312,7 @@ export class AuthService implements OnModuleInit {
       dto.guestSessionId || headerGuestSessionId || `guest_${randomUUID()}`;
     const phoneEncrypted = this.securityService.encrypt(dto.phone);
 
-    const existingUser = await this.userRepository.findByEmail(normalizedEmail);
+    const existingUser = await this.findUserByEmail(normalizedEmail);
 
     if (existingUser && (!existingUser.isGuest || STAFF_ROLES.includes(existingUser.role))) {
       // A guest checkout only proves knowledge of an email address, not ownership.
@@ -324,29 +322,16 @@ export class AuthService implements OnModuleInit {
     }
 
     if (existingUser) {
-      const updated = await this.userRepository.findByIdAndUpdate(
-        existingUser.id,
-        {
-          $set: {
+      const updated = await this.updateUser(existingUser.id, {
             fullName: dto.fullName,
             phoneEncrypted,
             guestSessionId: effectiveSessionId,
-            shippingAddress: {
-              city: dto.shippingAddress.city,
-              street: dto.shippingAddress.street,
-              building: dto.shippingAddress.building ?? 'NA',
-              floor: dto.shippingAddress.floor ?? 'NA',
-              apartment: dto.shippingAddress.apartment ?? 'NA',
-              notes: dto.shippingAddress.notes,
-            },
             ...(dto.favoriteRoast ? { favoriteRoast: dto.favoriteRoast } : {}),
-          },
-        },
-      );
+      });
       return this.toUserProfileEntity(updated ?? existingUser);
     }
 
-    const guestUser = await this.userRepository.create({
+    const guestUser = await this.createUser({
       fullName: dto.fullName,
       email: normalizedEmail,
       password: null,
@@ -354,13 +339,16 @@ export class AuthService implements OnModuleInit {
       role: UserRole.CUSTOMER,
       isGuest: true,
       guestSessionId: effectiveSessionId,
-      shippingAddress: {
-        city: dto.shippingAddress.city,
-        street: dto.shippingAddress.street,
-        building: dto.shippingAddress.building ?? 'NA',
-        floor: dto.shippingAddress.floor ?? 'NA',
-        apartment: dto.shippingAddress.apartment ?? 'NA',
-        notes: dto.shippingAddress.notes,
+      addresses: {
+        create: {
+          city: dto.shippingAddress.city,
+          street: dto.shippingAddress.street,
+          building: dto.shippingAddress.building ?? 'NA',
+          floor: dto.shippingAddress.floor ?? 'NA',
+          apartment: dto.shippingAddress.apartment ?? 'NA',
+          notes: dto.shippingAddress.notes,
+          isDefault: true,
+        },
       },
       favoriteRoast: dto.favoriteRoast,
       isEmailVerified: false,
@@ -377,7 +365,7 @@ export class AuthService implements OnModuleInit {
   async register(
     dto: RegisterDto,
   ): Promise<{ message: string; user: UserProfileEntity }> {
-    const existingUser = await this.userRepository.findByEmail(dto.email);
+    const existingUser = await this.findUserByEmail(dto.email);
     if (existingUser && !existingUser.isGuest) {
       throw new ConflictException('An account with this email already exists');
     }
@@ -392,14 +380,11 @@ export class AuthService implements OnModuleInit {
       ? this.securityService.encrypt(dto.phone)
       : null;
 
-    let user: UserDocument;
+    let user: UserWithAddress;
     if (existingUser && existingUser.isGuest) {
       // Stays a guest (and cannot log in) until the OTP proves ownership of the inbox.
       // If someone else registers the same email first, the real owner can simply register again.
-      const upgraded = await this.userRepository.findByIdAndUpdate(
-        existingUser.id,
-        {
-          $set: {
+      const upgraded = await this.updateUser(existingUser.id, {
             fullName: dto.fullName,
             password: hashedPassword,
             phoneEncrypted: phoneEncrypted ?? existingUser.phoneEncrypted,
@@ -408,12 +393,10 @@ export class AuthService implements OnModuleInit {
             isEmailVerified: false,
             otpHash,
             otpExpiresAt: new Date(Date.now() + AuthService.OTP_TTL_MS),
-          },
-        },
-      );
+      });
       user = upgraded ?? existingUser;
     } else {
-      user = await this.userRepository.create({
+      user = await this.createUser({
         fullName: dto.fullName,
         email: dto.email.toLowerCase().trim(),
         password: hashedPassword,
@@ -439,7 +422,7 @@ export class AuthService implements OnModuleInit {
   }
 
   async login(dto: LoginDto): Promise<AuthResponseEntity> {
-    const user = await this.userRepository.findByEmailWithSecrets(dto.email);
+    const user = await this.findUserByEmail(dto.email);
     if (!user || !user.password) {
       throw new UnauthorizedException('Invalid email or password');
     }
@@ -471,7 +454,7 @@ export class AuthService implements OnModuleInit {
   async verifyEmailOtp(
     dto: VerifyOtpDto,
   ): Promise<{ message: string; user: UserProfileEntity; tokens?: AuthResponseEntity['tokens'] }> {
-    const user = await this.userRepository.findByEmailWithSecrets(dto.email);
+    const user = await this.findUserByEmail(dto.email);
     const genericError = new BadRequestException(
       'OTP code has expired or is invalid',
     );
@@ -495,14 +478,12 @@ export class AuthService implements OnModuleInit {
       throw genericError;
     }
 
-    const updatedUser = await this.userRepository.findByIdAndUpdate(user.id, {
-      $set: {
+    const updatedUser = await this.updateUser(user.id, {
         isEmailVerified: true,
         isGuest: false,
         otpHash: null,
         otpExpiresAt: null,
-      },
-    });
+      });
 
     const session = await this.issueSession(updatedUser ?? user);
     return {
@@ -518,7 +499,7 @@ export class AuthService implements OnModuleInit {
       TokenType.REFRESH,
     );
 
-    const user = await this.userRepository.findByIdWithSecrets(payload.sub);
+    const user = await this.findUserById(payload.sub);
     if (!user || !user.isActive || !user.refreshTokenHash) {
       throw new UnauthorizedException('Invalid refresh session');
     }
@@ -538,26 +519,22 @@ export class AuthService implements OnModuleInit {
   async logout(currentUser: IJwtPayload): Promise<{ message: string }> {
     await Promise.all([
       this.tokenService.revokeToken(currentUser.jti, currentUser.exp),
-      this.userRepository.findByIdAndUpdate(currentUser.sub, {
-        $set: { refreshTokenHash: null },
-      }),
+      this.updateUser(currentUser.sub, { refreshTokenHash: null }),
     ]);
 
     return { message: 'Logged out successfully' };
   }
 
   async forgotPassword(dto: ForgotPasswordDto): Promise<{ message: string }> {
-    const user = await this.userRepository.findByEmail(dto.email);
+    const user = await this.findUserByEmail(dto.email);
     if (user && user.isActive && !user.isGuest) {
       const otpCode = this.securityService.generateNumericOtp(6);
       const otpHash = await this.securityService.hashPassword(otpCode);
 
-      await this.userRepository.findByIdAndUpdate(user.id, {
-        $set: {
+      await this.updateUser(user.id, {
           otpHash,
           otpExpiresAt: new Date(Date.now() + AuthService.OTP_TTL_MS),
-        },
-      });
+        });
 
       this.notificationService.emit(
         AppEvents.PASSWORD_RESET_REQUESTED,
@@ -577,7 +554,7 @@ export class AuthService implements OnModuleInit {
   }
 
   async resetPassword(dto: ResetPasswordDto): Promise<{ message: string }> {
-    const user = await this.userRepository.findByEmailWithSecrets(dto.email);
+    const user = await this.findUserByEmail(dto.email);
     if (
       !user ||
       !(await this.verifyOtpWithAttemptLimit(user, dto.otpCode, 'reset'))
@@ -589,8 +566,7 @@ export class AuthService implements OnModuleInit {
       dto.newPassword,
     );
 
-    await this.userRepository.findByIdAndUpdate(user.id, {
-      $set: {
+    await this.updateUser(user.id, {
         password: hashedPassword,
         isGuest: false,
         // The code was delivered to the inbox, so ownership of the email is proven
@@ -598,21 +574,42 @@ export class AuthService implements OnModuleInit {
         otpHash: null,
         otpExpiresAt: null,
         refreshTokenHash: null,
-      },
-    });
+      });
 
     return { message: 'Password has been reset successfully' };
   }
 
   async getProfile(userId: string): Promise<UserProfileEntity> {
-    const user = await this.userRepository.findById(userId);
+    const user = await this.findUserById(userId);
     if (!user) {
       throw new NotFoundException('User profile not found');
     }
     return this.toUserProfileEntity(user);
   }
 
-  private toUserProfileEntity(user: UserDocument): UserProfileEntity {
+  private findUserByEmail(email: string): Promise<UserWithAddress | null> {
+    return this.prisma.user.findFirst({
+      where: { email: email.toLowerCase().trim(), deletedAt: null },
+      include: { addresses: true },
+    });
+  }
+
+  private findUserById(id: string): Promise<UserWithAddress | null> {
+    return this.prisma.user.findFirst({
+      where: { id, deletedAt: null },
+      include: { addresses: true },
+    });
+  }
+
+  private createUser(data: Prisma.UserCreateInput): Promise<UserWithAddress> {
+    return this.prisma.user.create({ data, include: { addresses: true } });
+  }
+
+  private updateUser(id: string, data: Prisma.UserUpdateInput): Promise<UserWithAddress> {
+    return this.prisma.user.update({ where: { id }, data, include: { addresses: true } });
+  }
+
+  private toUserProfileEntity(user: UserWithAddress): UserProfileEntity {
     const decryptedPhone = user.phoneEncrypted
       ? this.securityService.decrypt(user.phoneEncrypted)
       : null;
@@ -625,7 +622,7 @@ export class AuthService implements OnModuleInit {
       role: user.role,
       isGuest: Boolean(user.isGuest),
       guestSessionId: user.guestSessionId,
-      shippingAddress: user.shippingAddress,
+      shippingAddress: user.addresses?.find((a) => a.isDefault) ?? user.addresses?.[0] ?? null,
       isEmailVerified: user.isEmailVerified,
       favoriteRoast: user.favoriteRoast,
       createdAt: (user as unknown as { createdAt?: Date }).createdAt,

@@ -12,6 +12,12 @@ import {
 import { PaymentMethod } from '../../../common/enums';
 
 export class CheckoutShippingAddressDto {
+  /** English governorate name, e.g. "Cairo" (must have an active delivery zone) */
+  @IsOptional()
+  @IsString()
+  @MaxLength(60)
+  governorate?: string;
+
   @IsString()
   @IsNotEmpty()
   @MaxLength(200)
@@ -83,4 +89,9 @@ export class CreateCheckoutOrderDto {
   @IsOptional()
   @IsIn(['en', 'ar'])
   locale?: 'en' | 'ar';
+
+  @IsOptional()
+  @IsString()
+  @MaxLength(40)
+  giftCardCode?: string;
 }

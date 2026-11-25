@@ -3,32 +3,13 @@ export enum PaymentProvider {
   CASH_ON_DELIVERY = 'CASH_ON_DELIVERY',
 }
 
-export enum PaymentMethod {
-  PAYMOB_CARD = 'PAYMOB_CARD',
-  CASH_ON_DELIVERY = 'CASH_ON_DELIVERY',
-  CARD = 'CARD',
-  MOBILE_WALLET = 'MOBILE_WALLET',
-  KIOSK = 'KIOSK',
-  CASH = 'CASH',
+export enum RoastLevel {
+  LIGHT = 'LIGHT',
+  MEDIUM_LIGHT = 'MEDIUM_LIGHT',
+  MEDIUM = 'MEDIUM',
+  MEDIUM_DARK = 'MEDIUM_DARK',
+  DARK = 'DARK',
+  ESPRESSO = 'ESPRESSO',
 }
 
-export enum PaymentTypeEnum {
-  CASH = 'CASH',
-  CARD = 'CARD',
-}
-
-export enum CurrencyTypeEnum {
-  USD = 'usd',
-  EGP = 'egp',
-}
-
-export enum PaymentStatus {
-  PENDING = 'PENDING',
-  INITIATED = 'INITIATED',
-  SUCCESS = 'SUCCESS',
-  AUTHORIZED = 'AUTHORIZED',
-  CAPTURED = 'CAPTURED',
-  FAILED = 'FAILED',
-  REFUNDED = 'REFUNDED',
-  VOIDED = 'VOIDED',
-}
+export const ONLINE_PAYMENT_METHODS = ['PAYMOB_CARD', 'MOBILE_WALLET'] as const;

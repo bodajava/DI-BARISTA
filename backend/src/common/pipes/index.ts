@@ -1,2 +1,1 @@
-export * from './parse-mongo-id.pipe';
-
+export * from './parse-id.pipe';

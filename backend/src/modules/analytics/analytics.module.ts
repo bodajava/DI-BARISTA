@@ -1,30 +1,15 @@
 import { Module } from '@nestjs/common';
-import { MongooseModule } from '@nestjs/mongoose';
-import {
-  ContactMessage,
-  ContactMessageSchema,
-  Order,
-  OrderSchema,
-  Product,
-  ProductSchema,
-  Subscriber,
-  SubscriberSchema,
-} from '../../models/schemas';
-import { AnalyticsController } from './analytics.controller';
+import { OrderModule } from '../order/order.module';
+import { ProductModule } from '../product/product.module';
+import { AdminService } from './admin.service';
+import { AdminController, AnalyticsController } from './analytics.controller';
 import { AnalyticsService } from './analytics.service';
+import { CustomersService } from './customers.service';
 
 @Module({
-  imports: [
-    MongooseModule.forFeature([
-      { name: Order.name, schema: OrderSchema },
-      { name: Product.name, schema: ProductSchema },
-      { name: Subscriber.name, schema: SubscriberSchema },
-      { name: ContactMessage.name, schema: ContactMessageSchema },
-    ]),
-  ],
-  controllers: [AnalyticsController],
-  providers: [AnalyticsService],
+  imports: [OrderModule, ProductModule],
+  controllers: [AnalyticsController, AdminController],
+  providers: [AnalyticsService, CustomersService, AdminService],
   exports: [AnalyticsService],
 })
 export class AnalyticsModule {}
-

@@ -1,29 +1,6 @@
-export enum OrderStatus {
-  PENDING_PAYMENT = 'PENDING_PAYMENT',
-  PAID = 'PAID',
-  PROCESSING = 'PROCESSING',
-  SHIPPED = 'SHIPPED',
-  DELIVERED = 'DELIVERED',
-  CANCELLED = 'CANCELLED',
-  PENDING = 'PENDING',
-  PLACED = 'PLACED',
-  ON_WAY = 'ON_WAY',
-  CONFIRMED = 'CONFIRMED',
-  ROASTING_AND_PREPARING = 'ROASTING_AND_PREPARING',
-  ROASTING = 'ROASTING',
-  PACKING = 'PACKING',
-  OUT_FOR_DELIVERY = 'OUT_FOR_DELIVERY',
-  REFUNDED = 'REFUNDED',
-}
-
-export enum OrderStatusEnum {
-  PENDING = 'PENDING',
-  PLACED = 'PLACED',
-  ON_WAY = 'ON_WAY',
-  DELIVERED = 'DELIVERED',
-  CANCELLED = 'CANCELLED',
-  REFUNDED = 'REFUNDED',
-}
+// Database enums come from Prisma so the TypeScript types and the PostgreSQL types never drift
+export { OrderStatus, PaymentStatus, PaymentMethod, CouponDiscountType } from '@prisma/client';
+import { OrderStatus } from '@prisma/client';
 
 export enum GrindType {
   WHOLE_BEAN = 'WHOLE_BEAN',
@@ -36,8 +13,25 @@ export enum GrindType {
   COLD_BREW = 'COLD_BREW',
 }
 
-export enum CouponDiscountType {
-  PERCENTAGE = 'PERCENTAGE',
-  FIXED_AMOUNT = 'FIXED_AMOUNT',
-  FIXED_AMOUNT_CENTS = 'FIXED_AMOUNT_CENTS',
+/**
+ * Order status machine. Staff move an order forward one step at a time; cancelling is
+ * possible until it ships. DELIVERED, CANCELLED and REFUNDED are closed.
+ */
+export const ORDER_TRANSITIONS: Readonly<Record<OrderStatus, readonly OrderStatus[]>> = {
+  PENDING_PAYMENT: ['CONFIRMED', 'CANCELLED'],
+  CONFIRMED: ['PREPARING', 'CANCELLED'],
+  PREPARING: ['SHIPPED', 'CANCELLED'],
+  SHIPPED: ['DELIVERED'],
+  DELIVERED: [],
+  CANCELLED: [],
+  REFUNDED: [],
+};
+
+export const REFUNDABLE_STATUSES: readonly OrderStatus[] = ['CONFIRMED', 'PREPARING', 'SHIPPED', 'DELIVERED'];
+
+/** Statuses that count as a sale (paid online, or cash order confirmed) */
+export const SOLD_STATUSES: readonly OrderStatus[] = ['CONFIRMED', 'PREPARING', 'SHIPPED', 'DELIVERED'];
+
+export function canTransition(from: OrderStatus, to: OrderStatus): boolean {
+  return ORDER_TRANSITIONS[from].includes(to);
 }

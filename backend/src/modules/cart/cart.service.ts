@@ -1,186 +1,159 @@
-import {
-  BadRequestException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { Cart, CartItem, Prisma, Product, ProductVariant } from '@prisma/client';
 import { randomUUID } from 'crypto';
-import { Types } from 'mongoose';
 import { GrindType } from '../../common/enums';
 import { IJwtPayload } from '../../common/interfaces';
-import {
-  CartRepository,
-  ProductRepository,
-} from '../../models/repositories';
-import { CartDocument, ProductDocument } from '../../models/schemas';
+import { PrismaService } from '../../database/prisma.service';
+import { ProductService } from '../product/product.service';
 import { AddToCartDto, UpdateCartItemDto } from './dto';
 import { CartEntity, ICartItemView } from './entities/cart.entity';
+
+const CART_INCLUDE = {
+  items: {
+    orderBy: { createdAt: 'asc' },
+    include: { product: { include: { brand: true, category: true, variants: true } } },
+  },
+} satisfies Prisma.CartInclude;
+
+type CartWithItems = Prisma.CartGetPayload<{ include: typeof CART_INCLUDE }>;
+type ProductWithVariants = Product & { variants: ProductVariant[] };
 
 @Injectable()
 export class CartService {
   constructor(
-    private readonly cartRepository: CartRepository,
-    private readonly productRepository: ProductRepository,
+    private readonly prisma: PrismaService,
+    private readonly productService: ProductService,
   ) {}
 
-  async getActiveCart(
-    user?: IJwtPayload,
-    guestSessionId?: string,
-  ): Promise<CartEntity> {
-    const effectiveSessionId =
-      guestSessionId || (user ? `user_${user.sub}` : `guest_${randomUUID()}`);
+  private sessionIdFor(user?: IJwtPayload, guestSessionId?: string): string {
+    return guestSessionId || (user ? `user_${user.sub}` : `guest_${randomUUID()}`);
+  }
 
-    const cart = await this.cartRepository.findActiveCart({
-      userId: user?.sub,
-      guestSessionId: effectiveSessionId,
-    });
+  /** The signed-in customer's cart first, else the guest cart of this browser */
+  private async findCart(userId?: string, guestSessionId?: string): Promise<CartWithItems | null> {
+    if (userId) {
+      const userCart = await this.prisma.cart.findFirst({
+        where: { userId },
+        orderBy: { updatedAt: 'desc' },
+        include: CART_INCLUDE,
+      });
+      if (userCart) return userCart;
+    }
+    if (guestSessionId) {
+      return this.prisma.cart.findUnique({ where: { guestSessionId: guestSessionId.trim() }, include: CART_INCLUDE });
+    }
+    return null;
+  }
 
+  async getActiveCart(user?: IJwtPayload, guestSessionId?: string): Promise<CartEntity> {
+    const sessionId = this.sessionIdFor(user, guestSessionId);
+    const cart = await this.findCart(user?.sub, sessionId);
     if (!cart) {
       return new CartEntity({
         id: '',
-        guestSessionId: effectiveSessionId,
+        guestSessionId: sessionId,
         userId: user?.sub ?? null,
         items: [],
         totalItemsCount: 0,
         subTotalCents: 0,
       });
     }
-
     return this.toEntity(cart);
   }
 
-  async addItem(
-    dto: AddToCartDto,
-    user?: IJwtPayload,
-    guestSessionId?: string,
-  ): Promise<CartEntity> {
+  private resolveVariant(product: ProductWithVariants, variantId?: string, label?: string): ProductVariant | undefined {
+    const active = product.variants.filter((v) => v.isActive);
+    if (variantId) return active.find((v) => v.id === variantId);
+    if (label?.trim()) return active.find((v) => v.label.toLowerCase() === label.trim().toLowerCase());
+    return undefined;
+  }
+
+  private priceFor(product: Product, variant?: ProductVariant): number {
+    return variant ? ProductService.variantPrice(product, variant) : product.finalPriceCents;
+  }
+
+  private availableStock(product: Product, variant?: ProductVariant): number {
+    return variant && variant.stock !== null ? variant.stock : product.stock;
+  }
+
+  async addItem(dto: AddToCartDto, user?: IJwtPayload, guestSessionId?: string): Promise<CartEntity> {
     if (!dto.productId && !dto.sku) {
-      throw new BadRequestException(
-        'Either productId or sku must be provided to add an item to cart',
-      );
+      throw new BadRequestException('Either productId or sku must be provided to add an item to cart');
     }
-
-    const product: ProductDocument | null = dto.productId
-      ? await this.productRepository.findById(dto.productId)
-      : await this.productRepository.findBySku(dto.sku!);
-
-    if (!product || !product.isActive) {
-      throw new NotFoundException('Requested coffee product not found or inactive');
-    }
+    const product = await this.prisma.product.findFirst({
+      where: {
+        deletedAt: null,
+        isActive: true,
+        ...(dto.productId ? { id: dto.productId } : { sku: dto.sku!.toUpperCase().trim() }),
+      },
+      include: { variants: true },
+    });
+    if (!product) throw new NotFoundException('This product is not available');
 
     const selectedGrind = dto.selectedGrind ?? GrindType.WHOLE_BEAN;
-    if (
-      product.availableGrinds?.length &&
-      !product.availableGrinds.includes(selectedGrind)
-    ) {
+    if (product.availableGrinds.length && !product.availableGrinds.includes(selectedGrind)) {
       throw new BadRequestException(
         `Grind "${selectedGrind}" is not available for "${product.name}". Available grinds: ${product.availableGrinds.join(', ')}`,
       );
     }
+    const variant = this.resolveVariant(product, dto.variantId, dto.variantLabel);
+    if ((dto.variantId || dto.variantLabel) && !variant) {
+      throw new BadRequestException('This version is no longer available');
+    }
+    const unitPriceCents = this.priceFor(product, variant);
+    const sessionId = this.sessionIdFor(user, guestSessionId);
 
-    const effectiveSessionId =
-      guestSessionId || (user ? `user_${user.sub}` : `guest_${randomUUID()}`);
-
-    const matchedVariant = dto.variantLabel
-      ? product.variants?.find(
-          (v) => v.label.toLowerCase() === dto.variantLabel?.trim().toLowerCase(),
-        )
-      : undefined;
-    const discount = product.discountPercent || 0;
-    const unitPriceCents = matchedVariant
-      ? Math.max(1, Math.round(matchedVariant.priceCents * (1 - discount / 100)))
-      : product.finalPriceCents;
-    const variantLabel = matchedVariant?.label;
-    const variantLabelAr = matchedVariant?.labelAr;
-
-    let cart = await this.cartRepository.findActiveCart({
-      userId: user?.sub,
-      guestSessionId: effectiveSessionId,
-    });
-
+    let cart = await this.findCart(user?.sub, sessionId);
     if (!cart) {
-      if (dto.quantity > product.stock) {
-        throw new BadRequestException(
-          `Insufficient stock for "${product.name}". Available: ${product.stock}`,
-        );
-      }
-
-      cart = await this.cartRepository.create({
-        guestSessionId: effectiveSessionId,
-        userId: user?.sub ? new Types.ObjectId(user.sub) : null,
-        items: [
-          {
-            productId: product._id,
-            sku: product.sku,
-            name: product.name,
-            unitPriceCents,
-            quantity: dto.quantity,
-            selectedGrind,
-            ...(variantLabel ? { variantLabel } : {}),
-            ...(variantLabelAr ? { variantLabelAr } : {}),
-          },
-        ],
-        subTotalCents: unitPriceCents * dto.quantity,
+      cart = await this.prisma.cart.create({
+        data: { guestSessionId: sessionId, userId: user?.sub ?? null },
+        include: CART_INCLUDE,
       });
-
-      const populated = await this.cartRepository.findById(cart.id, {
-        populate: [{ path: 'items.productId' }],
-      });
-      return this.toEntity(populated ?? cart);
+    } else if (user?.sub && !cart.userId) {
+      await this.prisma.cart.update({ where: { id: cart.id }, data: { userId: user.sub } });
     }
 
-    // Check if same product + same grind + same variant already exists in cart
-    const existingItemIndex = cart.items.findIndex((item) => {
-      const itemProdId =
-        item.productId && typeof item.productId === 'object' && '_id' in item.productId
-          ? String((item.productId as { _id: unknown })._id)
-          : String(item.productId);
-      return (
-        itemProdId === String(product._id) &&
-        item.selectedGrind === selectedGrind &&
-        (item.variantLabel || '') === (variantLabel || '')
-      );
-    });
-
-    const newQuantity =
-      existingItemIndex > -1
-        ? cart.items[existingItemIndex].quantity + dto.quantity
-        : dto.quantity;
-
-    if (newQuantity > product.stock) {
-      throw new BadRequestException(
-        `Insufficient stock for "${product.name}". Requested total: ${newQuantity}, Available: ${product.stock}`,
-      );
+    const existing = cart.items.find(
+      (i) =>
+        i.productId === product.id &&
+        i.selectedGrind === selectedGrind &&
+        (i.variantId ?? '') === (variant?.id ?? '') &&
+        (variant || (i.variantLabel ?? '') === ''),
+    );
+    const newQuantity = (existing?.quantity ?? 0) + dto.quantity;
+    const stock = this.availableStock(product, variant);
+    if (newQuantity > stock) {
+      throw new BadRequestException(`Only ${stock} of "${product.name}" left in stock`);
     }
 
-    if (existingItemIndex > -1) {
-      cart.items[existingItemIndex].quantity = newQuantity;
-      cart.items[existingItemIndex].unitPriceCents = unitPriceCents;
-      if (variantLabel) cart.items[existingItemIndex].variantLabel = variantLabel;
-      if (variantLabelAr) cart.items[existingItemIndex].variantLabelAr = variantLabelAr;
+    if (existing) {
+      await this.prisma.cartItem.update({
+        where: { id: existing.id },
+        data: { quantity: newQuantity, unitPriceCents },
+      });
     } else {
-      cart.items.push({
-        productId: product._id,
-        sku: product.sku,
-        name: product.name,
-        unitPriceCents,
-        quantity: dto.quantity,
-        selectedGrind,
-        ...(variantLabel ? { variantLabel } : {}),
-        ...(variantLabelAr ? { variantLabelAr } : {}),
+      await this.prisma.cartItem.create({
+        data: {
+          cartId: cart.id,
+          productId: product.id,
+          variantId: variant?.id ?? null,
+          sku: variant?.sku || product.sku,
+          name: product.name,
+          unitPriceCents,
+          quantity: dto.quantity,
+          selectedGrind,
+          variantLabel: variant?.label ?? null,
+          variantLabelAr: variant?.labelAr ?? null,
+        },
       });
     }
+    return this.reload(cart.id);
+  }
 
-    if (user?.sub && !cart.userId) {
-      cart.userId = new Types.ObjectId(user.sub);
-    }
-
-    this.recalculateCartTotals(cart);
-    await cart.save();
-
-    const populated = await this.cartRepository.findById(cart.id, {
-      populate: [{ path: 'items.productId' }],
-    });
-    return this.toEntity(populated ?? cart);
+  private findItem(cart: CartWithItems, itemId: string): CartWithItems['items'][number] | undefined {
+    return cart.items.find(
+      (i) => i.id === itemId || i.productId === itemId || i.sku === itemId.toUpperCase(),
+    );
   }
 
   async updateItemQuantity(
@@ -189,183 +162,84 @@ export class CartService {
     user?: IJwtPayload,
     guestSessionId?: string,
   ): Promise<CartEntity> {
-    const cart = await this.cartRepository.findActiveCart({
-      userId: user?.sub,
-      guestSessionId,
+    const cart = await this.findCart(user?.sub, guestSessionId);
+    if (!cart || cart.items.length === 0) throw new NotFoundException('Your bag is empty');
+    const item = this.findItem(cart, itemId);
+    if (!item) throw new NotFoundException('This piece is no longer in your bag');
+
+    const product = item.product;
+    if (!product || product.deletedAt || !product.isActive) {
+      throw new NotFoundException('This product is no longer available');
+    }
+    const variant = item.variantId
+      ? product.variants.find((v) => v.id === item.variantId)
+      : this.resolveVariant(product, undefined, item.variantLabel ?? undefined);
+    const stock = this.availableStock(product, variant);
+    if (dto.quantity > stock) {
+      throw new BadRequestException(`Only ${stock} of "${product.name}" left in stock`);
+    }
+    if (dto.selectedGrind && product.availableGrinds.length && !product.availableGrinds.includes(dto.selectedGrind)) {
+      throw new BadRequestException(`Grind "${dto.selectedGrind}" is not available for "${product.name}"`);
+    }
+
+    await this.prisma.cartItem.update({
+      where: { id: item.id },
+      data: {
+        quantity: dto.quantity,
+        unitPriceCents: this.priceFor(product, variant),
+        ...(dto.selectedGrind ? { selectedGrind: dto.selectedGrind } : {}),
+      },
     });
-
-    if (!cart || cart.items.length === 0) {
-      throw new NotFoundException('Active shopping cart not found');
-    }
-
-    const itemIndex = cart.items.findIndex((item) => {
-      const subId = item._id ? String(item._id) : '';
-      const prodId =
-        item.productId && typeof item.productId === 'object' && '_id' in item.productId
-          ? String((item.productId as { _id: unknown })._id)
-          : String(item.productId);
-      return subId === itemId || prodId === itemId || item.sku === itemId.toUpperCase();
-    });
-
-    if (itemIndex === -1) {
-      throw new NotFoundException(`Cart item "${itemId}" not found in cart`);
-    }
-
-    const targetItem = cart.items[itemIndex];
-    const prodId =
-      targetItem.productId &&
-      typeof targetItem.productId === 'object' &&
-      '_id' in targetItem.productId
-        ? String((targetItem.productId as { _id: unknown })._id)
-        : String(targetItem.productId);
-
-    const product = await this.productRepository.findById(prodId);
-    if (!product || !product.isActive) {
-      throw new NotFoundException('Associated coffee product is no longer available');
-    }
-
-    if (dto.quantity > product.stock) {
-      throw new BadRequestException(
-        `Insufficient stock for "${product.name}". Available: ${product.stock}`,
-      );
-    }
-
-    if (
-      dto.selectedGrind &&
-      product.availableGrinds?.length &&
-      !product.availableGrinds.includes(dto.selectedGrind)
-    ) {
-      throw new BadRequestException(
-        `Grind "${dto.selectedGrind}" is not available for "${product.name}"`,
-      );
-    }
-
-    // Keep the variant's price (e.g. 1kg bag); falling back to the base price would show the
-    // customer a different amount than the one charged at checkout
-    const matchedVariant = targetItem.variantLabel
-      ? product.variants?.find(
-          (v) => v.label.toLowerCase() === targetItem.variantLabel?.trim().toLowerCase(),
-        )
-      : undefined;
-    const discount = product.discountPercent || 0;
-
-    cart.items[itemIndex].quantity = dto.quantity;
-    cart.items[itemIndex].unitPriceCents = matchedVariant
-      ? Math.max(1, Math.round(matchedVariant.priceCents * (1 - discount / 100)))
-      : product.finalPriceCents;
-    if (dto.selectedGrind) {
-      cart.items[itemIndex].selectedGrind = dto.selectedGrind;
-    }
-
-    this.recalculateCartTotals(cart);
-    await cart.save();
-
-    const populated = await this.cartRepository.findById(cart.id, {
-      populate: [{ path: 'items.productId' }],
-    });
-    return this.toEntity(populated ?? cart);
+    return this.reload(cart.id);
   }
 
-  async removeItem(
-    itemId: string,
-    user?: IJwtPayload,
-    guestSessionId?: string,
-  ): Promise<CartEntity> {
-    const cart = await this.cartRepository.findActiveCart({
-      userId: user?.sub,
-      guestSessionId,
-    });
-
-    if (!cart) {
-      throw new NotFoundException('Active shopping cart not found');
-    }
-
-    const initialLen = cart.items.length;
-    cart.items = cart.items.filter((item) => {
-      const subId = item._id ? String(item._id) : '';
-      const prodId =
-        item.productId && typeof item.productId === 'object' && '_id' in item.productId
-          ? String((item.productId as { _id: unknown })._id)
-          : String(item.productId);
-      return subId !== itemId && prodId !== itemId && item.sku !== itemId.toUpperCase();
-    });
-
-    if (cart.items.length === initialLen) {
-      throw new NotFoundException(`Cart item "${itemId}" not found in cart`);
-    }
-
-    this.recalculateCartTotals(cart);
-    await cart.save();
-
-    const populated = await this.cartRepository.findById(cart.id, {
-      populate: [{ path: 'items.productId' }],
-    });
-    return this.toEntity(populated ?? cart);
+  async removeItem(itemId: string, user?: IJwtPayload, guestSessionId?: string): Promise<CartEntity> {
+    const cart = await this.findCart(user?.sub, guestSessionId);
+    if (!cart) throw new NotFoundException('Your bag is empty');
+    const item = this.findItem(cart, itemId);
+    if (!item) throw new NotFoundException('This piece is no longer in your bag');
+    await this.prisma.cartItem.delete({ where: { id: item.id } });
+    return this.reload(cart.id);
   }
 
-  async clearCart(
-    user?: IJwtPayload,
-    guestSessionId?: string,
-  ): Promise<{ message: string }> {
-    const cart = await this.cartRepository.findActiveCart({
-      userId: user?.sub,
-      guestSessionId,
-    });
-
-    if (cart) {
-      cart.items = [];
-      cart.subTotalCents = 0;
-      await cart.save();
-    }
-
+  async clearCart(user?: IJwtPayload, guestSessionId?: string): Promise<{ message: string }> {
+    const cart = await this.findCart(user?.sub, guestSessionId);
+    if (cart) await this.prisma.cartItem.deleteMany({ where: { cartId: cart.id } });
     return { message: 'Shopping cart cleared successfully' };
   }
 
-  private recalculateCartTotals(cart: CartDocument): void {
-    cart.subTotalCents = cart.items.reduce(
-      (sum, item) => sum + item.unitPriceCents * item.quantity,
-      0,
-    );
+  private async reload(cartId: string): Promise<CartEntity> {
+    const cart = await this.prisma.cart.update({
+      where: { id: cartId },
+      data: { updatedAt: new Date() },
+      include: CART_INCLUDE,
+    });
+    return this.toEntity(cart);
   }
 
-  private toEntity(cart: CartDocument): CartEntity {
-    const raw = cart as unknown as { updatedAt?: Date };
-    const items: ICartItemView[] = (cart.items || []).map((item) => {
-      const isPopulated =
-        item.productId &&
-        typeof item.productId === 'object' &&
-        '_id' in item.productId;
-      const productIdStr = isPopulated
-        ? String((item.productId as { _id: unknown })._id)
-        : String(item.productId);
-
-      return {
-        itemId: item._id ? String(item._id) : productIdStr,
-        productId: productIdStr,
-        sku: item.sku,
-        name: item.name,
-        unitPriceCents: item.unitPriceCents,
-        quantity: item.quantity,
-        selectedGrind: item.selectedGrind,
-        variantLabel: item.variantLabel,
-        variantLabelAr: item.variantLabelAr,
-        lineTotalCents: item.unitPriceCents * item.quantity,
-        ...(isPopulated ? { product: item.productId } : {}),
-      };
-    });
-
-    const totalItemsCount = items.reduce((acc, i) => acc + i.quantity, 0);
-    const subTotalCents = items.reduce((acc, i) => acc + i.lineTotalCents, 0);
-
+  private toEntity(cart: Cart & { items: CartWithItems['items'] }): CartEntity {
+    const items: ICartItemView[] = cart.items.map((item: CartItem & { product?: CartWithItems['items'][number]['product'] }) => ({
+      itemId: item.id,
+      productId: item.productId,
+      variantId: item.variantId,
+      sku: item.sku,
+      name: item.name,
+      unitPriceCents: item.unitPriceCents,
+      quantity: item.quantity,
+      selectedGrind: item.selectedGrind as GrindType,
+      variantLabel: item.variantLabel ?? undefined,
+      variantLabelAr: item.variantLabelAr ?? undefined,
+      lineTotalCents: item.unitPriceCents * item.quantity,
+      ...(item.product ? { product: this.productService.toEntity(item.product) } : {}),
+    }));
     return new CartEntity({
       id: cart.id,
       guestSessionId: cart.guestSessionId,
-      userId: cart.userId ? String(cart.userId) : null,
+      userId: cart.userId,
       items,
-      totalItemsCount,
-      subTotalCents,
-      updatedAt: raw.updatedAt,
+      totalItemsCount: items.reduce((acc, i) => acc + i.quantity, 0),
+      subTotalCents: items.reduce((acc, i) => acc + i.lineTotalCents, 0),
+      updatedAt: cart.updatedAt,
     });
   }
 }
-

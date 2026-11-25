@@ -23,6 +23,7 @@ export interface IEmailTemplateData {
 }
 
 export interface IEmailOrderItem {
+  imageUrl?: string | null;
   name: string;
   quantity: number;
   lineTotalCents: number;
@@ -39,10 +40,11 @@ export interface IEmailOrder {
   discountCents: number;
   couponCode?: string | null;
   shippingFeeCents: number;
+  giftCardCents?: number;
   totalCents: number;
   paymentMethod: string;
   status?: string;
-  shippingAddress: { street?: string; building?: string; city?: string; floor?: string; apartment?: string };
+  shippingAddress: { governorate?: string | null; street?: string; building?: string; city?: string; floor?: string; apartment?: string };
   notes?: string | null;
   locale?: EmailLocale;
 }
@@ -109,7 +111,11 @@ const STRINGS = {
     qty: 'Qty',
     subtotal: 'Subtotal',
     discount: 'Discount',
-    shipping: 'Shipping',
+    shipping: 'Delivery',
+    giftCard: 'Gift card',
+    giftTitle: 'You received a gift card',
+    giftBody: (amount: string) => `Someone sent you a DI BARISTA gift card worth ${amount}. Use the code below at checkout.`,
+    giftExpires: (date: string) => `Valid until ${date}.`,
     total: 'Total',
     deliverTo: 'Delivering to',
     payment: 'Payment',
@@ -124,11 +130,9 @@ const STRINGS = {
     confirmedPaid: 'Thanks! Your payment went through and we’re roasting and packing your coffee now.',
     statusSubject: (n: string, s: string) => `Order ${n}: ${s}`,
     statuses: {
-      PROCESSING: ['Being prepared', 'We’ve started preparing your order.'],
-      ROASTING: ['Roasting', 'Your beans are in the roaster right now.'],
-      PACKING: ['Packing', 'Your coffee is roasted and being packed.'],
-      OUT_FOR_DELIVERY: ['Out for delivery', 'The courier is on the way. Keep your phone close.'],
-      SHIPPED: ['Shipped', 'Your order has shipped and will reach you soon.'],
+      CONFIRMED: ['Confirmed', 'Your order is confirmed. We’ll start preparing it soon.'],
+      PREPARING: ['Being prepared', 'We’ve started roasting and packing your order.'],
+      SHIPPED: ['On the way', 'The courier is on the way. Keep your phone close.'],
       DELIVERED: ['Delivered', 'Your order was delivered. Enjoy every cup!'],
       CANCELLED: ['Cancelled', 'Your order was cancelled. If this is unexpected, just reply to this email.'],
     } as Record<string, [string, string]>,
@@ -164,7 +168,11 @@ const STRINGS = {
     qty: 'الكمية',
     subtotal: 'المجموع الفرعي',
     discount: 'الخصم',
-    shipping: 'الشحن',
+    shipping: 'التوصيل',
+    giftCard: 'كارت هدية',
+    giftTitle: 'وصلك كارت هدية',
+    giftBody: (amount: string) => `حد بعتلك كارت هدية من DI BARISTA بقيمة ${amount}. استخدم الكود ده وقت الدفع.`,
+    giftExpires: (date: string) => `صالح لحد ${date}.`,
     total: 'الإجمالي',
     deliverTo: 'التوصيل إلى',
     payment: 'الدفع',
@@ -179,11 +187,9 @@ const STRINGS = {
     confirmedPaid: 'شكرًا! الدفع وصل، وبنحمّص ونجهّز قهوتك دلوقتي.',
     statusSubject: (n: string, s: string) => `طلب ${n}: ${s}`,
     statuses: {
-      PROCESSING: ['بيتجهّز', 'بدأنا نجهّز طلبك.'],
-      ROASTING: ['بيتحمّص', 'البن بتاعك في المحمصة دلوقتي.'],
-      PACKING: ['بيتغلّف', 'قهوتك اتحمّصت وبتتغلّف.'],
-      OUT_FOR_DELIVERY: ['في الطريق', 'المندوب في الطريق ليك، خلّي موبايلك جنبك.'],
-      SHIPPED: ['اتشحن', 'طلبك اتشحن وهيوصلك قريب.'],
+      CONFIRMED: ['اتأكد', 'طلبك اتأكد، وهنبدأ نجهّزه قريب.'],
+      PREPARING: ['بيتجهّز', 'بدأنا نحمّص ونغلّف طلبك.'],
+      SHIPPED: ['في الطريق', 'المندوب في الطريق ليك، خلّي موبايلك جنبك.'],
       DELIVERED: ['وصل', 'طلبك وصل. بالهنا والشفا!'],
       CANCELLED: ['اتلغى', 'طلبك اتلغى. لو ده مش متوقع، رد على الإيميل ده.'],
     } as Record<string, [string, string]>,
@@ -295,7 +301,11 @@ function orderTable(order: IEmailOrder, locale: EmailLocale): string {
   const rows = order.items
     .map(
       (it) => `<tr>
-        <td style="${cell}text-align:${align};">${escapeHtml(it.name)}${
+        <td style="${cell}text-align:${align};">${
+          it.imageUrl
+            ? `<img src="${escapeHtml(absoluteUrl(it.imageUrl))}" width="44" height="44" alt="" style="width:44px;height:44px;object-fit:cover;border-radius:10px;vertical-align:middle;margin-${align === 'left' ? 'right' : 'left'}:10px;background:${C.milk};" />`
+            : ''
+        }${escapeHtml(it.name)}${
           it.variantLabel ? `<br/><span style="font-size:12px;color:${C.muted};">${escapeHtml(it.variantLabel)}</span>` : ''
         }</td>
         <td style="${cell}text-align:center;color:${C.muted};white-space:nowrap;">× ${it.quantity}</td>
@@ -312,6 +322,7 @@ function orderTable(order: IEmailOrder, locale: EmailLocale): string {
     ${line(s.subtotal, money(order.subTotalCents, locale))}
     ${order.discountCents > 0 ? line(`${s.discount}${order.couponCode ? ` (${order.couponCode})` : ''}`, `−${money(order.discountCents, locale)}`) : ''}
     ${line(s.shipping, money(order.shippingFeeCents, locale))}
+    ${order.giftCardCents ? line(s.giftCard, `−${money(order.giftCardCents, locale)}`) : ''}
     ${line(s.total, money(order.totalCents, locale), true)}
   </table>`;
 }
@@ -319,7 +330,7 @@ function orderTable(order: IEmailOrder, locale: EmailLocale): string {
 function orderMeta(order: IEmailOrder, locale: EmailLocale): string {
   const { s } = L(locale);
   const a = order.shippingAddress || {};
-  const address = [a.street, a.building, a.city].filter(Boolean).join(locale === 'ar' ? '، ' : ', ');
+  const address = [a.street, a.building, a.city, a.governorate].filter(Boolean).join(locale === 'ar' ? '، ' : ', ');
   const block = (label: string, value: string) =>
     `<td valign="top" style="padding:14px 16px;background:${C.milk};border-radius:14px;width:50%;">
       ${eyebrow(label)}
@@ -331,6 +342,10 @@ function orderMeta(order: IEmailOrder, locale: EmailLocale): string {
       ${block(s.payment, s.methods[order.paymentMethod] || order.paymentMethod)}
     </tr>
   </table>`;
+}
+
+function absoluteUrl(url: string): string {
+  return /^https?:\/\//i.test(url) ? url : `${storefrontUrl()}${url.startsWith('/') ? '' : '/'}${url}`;
 }
 
 function trackUrl(order: IEmailOrder, locale: EmailLocale): string {
@@ -516,6 +531,24 @@ export class EmailTemplates {
       subject,
       html: layout({ title: subject, preheader: message, body, locale }),
       text: textVersion([s.refundTitle, message, data.customMessage]),
+    };
+  }
+
+  static giftCard(data: { code: string; amountCents: number; message?: string | null; expiresAt?: Date | null; locale?: EmailLocale }): IRenderedEmail {
+    const { s, locale } = L(data.locale);
+    const amount = money(data.amountCents, locale);
+    const subject = `${s.giftTitle} · ${amount}`;
+    const body = `
+      ${heading(s.giftTitle)}
+      ${para(s.giftBody(amount))}
+      ${data.message ? `<div style="margin:0 0 14px;padding:16px;border-radius:14px;background:${C.milk};font-family:${FONT};font-size:15px;line-height:1.6;color:${C.roast};white-space:pre-wrap;" dir="auto">${escapeHtml(data.message)}</div>` : ''}
+      ${codeBox(data.code)}
+      ${data.expiresAt ? para(s.giftExpires(data.expiresAt.toISOString().slice(0, 10)), C.muted) : ''}
+      ${button(`${storefrontUrl()}/${locale}#shop`, s.shop)}`;
+    return {
+      subject,
+      html: layout({ title: subject, preheader: s.giftBody(amount), body, locale }),
+      text: textVersion([s.giftTitle, s.giftBody(amount), data.message ?? undefined, data.code]),
     };
   }
 }

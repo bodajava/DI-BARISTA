@@ -1,6 +1,5 @@
 import { RoastLevel, UserRole } from '../../../common/enums';
 import { ITokenPair } from '../../../common/interfaces';
-import { CustomerShippingAddress } from '../../../models/schemas';
 
 export class UserProfileEntity {
   id: string;
@@ -10,9 +9,9 @@ export class UserProfileEntity {
   role: UserRole;
   isGuest: boolean;
   guestSessionId?: string | null;
-  shippingAddress?: CustomerShippingAddress | null;
+  shippingAddress?: Record<string, unknown> | null;
   isEmailVerified: boolean;
-  favoriteRoast?: RoastLevel;
+  favoriteRoast?: RoastLevel | string | null;
   createdAt?: Date;
 
   constructor(partial: Partial<UserProfileEntity>) {

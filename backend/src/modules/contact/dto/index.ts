@@ -1,3 +1,4 @@
+import { PaginationQueryDto } from '../../../common/dto';
 import { Transform } from 'class-transformer';
 import {
   IsEmail,
@@ -7,7 +8,7 @@ import {
   MaxLength,
   MinLength,
 } from 'class-validator';
-import { CONTACT_MESSAGE_STATUSES, type ContactMessageStatus } from '../../../models/schemas';
+import { ContactStatus } from '@prisma/client';
 
 const trim = ({ value }: { value: unknown }) => (typeof value === 'string' ? value.trim() : value);
 
@@ -30,11 +31,33 @@ export class CreateContactMessageDto {
   message: string;
 
   @IsOptional()
+  @Transform(trim)
+  @IsString()
+  @MaxLength(30)
+  phone?: string;
+
+  @IsOptional()
+  @Transform(trim)
+  @IsString()
+  @MaxLength(150)
+  subject?: string;
+
+  @IsOptional()
   @IsIn(['en', 'ar'])
   locale?: string;
 }
 
 export class UpdateContactMessageDto {
-  @IsIn(CONTACT_MESSAGE_STATUSES as unknown as string[])
-  status: ContactMessageStatus;
+  @IsIn(Object.values(ContactStatus))
+  status: ContactStatus;
+}
+
+export class ContactQueryDto extends PaginationQueryDto {
+  @IsOptional()
+  @IsIn(Object.values(ContactStatus))
+  status?: ContactStatus;
+
+  @IsOptional()
+  @IsIn(['0', '1', 'true', 'false'])
+  unread?: string;
 }

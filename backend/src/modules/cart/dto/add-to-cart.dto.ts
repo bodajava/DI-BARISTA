@@ -1,8 +1,8 @@
+import { IsDbId } from '../../../common/decorators';
 import { Type } from 'class-transformer';
 import {
   IsEnum,
   IsInt,
-  IsMongoId,
   IsOptional,
   IsString,
   Max,
@@ -12,7 +12,7 @@ import { GrindType } from '../../../common/enums';
 
 export class AddToCartDto {
   @IsOptional()
-  @IsMongoId()
+  @IsDbId()
   productId?: string;
 
   @IsOptional()
@@ -32,5 +32,9 @@ export class AddToCartDto {
   @IsOptional()
   @IsString()
   variantLabel?: string;
+
+  @IsOptional()
+  @IsDbId()
+  variantId?: string;
 }
 

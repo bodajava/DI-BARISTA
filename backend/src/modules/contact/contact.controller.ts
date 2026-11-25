@@ -13,11 +13,11 @@ import {
 } from '@nestjs/common';
 import { Public, RateLimit, Roles } from '../../common/decorators';
 import { PaginationQueryDto } from '../../common/dto';
-import { UserRole } from '../../common/enums';
+import { STAFF_ROLES } from '../../common/enums';
 import { AuthGuard, RolesGuard } from '../../common/guards';
-import { ParseMongoIdPipe } from '../../common/pipes';
+import { ParseIdPipe } from '../../common/pipes';
 import { ContactService } from './contact.service';
-import { CreateContactMessageDto, UpdateContactMessageDto } from './dto';
+import { ContactQueryDto, CreateContactMessageDto, UpdateContactMessageDto } from './dto';
 
 @Controller('contact')
 @UseGuards(AuthGuard, RolesGuard)
@@ -34,23 +34,23 @@ export class ContactController {
   }
 
   @Get('messages')
-  @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN)
-  async findAll(@Query() query: PaginationQueryDto, @Query('status') status?: string) {
-    return this.contactService.findAll({ ...query, status });
+  @Roles(...STAFF_ROLES)
+  async findAll(@Query() query: ContactQueryDto) {
+    return this.contactService.findAll(query);
   }
 
   @Patch('messages/:id')
-  @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN)
+  @Roles(...STAFF_ROLES)
   async update(
-    @Param('id', ParseMongoIdPipe) id: string,
+    @Param('id', ParseIdPipe) id: string,
     @Body() dto: UpdateContactMessageDto,
   ) {
     return this.contactService.updateStatus(id, dto);
   }
 
   @Delete('messages/:id')
-  @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN)
-  async remove(@Param('id', ParseMongoIdPipe) id: string) {
+  @Roles(...STAFF_ROLES)
+  async remove(@Param('id', ParseIdPipe) id: string) {
     return this.contactService.remove(id);
   }
 }

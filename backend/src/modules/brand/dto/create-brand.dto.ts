@@ -31,6 +31,11 @@ export class CreateBrandDto {
   originCountry?: string;
 
   @IsOptional()
+  @IsString()
+  @MaxLength(120)
+  slug?: string;
+
+  @IsOptional()
   @Transform(({ value }) =>
     value === 'true' ? true : value === 'false' ? false : value,
   )

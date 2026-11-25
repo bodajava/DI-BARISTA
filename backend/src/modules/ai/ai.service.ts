@@ -1,10 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import {
-  CouponRepository,
-  ProductRepository,
-} from '../../models/repositories';
-import { ProductDocument } from '../../models/schemas';
+import { Product } from '@prisma/client';
+import { PrismaService } from '../../database/prisma.service';
 import { AnalyticsService } from '../analytics/analytics.service';
 import {
   AdminAdvisorQueryDto,
@@ -88,9 +85,8 @@ export class AiService {
 
   constructor(
     private readonly configService: ConfigService,
-    private readonly productRepository: ProductRepository,
+    private readonly prisma: PrismaService,
     private readonly analyticsService: AnalyticsService,
-    private readonly couponRepository: CouponRepository,
   ) {
     this.geminiApiKey = this.configService.get<string>('GEMINI_API_KEY', '');
     this.geminiModel = this.configService.get<string>(
@@ -107,9 +103,8 @@ export class AiService {
    * Customer-Facing Coffee Sommelier & Support Agent (POST /api/v1/ai/customer/chat)
    */
   async chatWithCustomer(dto: ChatCustomerDto): Promise<ICustomerChatResponse> {
-    const activeProducts = await this.productRepository.findAll({
-      isActive: true,
-      deletedAt: null,
+    const activeProducts = await this.prisma.product.findMany({
+      where: { isActive: true, deletedAt: null },
     });
 
     const deterministicHandoffNeeded = this.detectHumanHandoffIntent(
@@ -233,7 +228,7 @@ export class AiService {
     const systemPrompt = [
       'You are a Senior E-Commerce & Specialty Coffee Brand Strategist advising the leadership of DIBARESTA CAFFE.',
       `Primary Strategic Focus Area requested by Admin: ${focusArea}.`,
-      'Analyze the provided live MongoDB aggregation metrics and produce concrete, data-backed recommendations.',
+      'Analyze the provided live PostgreSQL store metrics and produce concrete, data-backed recommendations.',
       'Return strictly valid JSON matching this schema:',
       '{',
       '  "executiveSummary": "string",',
@@ -282,8 +277,8 @@ export class AiService {
         this.analyticsService.getOverviewKpis({}),
         this.analyticsService.getProductsPerformance(),
         this.analyticsService.getCustomersDirectory(),
-        this.productRepository.findAll({ deletedAt: null }),
-        this.couponRepository.findAll({ deletedAt: null }),
+        this.prisma.product.findMany({ where: { deletedAt: null } }),
+        this.prisma.coupon.findMany({ where: { deletedAt: null } }),
       ]);
 
     const winnerProducts = (productsPerformance.winnerProducts || []).map(
@@ -360,7 +355,7 @@ export class AiService {
 
     const systemPrompt = [
       'You are the Senior Executive AI Analyst & Chief Data Officer for DIBARESTA CAFFE (Specialty Coffee Roasters Cairo).',
-      'You are directly connected to the production MongoDB e-commerce database, inventory records, and order transaction engine.',
+      'You are directly connected to the production PostgreSQL e-commerce database, inventory records, and order transaction engine.',
       'Answer the admin question with deep business rigor, precise quantitative synthesis, and strategic clarity.',
       'Format your answer in clean GitHub-flavored Markdown. Use bold headers, bulleted takeaways, and structured ASCII/Markdown tables where numbers or lists are compared.',
       'Always use Egyptian Pounds (EGP) for currency.',
@@ -427,7 +422,7 @@ export class AiService {
       return [
         '### 🏆 Top Revenue & Winner Products Analysis',
         '',
-        'Based on live order fulfillment data in MongoDB:',
+        'Based on live order fulfillment data:',
         '',
         '| # | Product Name | SKU | Units Sold | Gross Revenue |',
         '|---|---|---|---|---|',
@@ -538,7 +533,7 @@ export class AiService {
     return `https://wa.me/${cleanPhone}?text=${encodeURIComponent(text)}`;
   }
 
-  private buildCatalogGroundingContext(products: ProductDocument[]): string {
+  private buildCatalogGroundingContext(products: Product[]): string {
     if (!products || products.length === 0) {
       return 'No active coffee products currently in stock.';
     }
@@ -683,7 +678,7 @@ export class AiService {
 
   private buildFallbackCustomerReply(
     message: string,
-    products: ProductDocument[],
+    products: Product[],
     handoffNeeded: boolean,
   ): string {
     if (handoffNeeded) {

@@ -14,10 +14,10 @@ import {
 import { FileInterceptor } from '@nestjs/platform-express';
 import { CurrentUser, Public, Roles } from '../../common/decorators';
 import { PaginationQueryDto } from '../../common/dto';
-import { UserRole } from '../../common/enums';
+import { ADMIN_ROLES, STAFF_ROLES } from '../../common/enums';
 import { AuthGuard, RolesGuard } from '../../common/guards';
 import { IPaginatedResult } from '../../common/interfaces';
-import { ParseMongoIdPipe } from '../../common/pipes';
+import { ParseIdPipe } from '../../common/pipes';
 import { createMulterMemoryOptions } from '../../common/utilities/multer';
 import { CategoryService } from './category.service';
 import { CreateCategoryDto, UpdateCategoryDto } from './dto';
@@ -36,6 +36,12 @@ export class CategoryController {
     return this.categoryService.findAll(query);
   }
 
+  @Get('admin/all')
+  @Roles(...STAFF_ROLES)
+  findAllForAdmin(): Promise<CategoryEntity[]> {
+    return this.categoryService.findAllForAdmin();
+  }
+
   @Public()
   @Get(':slug')
   async findOne(@Param('slug') slug: string): Promise<CategoryEntity> {
@@ -43,7 +49,7 @@ export class CategoryController {
   }
 
   @Post()
-  @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN)
+  @Roles(...ADMIN_ROLES)
   @UseInterceptors(FileInterceptor('image', createMulterMemoryOptions()))
   async create(
     @Body() dto: CreateCategoryDto,
@@ -54,21 +60,23 @@ export class CategoryController {
   }
 
   @Patch(':id')
-  @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN)
+  @Roles(...ADMIN_ROLES)
   @UseInterceptors(FileInterceptor('image', createMulterMemoryOptions()))
   async update(
-    @Param('id', ParseMongoIdPipe) id: string,
+    @Param('id', ParseIdPipe) id: string,
     @Body() dto: UpdateCategoryDto,
+    @CurrentUser('sub') userId: string,
     @UploadedFile() image?: Express.Multer.File,
   ): Promise<CategoryEntity> {
-    return this.categoryService.update(id, dto, image);
+    return this.categoryService.update(id, dto, image, userId);
   }
 
   @Delete(':id')
-  @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN)
+  @Roles(...ADMIN_ROLES)
   async remove(
-    @Param('id', ParseMongoIdPipe) id: string,
+    @Param('id', ParseIdPipe) id: string,
+    @CurrentUser('sub') userId: string,
   ): Promise<{ message: string }> {
-    return this.categoryService.remove(id);
+    return this.categoryService.remove(id, userId);
   }
 }

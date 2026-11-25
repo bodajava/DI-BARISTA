@@ -25,8 +25,14 @@ export class EnvironmentVariablesDto {
   @IsString()
   NODE_ENV: string = 'development';
 
+  /** PostgreSQL connection string (pooled on serverless) */
   @IsString()
-  DB_URL: string;
+  DATABASE_URL: string;
+
+  /** Direct (non-pooled) connection, used by migrations */
+  @IsOptional()
+  @IsString()
+  DIRECT_DATABASE_URL?: string;
 
   @IsOptional()
   @IsString()

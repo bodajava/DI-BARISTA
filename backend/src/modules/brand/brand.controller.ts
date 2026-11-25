@@ -14,10 +14,10 @@ import {
 import { FileInterceptor } from '@nestjs/platform-express';
 import { CurrentUser, Public, Roles } from '../../common/decorators';
 import { PaginationQueryDto } from '../../common/dto';
-import { UserRole } from '../../common/enums';
+import { ADMIN_ROLES, STAFF_ROLES } from '../../common/enums';
 import { AuthGuard, RolesGuard } from '../../common/guards';
 import { IPaginatedResult } from '../../common/interfaces';
-import { ParseMongoIdPipe } from '../../common/pipes';
+import { ParseIdPipe } from '../../common/pipes';
 import { createMulterMemoryOptions } from '../../common/utilities/multer';
 import { BrandService } from './brand.service';
 import { CreateBrandDto, UpdateBrandDto } from './dto';
@@ -29,7 +29,7 @@ export class BrandController {
   constructor(private readonly brandService: BrandService) {}
 
   @Post()
-  @Roles(UserRole.ADMIN, UserRole.SUPER_ADMIN)
+  @Roles(...ADMIN_ROLES)
   @UseInterceptors(FileInterceptor('logo', createMulterMemoryOptions()))
   async create(
     @Body() dto: CreateBrandDto,
@@ -47,6 +47,12 @@ export class BrandController {
     return this.brandService.findAll(query);
   }
 
+  @Get('admin/all')
+  @Roles(...STAFF_ROLES)
+  findAllForAdmin(): Promise<BrandEntity[]> {
+    return this.brandService.findAllForAdmin();
+  }
+
   @Public()
   @Get(':identifier')
   async findOne(@Param('identifier') identifier: string): Promise<BrandEntity> {
@@ -54,22 +60,24 @@ export class BrandController {
   }
 
   @Patch(':id')
-  @Roles(UserRole.ADMIN, UserRole.SUPER_ADMIN)
+  @Roles(...ADMIN_ROLES)
   @UseInterceptors(FileInterceptor('logo', createMulterMemoryOptions()))
   async update(
-    @Param('id', ParseMongoIdPipe) id: string,
+    @Param('id', ParseIdPipe) id: string,
     @Body() dto: UpdateBrandDto,
+    @CurrentUser('sub') userId: string,
     @UploadedFile() logo?: Express.Multer.File,
   ): Promise<BrandEntity> {
-    return this.brandService.update(id, dto, logo);
+    return this.brandService.update(id, dto, logo, userId);
   }
 
   @Delete(':id')
-  @Roles(UserRole.ADMIN, UserRole.SUPER_ADMIN)
+  @Roles(...ADMIN_ROLES)
   async remove(
-    @Param('id', ParseMongoIdPipe) id: string,
+    @Param('id', ParseIdPipe) id: string,
+    @CurrentUser('sub') userId: string,
   ): Promise<{ message: string }> {
-    return this.brandService.remove(id);
+    return this.brandService.remove(id, userId);
   }
 }
 

@@ -14,7 +14,7 @@ import { Public, RateLimit, Roles } from '../../common/decorators';
 import { PaginationQueryDto } from '../../common/dto';
 import { UserRole } from '../../common/enums';
 import { AuthGuard, RolesGuard } from '../../common/guards';
-import { ParseMongoIdPipe } from '../../common/pipes';
+import { ParseIdPipe } from '../../common/pipes';
 import { SubscribeDto } from './dto';
 import { NewsletterService } from './newsletter.service';
 
@@ -39,7 +39,7 @@ export class NewsletterController {
 
   @Delete('subscribers/:id')
   @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN)
-  async remove(@Param('id', ParseMongoIdPipe) id: string) {
+  async remove(@Param('id', ParseIdPipe) id: string) {
     return this.newsletterService.remove(id);
   }
 }

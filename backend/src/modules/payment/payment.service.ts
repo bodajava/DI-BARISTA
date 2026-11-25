@@ -1,3 +1,4 @@
+import { Prisma } from '@prisma/client';
 import {
   BadRequestException,
   forwardRef,
@@ -9,7 +10,6 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { Types } from 'mongoose';
 import {
   PaymentMethod,
   PaymentProvider,
@@ -18,8 +18,7 @@ import {
 import { IJwtPayload } from '../../common/interfaces';
 import { SecurityService } from '../../common/services/security';
 import { CacheService } from '../../common/utilities/caching';
-import { PaymentRepository } from '../../models/repositories';
-import { PaymentDocument } from '../../models/schemas';
+import { PrismaService } from '../../database/prisma.service';
 import { AuthService } from '../auth/auth.service';
 import { OrderService } from '../order/order.service';
 import {
@@ -68,7 +67,7 @@ export class PaymentService {
   private readonly iframeId: string;
 
   constructor(
-    private readonly paymentRepository: PaymentRepository,
+    private readonly prisma: PrismaService,
     private readonly authService: AuthService,
     @Inject(forwardRef(() => OrderService))
     private readonly orderService: OrderService,
@@ -263,11 +262,8 @@ export class PaymentService {
     const checkoutUrl = `https://accept.paymob.com/api/acceptance/iframes/${iframeId}?payment_token=${paymentKeyToken}`;
     const paymobIntentionId = `legacy_${paymobOrderId}`;
 
-    const payment = await this.paymentRepository.create({
-      userId:
-        params.userId && Types.ObjectId.isValid(params.userId)
-          ? new Types.ObjectId(params.userId)
-          : null,
+    const payment = await this.createPaymentRecord({
+      userId: params.userId ?? null,
       guestSessionId: params.guestSessionId ?? null,
       orderReference: params.orderNumber,
       provider: PaymentProvider.PAYMOB,
@@ -502,11 +498,8 @@ export class PaymentService {
       this.publicKey,
     )}&clientSecret=${encodeURIComponent(clientSecret)}`;
 
-    const payment = await this.paymentRepository.create({
-      userId:
-        params.userId && Types.ObjectId.isValid(params.userId)
-          ? new Types.ObjectId(params.userId)
-          : null,
+    const payment = await this.createPaymentRecord({
+      userId: params.userId ?? null,
       guestSessionId: params.guestSessionId ?? null,
       orderReference: params.orderNumber,
       provider: PaymentProvider.PAYMOB,
@@ -651,24 +644,31 @@ export class PaymentService {
     }
 
     const merchantOrderNumber = tx.order.merchant_order_id;
-    let payment = await this.paymentRepository.findByPaymobOrderId(tx.order.id);
+    let payment = await this.prisma.payment.findFirst({
+      where: { paymobOrderId: tx.order.id },
+      orderBy: { createdAt: 'desc' },
+    });
     if (!payment && merchantOrderNumber) {
-      payment =
-        await this.paymentRepository.findByOrderReference(merchantOrderNumber);
+      payment = await this.findLatestPayment(merchantOrderNumber);
     }
 
     const isSuccess = Boolean(tx.success && !tx.pending && !tx.error_occured);
-    const newStatus = isSuccess
-      ? PaymentStatus.SUCCESS
-      : tx.is_refunded
-        ? PaymentStatus.REFUNDED
-        : tx.is_voided
-          ? PaymentStatus.VOIDED
-          : PaymentStatus.FAILED;
+    const isRefundNotice = Boolean(tx.is_refunded || tx.has_parent_transaction);
+    const newStatus = isRefundNotice
+      ? PaymentStatus.REFUNDED
+      : isSuccess
+        ? PaymentStatus.PAID
+        : PaymentStatus.FAILED;
 
-    if (payment && payment.status !== PaymentStatus.REFUNDED) {
-      await this.paymentRepository.findByIdAndUpdate(payment.id, {
-        $set: {
+    if (
+      payment &&
+      !isRefundNotice &&
+      payment.status !== PaymentStatus.REFUNDED &&
+      payment.status !== PaymentStatus.PARTIALLY_REFUNDED
+    ) {
+      await this.prisma.payment.update({
+        where: { id: payment.id },
+        data: {
           status: newStatus,
           paymobTransactionId: tx.id,
           webhookVerified: true,
@@ -684,7 +684,7 @@ export class PaymentService {
     const resolvedOrderNumber =
       merchantOrderNumber || payment?.orderReference || undefined;
 
-    if (isSuccess) {
+    if (isSuccess && !isRefundNotice) {
       await this.orderService.confirmOrderFromPaymobWebhook({
         orderNumber: resolvedOrderNumber,
         paymobOrderId: tx.order.id,
@@ -694,12 +694,7 @@ export class PaymentService {
       });
     } else if (newStatus === PaymentStatus.REFUNDED && resolvedOrderNumber) {
       try {
-        await this.orderService.refundOrder(
-          resolvedOrderNumber,
-          'Refund confirmed via Paymob webhook',
-          undefined,
-          { refundedAtGateway: true },
-        );
+        await this.orderService.recordGatewayRefund(resolvedOrderNumber, Number(tx.amount_cents));
       } catch (error) {
         // Acknowledge the webhook anyway so Paymob stops retrying; log for manual review
         this.logger.warn(
@@ -732,20 +727,9 @@ export class PaymentService {
 
     const refundedOrder = await this.orderService.refundOrder(
       identifier,
-      dto.reason,
+      { reason: dto.reason || 'Refunded from the dashboard', restock: true },
       staffUserId,
     );
-
-    const payment = await this.paymentRepository.findByOrderReference(
-      refundedOrder.orderNumber,
-    );
-    if (payment) {
-      await this.paymentRepository.findByIdAndUpdate(payment.id, {
-        $set: {
-          status: PaymentStatus.REFUNDED,
-        },
-      });
-    }
 
     return {
       refunded: true,
@@ -762,7 +746,14 @@ export class PaymentService {
    * can keep the order in its paid state.
    */
   async refundAtGateway(orderReference: string, amountCents: number): Promise<void> {
-    const payment = await this.paymentRepository.findByOrderReference(orderReference);
+    const payment = await this.prisma.payment.findFirst({
+      where: {
+        orderReference,
+        paymobTransactionId: { not: null },
+        status: { in: [PaymentStatus.PAID, PaymentStatus.PARTIALLY_REFUNDED] },
+      },
+      orderBy: { createdAt: 'desc' },
+    });
     const transactionId = payment?.paymobTransactionId;
     if (!transactionId) {
       throw new BadRequestException(
@@ -829,23 +820,65 @@ export class PaymentService {
     }
 
     if (payment) {
-      await this.paymentRepository.findByIdAndUpdate(payment.id, {
-        $set: { status: PaymentStatus.REFUNDED },
+      const refundedCents = payment.refundedCents + amountCents;
+      await this.prisma.payment.update({
+        where: { id: payment.id },
+        data: {
+          refundedCents,
+          status: refundedCents >= payment.amountCents ? PaymentStatus.REFUNDED : PaymentStatus.PARTIALLY_REFUNDED,
+        },
       });
     }
   }
 
-  async getPaymentByOrderReference(
-    orderReference: string,
-  ): Promise<PaymentDocument> {
-    const payment =
-      await this.paymentRepository.findByOrderReference(orderReference);
+  /** Every payment attempt for an order (dashboard order page), newest first, without secrets */
+  async listForOrder(orderReference: string) {
+    return this.prisma.payment.findMany({
+      where: { orderReference },
+      orderBy: { createdAt: 'desc' },
+      select: {
+        id: true,
+        provider: true,
+        method: true,
+        status: true,
+        amountCents: true,
+        refundedCents: true,
+        currency: true,
+        paymobTransactionId: true,
+        failureReason: true,
+        paidAt: true,
+        createdAt: true,
+      },
+    });
+  }
+
+  private findLatestPayment(orderReference: string) {
+    return this.prisma.payment.findFirst({
+      where: { orderReference: orderReference.trim() },
+      orderBy: { createdAt: 'desc' },
+    });
+  }
+
+  private createPaymentRecord(data: Record<string, unknown>) {
+    const { billingData, ...rest } = data as { billingData?: Record<string, unknown> } & Record<string, unknown>;
+    return this.prisma.payment.create({
+      data: {
+        ...(rest as Omit<Prisma.PaymentUncheckedCreateInput, 'billingData'>),
+        provider: String(rest.provider ?? 'PAYMOB'),
+        billingData: (billingData ?? {}) as Prisma.InputJsonValue,
+      },
+    });
+  }
+
+  async getPaymentByOrderReference(orderReference: string) {
+    const payment = await this.findLatestPayment(orderReference);
     if (!payment) {
       throw new NotFoundException(
         `Payment for order "${orderReference}" not found`,
       );
     }
-    return payment;
+    const { clientSecret: _c, paymentKeyToken: _k, ...safe } = payment;
+    return safe;
   }
 
   public buildPaymobHmacConcatenatedString(tx: IPaymobTransactionObj): string {

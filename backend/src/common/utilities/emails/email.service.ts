@@ -18,6 +18,7 @@ export interface ISendMailOptions {
   html?: string;
   text?: string;
   attachments?: Mail.Attachment[];
+  replyTo?: string;
 }
 
 @Injectable()
@@ -126,6 +127,7 @@ export class EmailService {
         html: options.html,
         text: options.text,
         attachments: options.attachments,
+        replyTo: options.replyTo,
       });
       return this.configured;
     } catch (error) {
@@ -191,5 +193,26 @@ export class EmailService {
 
   async notifyAdminNewMessage(msg: { email: string; message: string; locale?: string }): Promise<boolean> {
     return this.send(this.adminInbox, EmailTemplates.adminNewMessage(msg));
+  }
+
+  async sendGiftCard(
+    to: string,
+    data: { code: string; amountCents: number; message?: string | null; expiresAt?: Date | null; locale?: EmailLocale },
+  ): Promise<boolean> {
+    return this.send(to, EmailTemplates.giftCard(data));
+  }
+
+  /** Full order copy (with the printable PDF) for the shop's orders inbox */
+  async sendOrdersInbox(to: string, order: IEmailOrder, paid: boolean, pdf?: Buffer): Promise<boolean> {
+    if (!to) return false;
+    const email = EmailTemplates.adminNewOrder(order, paid);
+    return this.sendMail({
+      to,
+      subject: email.subject,
+      html: email.html,
+      text: email.text,
+      replyTo: order.customerEmail,
+      attachments: pdf ? [{ filename: `${order.orderNumber}.pdf`, content: pdf, contentType: 'application/pdf' }] : undefined,
+    });
   }
 }

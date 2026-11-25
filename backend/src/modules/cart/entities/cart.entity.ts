@@ -3,6 +3,7 @@ import { GrindType } from '../../../common/enums';
 export interface ICartItemView {
   itemId: string;
   productId: string;
+  variantId?: string | null;
   sku: string;
   name: string;
   unitPriceCents: number;

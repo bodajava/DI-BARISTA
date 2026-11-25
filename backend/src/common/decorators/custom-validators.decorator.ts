@@ -1,4 +1,5 @@
 import {
+  Matches,
   registerDecorator,
   ValidationArguments,
   ValidationOptions,
@@ -118,7 +119,6 @@ export class IsValidCouponDiscount implements ValidatorConstraintInterface {
 
     if (
       rawType === CouponDiscountType.FIXED_AMOUNT ||
-      rawType === CouponDiscountType.FIXED_AMOUNT_CENTS ||
       rawType === 'FIXED_AMOUNT'
     ) {
       return numericValue > 0;
@@ -144,3 +144,8 @@ export function IsValidDiscount(validationOptions?: ValidationOptions) {
   };
 }
 
+
+/** A database id (cuid, or a 24-hex id migrated from MongoDB) */
+export function IsDbId(options?: ValidationOptions) {
+  return Matches(/^[a-z0-9]{20,32}$/i, { message: '$property must be a valid id', ...options });
+}

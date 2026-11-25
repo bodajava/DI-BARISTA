@@ -1,10 +1,10 @@
+import { IsDbId } from '../../../common/decorators';
 import { Transform, Type } from 'class-transformer';
 import {
   IsArray,
   IsBoolean,
   IsEnum,
   IsInt,
-  IsMongoId,
   IsNotEmpty,
   IsOptional,
   IsString,
@@ -57,10 +57,12 @@ export class CreateProductDto {
   @MaxLength(2000)
   description_ar?: string;
 
-  @IsMongoId()
-  brandId: string;
+  @IsOptional()
+  @Transform(({ value }) => (value === '' ? undefined : value))
+  @IsDbId()
+  brandId?: string;
 
-  @IsMongoId()
+  @IsDbId()
   categoryId: string;
 
   @IsOptional()
@@ -159,6 +161,42 @@ export class CreateProductDto {
   @IsInt()
   @Min(0)
   stock: number;
+
+  /** Sale price; empty = no sale. Must be lower than priceCents */
+  @IsOptional()
+  @Transform(({ value }) => (value === '' || value === null ? null : Number(value)))
+  @IsInt()
+  @Min(1)
+  salePriceCents?: number | null;
+
+  /** Private: what the piece costs the store */
+  @IsOptional()
+  @Transform(({ value }) => (value === '' || value === null ? null : Number(value)))
+  @IsInt()
+  @Min(0)
+  costCents?: number | null;
+
+  @IsOptional()
+  @Type(() => Number)
+  @IsInt()
+  @Min(0)
+  @Max(10000)
+  lowStockThreshold?: number;
+
+  @IsOptional()
+  @IsString()
+  @MaxLength(240)
+  shortDescription?: string;
+
+  @IsOptional()
+  @IsString()
+  @MaxLength(240)
+  shortDescriptionAr?: string;
+
+  @IsOptional()
+  @IsString()
+  @MaxLength(160)
+  slug?: string;
 
   @IsOptional()
   @Transform(({ value }) =>

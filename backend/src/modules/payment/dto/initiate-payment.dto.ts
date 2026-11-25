@@ -74,7 +74,7 @@ export class InitiatePaymentDto {
 
   @IsOptional()
   @IsEnum(PaymentMethod)
-  method?: PaymentMethod = PaymentMethod.CARD;
+  method?: PaymentMethod = PaymentMethod.PAYMOB_CARD;
 
   @IsOptional()
   @IsArray()

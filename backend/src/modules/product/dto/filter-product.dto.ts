@@ -1,5 +1,6 @@
+import { IsDbId } from '../../../common/decorators';
 import { Type } from 'class-transformer';
-import { IsEnum, IsInt, IsMongoId, IsOptional, Min } from 'class-validator';
+import { IsEnum, IsInt, IsOptional, Min } from 'class-validator';
 import { PaginationQueryDto } from '../../../common/dto';
 import { GrindType, RoastLevel } from '../../../common/enums';
 
@@ -13,11 +14,11 @@ export class FilterProductDto extends PaginationQueryDto {
   grindType?: GrindType;
 
   @IsOptional()
-  @IsMongoId()
+  @IsDbId()
   categoryId?: string;
 
   @IsOptional()
-  @IsMongoId()
+  @IsDbId()
   brandId?: string;
 
   @IsOptional()

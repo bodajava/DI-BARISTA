@@ -13,9 +13,9 @@ import {
 } from '@nestjs/common';
 import { CurrentUser, Public, RateLimit, Roles } from '../../common/decorators';
 import { PaginationQueryDto } from '../../common/dto';
-import { UserRole } from '../../common/enums';
+import { ADMIN_ROLES } from '../../common/enums';
 import { AuthGuard, RolesGuard } from '../../common/guards';
-import { ParseMongoIdPipe } from '../../common/pipes';
+import { ParseIdPipe } from '../../common/pipes';
 import { CouponService } from './coupon.service';
 import {
   CreateCouponDto,
@@ -30,7 +30,7 @@ export class CouponController {
   constructor(private readonly couponService: CouponService) {}
 
   @Post()
-  @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN)
+  @Roles(...ADMIN_ROLES)
   async create(
     @Body() dto: CreateCouponDto,
     @CurrentUser('sub') userId: string,
@@ -39,28 +39,29 @@ export class CouponController {
   }
 
   @Get()
-  @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN)
+  @Roles(...ADMIN_ROLES)
   async findAll(@Query() query: PaginationQueryDto) {
     return this.couponService.findAll(query);
   }
 
   @Patch(':id')
-  @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN)
+  @Roles(...ADMIN_ROLES)
   async update(
-    @Param('id', ParseMongoIdPipe) id: string,
+    @Param('id', ParseIdPipe) id: string,
     @Body() dto: UpdateCouponDto,
+    @CurrentUser('sub') userId: string,
   ) {
-    return this.couponService.update(id, dto);
+    return this.couponService.update(id, dto, userId);
   }
 
   @Delete(':id')
-  @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN)
-  async remove(@Param('id', ParseMongoIdPipe) id: string) {
-    return this.couponService.remove(id);
+  @Roles(...ADMIN_ROLES)
+  async remove(@Param('id', ParseIdPipe) id: string, @CurrentUser('sub') userId: string) {
+    return this.couponService.remove(id, userId);
   }
 
   @Post('send-to-buyers')
-  @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN)
+  @Roles(...ADMIN_ROLES)
   @HttpCode(HttpStatus.OK)
   async sendToBuyers(@Body() dto: SendCouponToBuyersDto) {
     return this.couponService.sendCouponToBuyers(dto);

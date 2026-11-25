@@ -21,7 +21,6 @@ import type { Response } from 'express';
 import { UserRole } from '../../common/enums';
 import { AuthGuard, RolesGuard } from '../../common/guards';
 import { IJwtPayload } from '../../common/interfaces';
-import { PaymentDocument } from '../../models/schemas';
 import { InitiatePaymentDto, PaymobWebhookDto, RefundPaymobOrderDto } from './dto';
 import { PaymentService } from './payment.service';
 
@@ -91,11 +90,11 @@ export class PaymentController {
     res.redirect(302, `${storefront}/checkout/complete?${params}`);
   }
 
-  @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.BARISTA)
+  @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.STAFF)
   @Get('order/:orderReference')
   async getPaymentByOrderReference(
     @Param('orderReference') orderReference: string,
-  ): Promise<PaymentDocument> {
+  ): Promise<unknown> {
     return this.paymentService.getPaymentByOrderReference(orderReference);
   }
 

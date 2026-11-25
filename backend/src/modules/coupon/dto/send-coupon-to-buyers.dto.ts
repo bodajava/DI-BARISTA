@@ -1,24 +1,19 @@
-import {
-  ArrayMinSize,
-  IsArray,
-  IsBoolean,
-  IsEmail,
-  IsIn,
-  IsNotEmpty,
-  IsOptional,
-  IsString,
-  MaxLength,
-} from 'class-validator';
+import { IsArray, IsBoolean, IsEmail, IsIn, IsNotEmpty, IsOptional, IsString, MaxLength } from 'class-validator';
 
 export class SendCouponToBuyersDto {
   @IsString()
   @IsNotEmpty()
   code: string;
 
+  /** buyers = everyone who has ordered, subscribers = newsletter, list = the pasted emails */
+  @IsOptional()
+  @IsIn(['buyers', 'subscribers', 'list'])
+  audience?: 'buyers' | 'subscribers' | 'list' = 'list';
+
+  @IsOptional()
   @IsArray()
-  @ArrayMinSize(1)
   @IsEmail({}, { each: true })
-  emails: string[];
+  emails?: string[];
 
   @IsOptional()
   @IsString()
@@ -34,4 +29,3 @@ export class SendCouponToBuyersDto {
   @IsIn(['en', 'ar'])
   locale?: 'en' | 'ar';
 }
-
