@@ -1,5 +1,5 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
-import PDFDocument from 'pdfkit';
+import type PDFKitType from 'pdfkit';
 import { join } from 'path';
 import { PrismaService } from '../../database/prisma.service';
 
@@ -41,6 +41,9 @@ export class InvoiceService {
 
     const images = await Promise.all(order.items.map((i) => this.fetchImage(i.imageUrl)));
 
+    // Loaded on demand so a PDF library problem can never stop the API from starting
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    const PDFDocument = require('pdfkit') as typeof PDFKitType;
     const doc = new PDFDocument({ size: 'A4', margin: 40, info: { Title: `Invoice ${order.orderNumber}` } });
     doc.registerFont('regular', REGULAR);
     doc.registerFont('bold', BOLD);
