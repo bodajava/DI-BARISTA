@@ -5,6 +5,7 @@ import { createContext, useCallback, useContext, useMemo, useSyncExternalStore }
 export type AdminLang = "en" | "ar";
 export type AdminTheme = "light" | "dark";
 
+import { DASHBOARD_AR } from "./admin/dict-ar";
 import { ADMIN_LANG_KEY as LANG_KEY, ADMIN_THEME_KEY as THEME_KEY, ADMIN_PREFS_EVENT as EVENT } from "./admin-prefs-script";
 
 function read(): string {
@@ -261,11 +262,34 @@ const AR: Record<string, string> = {
   "Back to the store": "ارجع للمتجر",
 };
 
+type Vars = Record<string, string | number>;
+
+function fill(text: string, vars?: Vars): string {
+  if (!vars) return text;
+  return text.replace(/\{(\w+)\}/g, (_, k) => (vars[k] !== undefined ? String(vars[k]) : `{${k}}`));
+}
+
+/** Arabic plural forms: one | two | few (3–10) | many (11+); zero uses "many" */
+function arabicForm(forms: string[], n: number): string {
+  const [one, two, few, many] = forms;
+  if (n === 1) return one;
+  if (n === 2) return two ?? many ?? one;
+  const mod = n % 100;
+  if (mod >= 3 && mod <= 10) return few ?? many ?? one;
+  return many ?? few ?? one;
+}
+
 type Ctx = {
   lang: AdminLang;
   theme: AdminTheme;
   dir: "ltr" | "rtl";
-  t: (en: string) => string;
+  /** English source text (with optional {vars}) → current language */
+  t: (en: string, vars?: Vars) => string;
+  /** Counted text: key "{n} order|{n} orders"; Arabic entry "one|two|few|many" */
+  tn: (key: string, n: number, vars?: Vars) => string;
+  dateOnly: (iso?: string | null) => string;
+  time: (iso?: string | null) => string;
+  ago: (iso?: string | null) => string;
   setLang: (lang: AdminLang) => void;
   setTheme: (theme: AdminTheme) => void;
   money: (cents: number | null | undefined) => string;
@@ -295,16 +319,41 @@ export function AdminPrefsProvider({ children }: { children: React.ReactNode }) 
   }, []);
 
   const value = useMemo<Ctx>(() => {
-    const intl = lang === "ar" ? "ar-EG" : "en-EG";
-    const moneyFmt = new Intl.NumberFormat(intl, { style: "currency", currency: "EGP", maximumFractionDigits: 0 });
+    const intl = lang === "ar" ? "ar-EG-u-nu-latn" : "en-EG";
     return {
       lang,
       theme,
       dir: lang === "ar" ? "rtl" : "ltr",
-      t: (en: string) => (lang === "ar" ? AR[en] ?? en : en),
+      t: (en, vars) => fill(lang === "ar" ? DASHBOARD_AR[en] ?? AR[en] ?? en : en, vars),
+      tn: (key, n, vars) => {
+        const all = { n: Number(n).toLocaleString(intl), ...vars };
+        if (lang === "ar") {
+          const entry = DASHBOARD_AR[key];
+          if (entry) return fill(arabicForm(entry.split("|"), n), all);
+        }
+        const [one, other] = key.split("|");
+        return fill(n === 1 ? one : other ?? one, all);
+      },
+      dateOnly: (iso) => (iso ? new Date(iso).toLocaleDateString(intl, { dateStyle: "medium" }) : "—"),
+      time: (iso) => (iso ? new Date(iso).toLocaleTimeString(intl, { timeStyle: "short" }) : "—"),
+      ago: (iso) => {
+        if (!iso) return "—";
+        const rtf = new Intl.RelativeTimeFormat(intl, { numeric: "auto" });
+        const diff = (new Date(iso).getTime() - Date.now()) / 1000;
+        const abs = Math.abs(diff);
+        if (abs < 60) return rtf.format(Math.round(diff), "second");
+        if (abs < 3600) return rtf.format(Math.round(diff / 60), "minute");
+        if (abs < 86400) return rtf.format(Math.round(diff / 3600), "hour");
+        return rtf.format(Math.round(diff / 86400), "day");
+      },
       setLang: (next) => apply(next, theme),
       setTheme: (next) => apply(lang, next),
-      money: (cents) => moneyFmt.format(Number(cents || 0) / 100),
+      // One format everywhere: "1,250 EGP" / "1,250 ج.م" (Latin digits in both languages)
+      money: (cents) => {
+        const value = Number(cents || 0) / 100;
+        const text = Math.abs(value).toLocaleString("en-US", { maximumFractionDigits: value % 1 ? 2 : 0 });
+        return `${value < 0 ? "−" : ""}${text} ${lang === "ar" ? "ج.م" : "EGP"}`;
+      },
       num: (n, digits = 0) =>
         Number(n || 0).toLocaleString(intl, { maximumFractionDigits: digits, minimumFractionDigits: digits }),
       pct: (ratio) =>

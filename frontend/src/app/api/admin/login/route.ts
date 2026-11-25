@@ -51,12 +51,12 @@ export async function POST(request: NextRequest) {
     if (
       !user ||
       !accessToken ||
-      (user.role !== 'ADMIN' && user.role !== 'SUPER_ADMIN')
+      !['STAFF', 'ADMIN', 'SUPER_ADMIN'].includes(String(user.role))
     ) {
       return NextResponse.json(
         {
           success: false,
-          error: 'Forbidden: Only ADMIN accounts can access this portal',
+          error: "This account can't open the dashboard",
         },
         { status: 403 },
       );

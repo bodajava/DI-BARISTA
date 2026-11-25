@@ -8,7 +8,7 @@ export const ADMIN_SESSION_COOKIE = 'dibaresta_admin_session';
 export const NEST_TOKEN_COOKIE = 'dibaresta_nest_token';
 export const GUEST_SESSION_COOKIE = 'dibaresta_guest_session_id';
 
-const ADMIN_ALLOWED_ROLES = new Set<string>(['ADMIN', 'SUPER_ADMIN']);
+const ADMIN_ALLOWED_ROLES = new Set<string>(['STAFF', 'ADMIN', 'SUPER_ADMIN']);
 
 function getJwtSecretKey(): Uint8Array {
   const { jwtSecret } = getServerEnv();

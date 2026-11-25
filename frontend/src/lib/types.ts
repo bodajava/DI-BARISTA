@@ -60,7 +60,7 @@ export type CouponDiscountType =
   | 'FIXED_AMOUNT'
   | 'FIXED_AMOUNT_CENTS';
 
-export type UserRole = 'SUPER_ADMIN' | 'ADMIN' | 'BARISTA' | 'USER' | 'GUEST';
+export type UserRole = 'SUPER_ADMIN' | 'ADMIN' | 'STAFF' | 'CUSTOMER' | 'BARISTA' | 'USER' | 'GUEST';
 
 export interface IBrandRef {
   _id?: string;
