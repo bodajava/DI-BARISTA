@@ -6,16 +6,14 @@ export const SITE_URL = (
 export const SITE_NAME = 'DIBARESTA CAFFE';
 
 export const SITE_DESCRIPTION =
-  'Freshly roasted specialty coffee in Cairo: Ethiopian and Colombian single origins, house espresso blends, Turkish coffee, capsules and pour-over gear, delivered across Egypt.';
+  'Specialty coffee from Cairo: coffee capsules, coffee beans and grinded coffee, delivered across Egypt.';
 
 export const SITE_KEYWORDS = [
   'specialty coffee Egypt',
   'coffee beans Cairo',
   'buy coffee online Egypt',
-  'Ethiopian coffee',
-  'espresso blend',
+  'coffee capsules Egypt',
   'Turkish coffee',
-  'V60',
   'قهوة مختصة',
   'بن مختص القاهرة',
   'قهوة تركي',

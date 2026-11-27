@@ -69,7 +69,6 @@ async function ProductContent({ params }: Params) {
     '@context': 'https://schema.org',
     '@type': 'Product',
     name: product.name,
-    sku: product.sku,
     image: product.images.map(absolute).filter(Boolean),
     description: product.description || product.notes,
     brand: { '@type': 'Brand', name: 'DI BARISTA' },
