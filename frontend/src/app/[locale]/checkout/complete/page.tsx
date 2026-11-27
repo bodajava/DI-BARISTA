@@ -20,7 +20,7 @@ export default async function CheckoutCompletePage({ params }: Params) {
   const t = getDictionary(locale).complete;
   return (
     <>
-      <PageHeader title={t.metaTitle} />
+      <PageHeader title={t.metaTitle} locale={locale} />
       <main id="main" className="track-page" data-nav="page">
         <Suspense fallback={<div className="track-card track-card-skeleton" aria-hidden="true" />}>
           <CheckoutComplete locale={locale} />

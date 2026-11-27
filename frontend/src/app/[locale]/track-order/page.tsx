@@ -29,7 +29,7 @@ export default async function TrackOrderPage({ params }: Params) {
 
   return (
     <>
-      <PageHeader title={t.title} />
+      <PageHeader title={t.title} locale={locale} />
       <main id="main" className="track-page" data-nav="page">
         <p className="track-intro">{t.intro}</p>
         {/* The form reads ?order= from the URL (links in confirmation emails), so it streams in */}

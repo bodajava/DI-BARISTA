@@ -1,10 +1,11 @@
+import { AnnouncementStrip } from './AnnouncementStrip';
 
 /** Header for inner pages: same frame, strip and nav as the hero, on espresso instead of video */
 /** Without a title it's just the strip + space for the fixed nav (used by product pages) */
-export function PageHeader({ title }: { title?: string }) {
+export function PageHeader({ title, locale }: { title?: string; locale: string | Promise<string> }) {
   return (
     <header className="hero-frame page-frame" data-nav="dark">
-      <div className="hero-strip" aria-hidden="true" />
+      <AnnouncementStrip locale={locale} />
       <div className="page-stage" data-compact={!title || undefined}>
         {title && (
           <h1 className="page-title" data-reveal>

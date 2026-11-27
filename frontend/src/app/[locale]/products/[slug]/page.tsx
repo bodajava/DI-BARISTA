@@ -128,7 +128,7 @@ function ProductSkeleton() {
 export default function ProductPage({ params }: Params) {
   return (
     <>
-      <PageHeader />
+      <PageHeader locale={params.then((p) => p.locale)} />
       <Suspense fallback={<ProductSkeleton />}>
         <ProductContent params={params} />
       </Suspense>

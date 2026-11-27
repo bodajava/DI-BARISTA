@@ -4220,3 +4220,70 @@ a.page-step:hover {
 .explore-row:hover .explore-thumb-placeholder {
   transform: translateY(-4px);
 }
+
+/* ---------- Offers strip (crema band above the menu) ---------- */
+.hero-strip.announce {
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  color: var(--c-espresso);
+}
+.announce-track {
+  display: flex;
+  width: max-content;
+  animation: announce-move linear infinite;
+  will-change: transform;
+}
+.announce:hover .announce-track {
+  animation-play-state: paused;
+}
+.announce-half {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+}
+.announce-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 22px;
+  padding: 0 22px 0 0;
+  font: 600 11px/1 var(--font-ui);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.announce-item::after {
+  content: "";
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.55;
+}
+.announce-item[lang="ar"] {
+  font-family: var(--font-arabic, var(--font-ui));
+  font-size: 12px;
+  letter-spacing: 0;
+  text-transform: none;
+}
+@keyframes announce-move {
+  to {
+    transform: translateX(-50%);
+  }
+}
+@media (max-width: 767px) {
+  .announce-item {
+    font-size: 9.5px;
+    letter-spacing: 0.12em;
+    gap: 16px;
+    padding-inline-end: 16px;
+  }
+  .announce-item[lang="ar"] {
+    font-size: 10.5px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .announce-track {
+    animation: none;
+  }
+}

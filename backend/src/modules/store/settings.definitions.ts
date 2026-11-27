@@ -77,7 +77,15 @@ export const SETTINGS: Record<string, SettingDefinition> = {
   'giftCards.unpaidExpiryMinutes': { type: 'int', default: 60, isPublic: false, min: 5, max: 10080 },
   'marquee.top': {
     type: 'json',
-    default: { enabled: true, lines: [{ en: 'Free delivery on orders over 1,000 EGP', ar: 'توصيل مجاني للطلبات فوق ١٠٠٠ ج.م' }] },
+    // Only true statements by default; the shop writes its real offers in Dashboard → Marketing
+    default: {
+      enabled: true,
+      lines: [
+        { en: 'Specialty coffee, roasted in small batches', ar: 'قهوة مختصة محمّصة على دفعات صغيرة' },
+        { en: 'Delivery to all 27 governorates of Egypt', ar: 'توصيل لكل محافظات مصر' },
+        { en: 'Cash on delivery available', ar: 'متاح الدفع عند الاستلام' },
+      ],
+    },
     isPublic: true,
   },
   'marquee.band': {

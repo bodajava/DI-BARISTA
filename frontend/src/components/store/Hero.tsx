@@ -1,5 +1,6 @@
 import { getDictionary, type Locale } from '@/lib/i18n';
 import { getHeroProducts } from '@/lib/storefront-products';
+import { AnnouncementStrip } from './AnnouncementStrip';
 import { HeroMedia } from './HeroMedia';
 import { HeroProductCard } from './HeroProductCard';
 
@@ -12,7 +13,7 @@ export async function Hero({ locale }: { locale: Locale }) {
 
   return (
     <header className="hero-frame" data-nav="dark">
-      <div className="hero-strip" aria-hidden="true" />
+      <AnnouncementStrip locale={locale} />
       <div className="hero-stage">
         <HeroMedia t={t.hero} />
         <div className="hero-shade" aria-hidden="true" />
