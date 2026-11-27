@@ -23,7 +23,7 @@ const en = {
   meta: {
     title: 'DI BARISTA | Specialty Coffee Roastery in Cairo',
     description:
-      'Freshly roasted specialty coffee in Cairo: single origins, house espresso blends, Turkish coffee and brewing gear, delivered across Egypt.',
+      'Specialty coffee from Cairo: coffee capsules, coffee beans and grinded coffee, delivered across Egypt.',
   },
   nav: {
     label: 'Main',
@@ -277,7 +277,7 @@ const en = {
     eyebrow: 'What are you looking for?',
     intro:
       'From espresso capsules to single-origin beans and Arabic coffee with cardamom, every bag is roasted to turn your daily cup into a small ritual.',
-    rows: { capsules: 'Capsules', beans: 'Beans', arabic: 'Arabic & Turkish', bestsellers: 'Best sellers' },
+    rows: { capsules: 'Coffee Capsules', beans: 'Coffee Beans', arabic: 'Grinded', bestsellers: 'Best sellers' },
     videoLabel: 'Espresso pouring from a machine',
   },
   newsletter: {
@@ -344,7 +344,7 @@ const en = {
       'DI BARISTA roasts specialty coffee in small batches, so every cup, from capsule to cezve, tastes like it was made just for you.',
     heading: 'Shop coffee',
     tabsLabel: 'Coffee categories',
-    tabs: { all: 'All coffee', capsules: 'Capsules', beans: 'Beans', arabic: 'Arabic & Turkish' },
+    tabs: { all: 'All coffee', capsules: 'Coffee Capsules', beans: 'Coffee Beans', arabic: 'Grinded' },
     from: 'From',
     bestseller: 'Best seller',
     photo: (n: number, total: number) => `Photo ${n} of ${total}`,
@@ -397,7 +397,7 @@ const ar: Dictionary = {
   meta: {
     title: 'دي باريستا | محمصة قهوة مختصة في القاهرة',
     description:
-      'قهوة مختصة محمّصة طازة في القاهرة: محاصيل منفردة، خلطات إسبريسو، قهوة تركي وأدوات تحضير، توصيل لكل مصر.',
+      'قهوة مختصة من القاهرة: كبسولات قهوة، بن، وقهوة مطحونة، توصيل لكل مصر.',
   },
   nav: {
     label: 'القائمة الرئيسية',
@@ -652,7 +652,7 @@ const ar: Dictionary = {
     eyebrow: 'بتدوّر على إيه؟',
     intro:
       'من كبسولات الإسبريسو للبن المختص والقهوة العربي بالهيل، كل كيس بيتحمّص علشان فنجانك اليومي يبقى لحظة مختلفة.',
-    rows: { capsules: 'كبسولات', beans: 'بن', arabic: 'عربي وتركي', bestsellers: 'الأكثر مبيعًا' },
+    rows: { capsules: 'كبسولات', beans: 'بن', arabic: 'مطحون', bestsellers: 'الأكثر مبيعًا' },
     videoLabel: 'إسبريسو بينزل من الماكينة',
   },
   newsletter: {
@@ -719,7 +719,7 @@ const ar: Dictionary = {
       'دي باريستا بتحمّص قهوة مختصة على دفعات صغيرة، علشان كل فنجان، من الكبسولة للكنكة، يطلع كأنه معمول ليك انت بالذات.',
     heading: 'تسوّق القهوة',
     tabsLabel: 'أقسام القهوة',
-    tabs: { all: 'كل القهوة', capsules: 'كبسولات', beans: 'بن', arabic: 'عربي وتركي' },
+    tabs: { all: 'كل القهوة', capsules: 'كبسولات', beans: 'بن', arabic: 'مطحون' },
     from: 'من',
     bestseller: 'الأكثر مبيعًا',
     photo: (n: number, total: number) =>

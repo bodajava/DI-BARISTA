@@ -13,7 +13,7 @@ export const SHOP_TABS = [
   { key: 'all', categorySlug: null },
   { key: 'capsules', categorySlug: 'coffee-capsules' },
   { key: 'beans', categorySlug: 'coffee-beans' },
-  { key: 'arabic', categorySlug: 'turkish-arabic-coffee' },
+  { key: 'arabic', categorySlug: 'grinded' },
 ] as const;
 export type ShopTab = (typeof SHOP_TABS)[number]['key'];
 
@@ -27,6 +27,8 @@ export interface IStoreProduct {
   name: string;
   notes: string;
   roastLevel: string;
+  /** Pieces actually sold (from orders) */
+  soldCount: number;
   /** 1-5, drawn as dots */
   roastScore: number;
   /** Formatted lowest price */
@@ -62,12 +64,14 @@ function localizedName(p: IProduct, locale: Locale): string {
   return p.name_en || p.name;
 }
 
+/** Flavour notes as written in the price list (English when there are no Arabic ones) */
+function notesList(p: IProduct, locale: Locale): string[] {
+  const ar = locale === 'ar' && p.tastingNotes_ar?.length ? p.tastingNotes_ar : null;
+  return ar ?? (p.tastingNotes_en?.length ? p.tastingNotes_en : p.flavorNotes ?? []);
+}
+
 function localizedNotes(p: IProduct, locale: Locale): string {
-  const notes =
-    (locale === 'ar' ? p.tastingNotes_ar : p.tastingNotes_en) ||
-    p.flavorNotes ||
-    [];
-  return notes.slice(0, 3).join(' · ');
+  return notesList(p, locale).slice(0, 3).join(' · ');
 }
 
 function refId(ref: string | ICategoryRef | undefined | null): string {
@@ -124,7 +128,8 @@ export async function getStoreCatalog(locale: Locale): Promise<IStoreProduct[]> 
         name: localizedName(p, locale),
         notes: localizedNotes(p, locale),
         roastLevel: p.roastLevel,
-        roastScore: ROAST_SCORE[p.roastLevel] ?? 3,
+        soldCount: p.soldCount ?? 0,
+        roastScore: ROAST_SCORE[p.roastLevel] ?? 0,
         price: price.format((p.finalPriceCents ?? p.priceCents) / 100),
         hasOptions: (p.variants?.length ?? 0) > 1,
         images,
@@ -217,6 +222,8 @@ export interface IProductVariantOption {
   label: string;
   /** Exact label the API expects back when adding to the bag */
   value: string;
+  /** The price list's Item Number for this size */
+  sku: string;
   price: string;
   priceCents: number;
 }
@@ -273,7 +280,8 @@ export async function getStoreProductDetail(
       name: ar ? product.nameAr || product.name : product.name_en || product.name,
       notes: '',
       roastLevel: product.roastLevel,
-      roastScore: ROAST_SCORE[product.roastLevel] ?? 3,
+      soldCount: product.soldCount ?? 0,
+      roastScore: ROAST_SCORE[product.roastLevel] ?? 0,
       price: price.format(product.finalPriceCents / 100),
       hasOptions: (product.variants?.length ?? 0) > 1,
       images: product.imageUrls ?? [],
@@ -282,6 +290,8 @@ export async function getStoreProductDetail(
       categorySlugs: [],
       defaultGrind: product.availableGrinds?.[0] ?? 'WHOLE_BEAN',
     }),
+    // Product page shows every note from the price list, not just the first three
+    notes: notesList(product, locale).join(' · '),
     sku: product.sku,
     description:
       (ar ? product.description_ar : product.description_en) || product.description || '',
@@ -293,6 +303,7 @@ export async function getStoreProductDetail(
     variants: (product.variants ?? []).map((v) => ({
       label: (ar ? v.labelAr : null) || v.label,
       value: v.label,
+      sku: (v as { sku?: string | null }).sku ?? '',
       price: price.format(v.priceCents / 100),
       priceCents: v.priceCents,
     })),

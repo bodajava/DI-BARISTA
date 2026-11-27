@@ -90,11 +90,13 @@ export function HeroProductCard({
           </h2>
           <div className="hero-card-meta">
             <p className="hero-card-notes">{product.notes}</p>
-            <RoastDots
-              score={product.roastScore}
-              prefix={t.roast}
-              name={roastNames[product.roastLevel] ?? product.roastLevel}
-            />
+            {product.roastLevel ? (
+              <RoastDots
+                score={product.roastScore}
+                prefix={t.roast}
+                name={roastNames[product.roastLevel] ?? product.roastLevel}
+              />
+            ) : null}
           </div>
         </div>
 

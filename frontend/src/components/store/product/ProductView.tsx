@@ -99,7 +99,7 @@ export function ProductView({ product, locale }: { product: IStoreProductDetail;
   const soldOut = product.stock <= 0;
   const maxQty = Math.max(1, Math.min(50, product.stock));
   const selected = product.variants.find((v) => v.value === variant);
-  const roastName = dict.roast[product.roastLevel] ?? product.roastLevel;
+  const roastName = product.roastLevel ? (dict.roast[product.roastLevel] ?? product.roastLevel) : '';
   const tabName = product.tab !== 'all' ? dict.shop.tabs[product.tab] : dict.shop.tabs.all;
 
   // Count a product view once per visitor (the API de-duplicates), without slowing the page
@@ -121,7 +121,7 @@ export function ProductView({ product, locale }: { product: IStoreProductDetail;
     [t.elevation, product.elevation],
     [t.roast, roastName],
     [t.weight, product.weightGrams ? `${product.weightGrams.toLocaleString(locale === 'ar' ? 'ar-EG' : 'en')} g` : ''],
-    [t.sku, product.sku],
+    [t.sku, selected?.sku ?? ''],
   ].filter(([, v]) => v) as Array<[string, string]>;
 
   return (
@@ -140,10 +140,12 @@ export function ProductView({ product, locale }: { product: IStoreProductDetail;
 
         <div className="pd-price-row">
           <span className="pd-price">{selected?.price ?? product.price}</span>
-          <span className="pd-roast">
-            <RoastDots score={product.roastScore} label={`${t.roast}: ${roastName}`} />
-            <span>{roastName}</span>
-          </span>
+          {product.roastLevel ? (
+            <span className="pd-roast">
+              <RoastDots score={product.roastScore} label={`${t.roast}: ${roastName}`} />
+              <span>{roastName}</span>
+            </span>
+          ) : null}
         </div>
 
         {product.variants.length > 1 && (

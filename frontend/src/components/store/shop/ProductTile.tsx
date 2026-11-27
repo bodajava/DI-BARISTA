@@ -171,10 +171,9 @@ export function ProductTile({
           <h3 className="tile-title">
             <Link href={href}>{product.name}</Link>
           </h3>
-          <RoastDots
-            score={product.roastScore}
-            label={`${dict.hero.roast}: ${roastName}`}
-          />
+          {product.roastLevel ? (
+            <RoastDots score={product.roastScore} label={`${dict.hero.roast}: ${roastName}`} />
+          ) : null}
         </div>
         {product.notes && <p className="tile-notes">{product.notes}</p>}
         <div className="tile-foot">

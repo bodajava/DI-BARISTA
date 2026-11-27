@@ -1,1220 +1,1051 @@
 {
  "products": [
   {
-   "key": "sleeve:verona",
-   "sheetName": "Verona",
+   "name": "Verona",
    "siteSku": "DBC-WC-004",
-   "new": null,
-   "variants": [
+   "category": "Coffee Capsules",
+   "originCountry": "Ethiopia",
+   "processingMethod": "",
+   "roastText": "Medium Roast",
+   "roastLevel": "MEDIUM",
+   "flavorNotes": [
+    "Almond, Dried Berry And Cane Suger"
+   ],
+   "elevation": "",
+   "description": "Medium roasted unique and complex flavour profile, well known which is the result of a combination of factors including the region in which the coffee is grown, well-known for having a distinct fruity flavour, with notes of citrus, berry, and floral tones. \nThe coffee is often described as having a \"bright\" or \"lively\" flavour, with a pleasant acidity and a smooth, it’s a Juice of coffee”, ((((lovely if straight and perfect with any partner))))\nIt’s a favorite for many people who prefer to drink and feel the unique taste",
+   "sizes": [
     {
-     "label": "Sleeve pack of 1",
-     "labelAr": "عبوة ١ سليف",
-     "capsulesCount": null,
-     "weightGrams": null,
-     "order": 1,
+     "label": "Capsules Sleeve Pack of 1",
      "sku": "10001",
-     "size": "Capsules Sleeve Pack of 1",
+     "weightGrams": null,
+     "capsulesCount": null,
      "priceCents": 24000
     },
     {
-     "label": "Sleeve pack of 3",
-     "labelAr": "عبوة ٣ سليف",
-     "capsulesCount": null,
-     "weightGrams": null,
-     "order": 3,
+     "label": "Capsules Sleeve Pack of 3",
      "sku": "10002",
-     "size": "Capsules Sleeve Pack of 3",
+     "weightGrams": null,
+     "capsulesCount": null,
      "priceCents": 64800
     },
     {
-     "label": "Sleeve pack of 5",
-     "labelAr": "عبوة ٥ سليف",
-     "capsulesCount": null,
-     "weightGrams": null,
-     "order": 5,
+     "label": "Capsules Sleeve Pack of 5",
      "sku": "10003",
-     "size": "Capsules Sleeve Pack of 5",
+     "weightGrams": null,
+     "capsulesCount": null,
      "priceCents": 105000
     },
     {
-     "label": "Sleeve pack of 10",
-     "labelAr": "عبوة ١٠ سليف",
-     "capsulesCount": null,
-     "weightGrams": null,
-     "order": 10,
+     "label": "Capsules Sleeve Pack of 10",
      "sku": "10004",
-     "size": "Capsules Sleeve Pack of 10",
+     "weightGrams": null,
+     "capsulesCount": null,
      "priceCents": 204000
-    }
-   ],
-   "unsellable": []
-  },
-  {
-   "key": "sleeve:florence",
-   "sheetName": "Florence",
-   "siteSku": "DBC-WC-006",
-   "new": null,
-   "variants": [
-    {
-     "label": "Sleeve pack of 1",
-     "labelAr": "عبوة ١ سليف",
-     "capsulesCount": null,
-     "weightGrams": null,
-     "order": 1,
-     "sku": "10017",
-     "size": "10017 Capsules Sleeve Pack of 1",
-     "priceCents": 24000
     },
     {
-     "label": "Sleeve pack of 3",
-     "labelAr": "عبوة ٣ سليف",
-     "capsulesCount": null,
-     "weightGrams": null,
-     "order": 3,
-     "sku": "10018",
-     "size": "Capsules Sleeve Pack of 3",
-     "priceCents": 64800
-    },
-    {
-     "label": "Sleeve pack of 5",
-     "labelAr": "عبوة ٥ سليف",
-     "capsulesCount": null,
-     "weightGrams": null,
-     "order": 5,
-     "sku": "10019",
-     "size": "Capsules Sleeve Pack of 5",
-     "priceCents": 105000
-    },
-    {
-     "label": "Sleeve pack of 10",
-     "labelAr": "عبوة ١٠ سليف",
-     "capsulesCount": null,
-     "weightGrams": null,
-     "order": 10,
-     "sku": "10020",
-     "size": "Capsules Sleeve Pack of 10",
-     "priceCents": 204000
-    }
-   ],
-   "unsellable": []
-  },
-  {
-   "key": "sleeve:roma",
-   "sheetName": "Roma",
-   "siteSku": "DBC-WC-007",
-   "new": null,
-   "variants": [
-    {
-     "label": "Sleeve pack of 1",
-     "labelAr": "عبوة ١ سليف",
-     "capsulesCount": null,
-     "weightGrams": null,
-     "order": 1,
-     "sku": "10013",
-     "size": "Capsules Sleeve Pack of 1",
-     "priceCents": 23000
-    },
-    {
-     "label": "Sleeve pack of 3",
-     "labelAr": "عبوة ٣ سليف",
-     "capsulesCount": null,
-     "weightGrams": null,
-     "order": 3,
-     "sku": "10014",
-     "size": "Capsules Sleeve Pack of 3",
-     "priceCents": 62100
-    },
-    {
-     "label": "Sleeve pack of 5",
-     "labelAr": "عبوة ٥ سليف",
-     "capsulesCount": null,
-     "weightGrams": null,
-     "order": 5,
-     "sku": "10015",
-     "size": "Capsules Sleeve Pack of 5",
-     "priceCents": 100600
-    },
-    {
-     "label": "Sleeve pack of 10",
-     "labelAr": "عبوة ١٠ سليف",
-     "capsulesCount": null,
-     "weightGrams": null,
-     "order": 10,
-     "sku": "10016",
-     "size": "Capsules Sleeve Pack of 10",
-     "priceCents": 195500
-    }
-   ],
-   "unsellable": []
-  },
-  {
-   "key": "sleeve:milan",
-   "sheetName": "Milan",
-   "siteSku": "DBC-WC-003",
-   "new": null,
-   "variants": [
-    {
-     "label": "Sleeve pack of 1",
-     "labelAr": "عبوة ١ سليف",
-     "capsulesCount": null,
-     "weightGrams": null,
-     "order": 1,
-     "sku": "10005",
-     "size": "Capsules Sleeve Pack of 1",
-     "priceCents": 23000
-    },
-    {
-     "label": "Sleeve pack of 3",
-     "labelAr": "عبوة ٣ سليف",
-     "capsulesCount": null,
-     "weightGrams": null,
-     "order": 3,
-     "sku": "10006",
-     "size": "Capsules Sleeve Pack of 3",
-     "priceCents": 62100
-    },
-    {
-     "label": "Sleeve pack of 5",
-     "labelAr": "عبوة ٥ سليف",
-     "capsulesCount": null,
-     "weightGrams": null,
-     "order": 5,
-     "sku": "10007",
-     "size": "Capsules Sleeve Pack of 5",
-     "priceCents": 100600
-    },
-    {
-     "label": "Sleeve pack of 10",
-     "labelAr": "عبوة ١٠ سليف",
-     "capsulesCount": null,
-     "weightGrams": null,
-     "order": 10,
-     "sku": "10008",
-     "size": "Capsules Sleeve Pack of 10",
-     "priceCents": 195500
-    }
-   ],
-   "unsellable": []
-  },
-  {
-   "key": "sleeve:venice",
-   "sheetName": "Venice",
-   "siteSku": "DBC-WC-005",
-   "new": null,
-   "variants": [
-    {
-     "label": "Sleeve pack of 1",
-     "labelAr": "عبوة ١ سليف",
-     "capsulesCount": null,
-     "weightGrams": null,
-     "order": 1,
-     "sku": "10009",
-     "size": "Capsules Sleeve Pack of 1",
-     "priceCents": 24000
-    },
-    {
-     "label": "Sleeve pack of 3",
-     "labelAr": "عبوة ٣ سليف",
-     "capsulesCount": null,
-     "weightGrams": null,
-     "order": 3,
-     "sku": "10010",
-     "size": "Capsules Sleeve Pack of 3",
-     "priceCents": 64800
-    },
-    {
-     "label": "Sleeve pack of 5",
-     "labelAr": "عبوة ٥ سليف",
-     "capsulesCount": null,
-     "weightGrams": null,
-     "order": 5,
-     "sku": "10011",
-     "size": "Capsules Sleeve Pack of 5",
-     "priceCents": 105000
-    },
-    {
-     "label": "Sleeve pack of 10",
-     "labelAr": "عبوة ١٠ سليف",
-     "capsulesCount": null,
-     "weightGrams": null,
-     "order": 10,
-     "sku": "10012",
-     "size": "Capsules Sleeve Pack of 10",
-     "priceCents": 204000
-    }
-   ],
-   "unsellable": []
-  },
-  {
-   "key": "named:verona ethipian kaffa tega specialty coffee beans",
-   "sheetName": "Verona Ethipian Kaffa Tega specialty Coffee Beans",
-   "siteSku": "DBC-WC-017",
-   "new": null,
-   "variants": [],
-   "unsellable": [
-    {
-     "label": "125g",
-     "labelAr": "١٢٥ جم",
-     "capsulesCount": null,
-     "weightGrams": 125,
-     "order": 125,
-     "sku": "10021",
-     "size": "125 GM",
-     "why": "no price"
-    },
-    {
-     "label": "250g",
-     "labelAr": "٢٥٠ جم",
-     "capsulesCount": null,
-     "weightGrams": 250,
-     "order": 250,
-     "sku": "10023",
-     "size": "250 GM",
-     "why": "no price"
-    },
-    {
-     "label": "500g",
-     "labelAr": "٥٠٠ جم",
-     "capsulesCount": null,
-     "weightGrams": 500,
-     "order": 500,
-     "sku": "10025",
-     "size": "500 GM",
-     "why": "no price"
-    }
-   ]
-  },
-  {
-   "key": "named:florance speciality coffee beans",
-   "sheetName": "Florance speciality Coffee Beans",
-   "siteSku": "DBC-WC-020",
-   "new": null,
-   "variants": [],
-   "unsellable": [
-    {
-     "label": "125g",
-     "labelAr": "١٢٥ جم",
-     "capsulesCount": null,
-     "weightGrams": 125,
-     "order": 125,
-     "sku": "10022",
-     "size": "125 GM",
-     "why": "no price"
-    },
-    {
-     "label": "250g",
-     "labelAr": "٢٥٠ جم",
-     "capsulesCount": null,
-     "weightGrams": 250,
-     "order": 250,
-     "sku": "10024",
-     "size": "250 GM",
-     "why": "no price"
-    },
-    {
-     "label": "500g",
-     "labelAr": "٥٠٠ جم",
-     "capsulesCount": null,
-     "weightGrams": 500,
-     "order": 500,
-     "sku": "10026",
-     "size": "500 GM",
-     "why": "no price"
-    }
-   ]
-  },
-  {
-   "key": "bag:verona",
-   "sheetName": "Verona",
-   "siteSku": null,
-   "new": {
-    "sku": "DBC-WC-027",
-    "name": "Verona Coffee Capsules Bag",
-    "nameAr": "كيس كبسولات قهوة فيرونا",
-    "copyFrom": "DBC-WC-004"
-   },
-   "variants": [
-    {
-     "label": "Bag of 5 capsules",
-     "labelAr": "كيس ٥ كبسولة",
-     "capsulesCount": 5,
-     "weightGrams": null,
-     "order": 5,
+     "label": "Capsules Bag of 5",
      "sku": "10029",
-     "size": "Capsules Bag of 5",
+     "weightGrams": null,
+     "capsulesCount": 5,
      "priceCents": 10000
     },
     {
-     "label": "Bag of 15 capsules",
-     "labelAr": "كيس ١٥ كبسولة",
-     "capsulesCount": 15,
-     "weightGrams": null,
-     "order": 15,
+     "label": "Capsules Bag of 15",
      "sku": "10030",
-     "size": "Capsules Bag of 15",
+     "weightGrams": null,
+     "capsulesCount": 15,
      "priceCents": 27000
     },
     {
-     "label": "Bag of 30 capsules",
-     "labelAr": "كيس ٣٠ كبسولة",
-     "capsulesCount": 30,
-     "weightGrams": null,
-     "order": 30,
+     "label": "Capsules Bag of 30",
      "sku": "10031",
-     "size": "Capsules Bag of 30",
+     "weightGrams": null,
+     "capsulesCount": 30,
      "priceCents": 48000
     },
     {
-     "label": "Bag of 50 capsules",
-     "labelAr": "كيس ٥٠ كبسولة",
-     "capsulesCount": 50,
-     "weightGrams": null,
-     "order": 50,
+     "label": "Capsules Bag of 50",
      "sku": "10032",
-     "size": "Capsules Bag of 50",
+     "weightGrams": null,
+     "capsulesCount": 50,
      "priceCents": 89000
     }
    ],
    "unsellable": []
   },
   {
-   "key": "bag:roma",
-   "sheetName": "Roma",
-   "siteSku": "DBC-WC-001",
-   "new": null,
-   "variants": [
-    {
-     "label": "Bag of 5 capsules",
-     "labelAr": "كيس ٥ كبسولة",
-     "capsulesCount": 5,
-     "weightGrams": null,
-     "order": 5,
-     "sku": "10033",
-     "size": "Capsules Bag of 5",
-     "priceCents": 9600
-    },
-    {
-     "label": "Bag of 15 capsules",
-     "labelAr": "كيس ١٥ كبسولة",
-     "capsulesCount": 15,
-     "weightGrams": null,
-     "order": 15,
-     "sku": "10034",
-     "size": "Capsules Bag of 15",
-     "priceCents": 26000
-    },
-    {
-     "label": "Bag of 30 capsules",
-     "labelAr": "كيس ٣٠ كبسولة",
-     "capsulesCount": 30,
-     "weightGrams": null,
-     "order": 30,
-     "sku": "10035",
-     "size": "Capsules Bag of 30",
-     "priceCents": 47000
-    },
-    {
-     "label": "Bag of 50 capsules",
-     "labelAr": "كيس ٥٠ كبسولة",
-     "capsulesCount": 50,
-     "weightGrams": null,
-     "order": 50,
-     "sku": "10036",
-     "size": "Capsules Bag of 50",
-     "priceCents": 87000
-    }
+   "name": "Florence",
+   "siteSku": "DBC-WC-006",
+   "category": "Coffee Capsules",
+   "originCountry": "Colombia",
+   "processingMethod": "",
+   "roastText": "Medium Roast",
+   "roastLevel": "MEDIUM",
+   "flavorNotes": [
+    "Balanced and smooth note of fruit, Choclate and caramel , bright acidity and pleasant ,clean after taste Medium body"
    ],
-   "unsellable": []
-  },
-  {
-   "key": "bag:venice",
-   "sheetName": "Venice",
-   "siteSku": "DBC-WC-008",
-   "new": null,
-   "variants": [
+   "elevation": "",
+   "description": "Colombian coffee represents a prestigious denomination reserved for 100% Arabica specialty coffee produced in Colombia's renowned coffee-growing regions. Known for its sweet, creamy notes with subtle hints of chocolate, this coffee delivers a refined and balanced flavor profile. To qualify as \"Café de Colombia,\" the coffee must be of premium quality, exclusively sourced from Colombia’s designated coffee-growing zones. It is cultivated at high altitudes, often exceeding 2,000 meters above sea level, where unique climate conditions contribute to its exceptional taste and aroma.",
+   "sizes": [
     {
-     "label": "Bag of 5 capsules",
-     "labelAr": "كيس ٥ كبسولة",
-     "capsulesCount": 5,
+     "label": "10017 Capsules Sleeve Pack of 1",
+     "sku": "10017",
      "weightGrams": null,
-     "order": 5,
-     "sku": "10037",
-     "size": "Capsules Bag of 5",
-     "priceCents": 10000
+     "capsulesCount": null,
+     "priceCents": 24000
     },
     {
-     "label": "Bag of 15 capsules",
-     "labelAr": "كيس ١٥ كبسولة",
-     "capsulesCount": 15,
+     "label": "Capsules Sleeve Pack of 3",
+     "sku": "10018",
      "weightGrams": null,
-     "order": 15,
-     "sku": "10038",
-     "size": "Capsules Bag of 15",
-     "priceCents": 27000
+     "capsulesCount": null,
+     "priceCents": 64800
     },
     {
-     "label": "Bag of 30 capsules",
-     "labelAr": "كيس ٣٠ كبسولة",
-     "capsulesCount": 30,
+     "label": "Capsules Sleeve Pack of 5",
+     "sku": "10019",
      "weightGrams": null,
-     "order": 30,
-     "sku": "10039",
-     "size": "Capsules Bag of 30",
-     "priceCents": 48000
+     "capsulesCount": null,
+     "priceCents": 105000
     },
     {
-     "label": "Bag of 50 capsules",
-     "labelAr": "كيس ٥٠ كبسولة",
-     "capsulesCount": 50,
+     "label": "Capsules Sleeve Pack of 10",
+     "sku": "10020",
      "weightGrams": null,
-     "order": 50,
-     "sku": "10040",
-     "size": "Capsules Bag of 50",
-     "priceCents": 89000
-    }
-   ],
-   "unsellable": []
-  },
-  {
-   "key": "bag:milan",
-   "sheetName": "Milan",
-   "siteSku": "DBC-WC-025",
-   "new": null,
-   "variants": [
-    {
-     "label": "Bag of 5 capsules",
-     "labelAr": "كيس ٥ كبسولة",
-     "capsulesCount": 5,
-     "weightGrams": null,
-     "order": 5,
-     "sku": "10041",
-     "size": "Capsules Bag of 5",
-     "priceCents": 9600
+     "capsulesCount": null,
+     "priceCents": 204000
     },
     {
-     "label": "Bag of 15 capsules",
-     "labelAr": "كيس ١٥ كبسولة",
-     "capsulesCount": 15,
-     "weightGrams": null,
-     "order": 15,
-     "sku": "10042",
-     "size": "Capsules Bag of 15",
-     "priceCents": 26000
-    },
-    {
-     "label": "Bag of 30 capsules",
-     "labelAr": "كيس ٣٠ كبسولة",
-     "capsulesCount": 30,
-     "weightGrams": null,
-     "order": 30,
-     "sku": "10043",
-     "size": "Capsules Bag of 30",
-     "priceCents": 47000
-    },
-    {
-     "label": "Bag of 50 capsules",
-     "labelAr": "كيس ٥٠ كبسولة",
-     "capsulesCount": 50,
-     "weightGrams": null,
-     "order": 50,
-     "sku": "10044",
-     "size": "Capsules Bag of 50",
-     "priceCents": 87000
-    }
-   ],
-   "unsellable": []
-  },
-  {
-   "key": "bag:florence",
-   "sheetName": "Florence",
-   "siteSku": "DBC-WC-002",
-   "new": null,
-   "variants": [
-    {
-     "label": "Bag of 5 capsules",
-     "labelAr": "كيس ٥ كبسولة",
-     "capsulesCount": 5,
-     "weightGrams": null,
-     "order": 5,
+     "label": "Capsules Bag of 5",
      "sku": "10045",
-     "size": "Capsules Bag of 5",
+     "weightGrams": null,
+     "capsulesCount": 5,
      "priceCents": 10000
     },
     {
-     "label": "Bag of 15 capsules",
-     "labelAr": "كيس ١٥ كبسولة",
-     "capsulesCount": 15,
-     "weightGrams": null,
-     "order": 15,
+     "label": "Capsules Bag of 15",
      "sku": "10046",
-     "size": "Capsules Bag of 15",
+     "weightGrams": null,
+     "capsulesCount": 15,
      "priceCents": 27000
     },
     {
-     "label": "Bag of 30 capsules",
-     "labelAr": "كيس ٣٠ كبسولة",
-     "capsulesCount": 30,
-     "weightGrams": null,
-     "order": 30,
+     "label": "Capsules Bag of 30",
      "sku": "10047",
-     "size": "Capsules Bag of 30",
+     "weightGrams": null,
+     "capsulesCount": 30,
      "priceCents": 48000
     },
     {
-     "label": "Bag of 50 capsules",
-     "labelAr": "كيس ٥٠ كبسولة",
-     "capsulesCount": 50,
-     "weightGrams": null,
-     "order": 50,
+     "label": "Capsules Bag of 50",
      "sku": "10048",
-     "size": "Capsules Bag of 50",
+     "weightGrams": null,
+     "capsulesCount": 50,
      "priceCents": 89000
     }
    ],
    "unsellable": []
   },
   {
-   "key": "bag:mix",
-   "sheetName": "Mix",
-   "siteSku": "DBC-WC-026",
-   "new": null,
-   "variants": [
+   "name": "Roma",
+   "siteSku": "DBC-WC-007",
+   "category": "Coffee Capsules",
+   "originCountry": "Asia,South America and Africa",
+   "processingMethod": "",
+   "roastText": "Medium Dark Roast",
+   "roastLevel": "MEDIUM_DARK",
+   "flavorNotes": [
+    "cane sugar , and red berry and citric after taste medium body"
+   ],
+   "elevation": "",
+   "description": "Crafted from premium Colombian Medellín Supremo beans, this espresso offers a rich, aromatic experience with a distinct elegance. With a smooth body and well-balanced profile, it delivers delightful light notes of cocoa and cream. The result is a coffee that’s full of character, yet approachable—perfect for any time of day. Whether enjoyed as a classic espresso or in your favorite coffee beverage, this blend brings a touch of luxury to every cup.",
+   "sizes": [
     {
-     "label": "Bag of 5 capsules",
-     "labelAr": "كيس ٥ كبسولة",
-     "capsulesCount": 5,
+     "label": "Capsules Sleeve Pack of 1",
+     "sku": "10013",
      "weightGrams": null,
-     "order": 5,
-     "sku": "10049",
-     "size": "Capsules Bag of 5",
+     "capsulesCount": null,
+     "priceCents": 23000
+    },
+    {
+     "label": "Capsules Sleeve Pack of 3",
+     "sku": "10014",
+     "weightGrams": null,
+     "capsulesCount": null,
+     "priceCents": 62100
+    },
+    {
+     "label": "Capsules Sleeve Pack of 5",
+     "sku": "10015",
+     "weightGrams": null,
+     "capsulesCount": null,
+     "priceCents": 100600
+    },
+    {
+     "label": "Capsules Sleeve Pack of 10",
+     "sku": "10016",
+     "weightGrams": null,
+     "capsulesCount": null,
+     "priceCents": 195500
+    },
+    {
+     "label": "Capsules Bag of 5",
+     "sku": "10033",
+     "weightGrams": null,
+     "capsulesCount": 5,
      "priceCents": 9600
     },
     {
-     "label": "Bag of 15 capsules",
-     "labelAr": "كيس ١٥ كبسولة",
-     "capsulesCount": 15,
+     "label": "Capsules Bag of 15",
+     "sku": "10034",
      "weightGrams": null,
-     "order": 15,
-     "sku": "10050",
-     "size": "Capsules Bag of 15",
+     "capsulesCount": 15,
      "priceCents": 26000
     },
     {
-     "label": "Bag of 30 capsules",
-     "labelAr": "كيس ٣٠ كبسولة",
-     "capsulesCount": 30,
+     "label": "Capsules Bag of 30",
+     "sku": "10035",
      "weightGrams": null,
-     "order": 30,
-     "sku": "10051",
-     "size": "Capsules Bag of 30",
+     "capsulesCount": 30,
      "priceCents": 47000
     },
     {
-     "label": "Bag of 50 capsules",
-     "labelAr": "كيس ٥٠ كبسولة",
-     "capsulesCount": 50,
+     "label": "Capsules Bag of 50",
+     "sku": "10036",
      "weightGrams": null,
-     "order": 50,
-     "sku": "10052",
-     "size": "Capsules Bag of 50",
+     "capsulesCount": 50,
      "priceCents": 87000
     }
    ],
    "unsellable": []
   },
   {
-   "key": "named:gesha ethiopian chaka specialty coffee beans",
-   "sheetName": "GESHA Ethiopian Chaka Specialty Coffee Beans",
+   "name": "Milan",
+   "siteSku": "DBC-WC-003",
+   "category": "Coffee Capsules",
+   "originCountry": "Asia,South America and Africa",
+   "processingMethod": "",
+   "roastText": "Dark Roast",
+   "roastLevel": "DARK",
+   "flavorNotes": [
+    "nutty and dark choclate"
+   ],
+   "elevation": "",
+   "description": "A coffee that’s more than just a moment of refreshment; it’s an experience for the senses. Rich and aromatic, Palermo Blend embodies the soul of Sicilian coffee with a perfect balance of strength and finesse. Bold yet delicate, robust yet fragrant, this blend is your ideal companion at any time of day. It’s not just about energy—it’s about finding a moment of calm and well-being, enveloped in the comforting warmth and inviting aroma of Milan’s finest coffee.",
+   "sizes": [
+    {
+     "label": "Capsules Sleeve Pack of 1",
+     "sku": "10005",
+     "weightGrams": null,
+     "capsulesCount": null,
+     "priceCents": 23000
+    },
+    {
+     "label": "Capsules Sleeve Pack of 3",
+     "sku": "10006",
+     "weightGrams": null,
+     "capsulesCount": null,
+     "priceCents": 62100
+    },
+    {
+     "label": "Capsules Sleeve Pack of 5",
+     "sku": "10007",
+     "weightGrams": null,
+     "capsulesCount": null,
+     "priceCents": 100600
+    },
+    {
+     "label": "Capsules Sleeve Pack of 10",
+     "sku": "10008",
+     "weightGrams": null,
+     "capsulesCount": null,
+     "priceCents": 195500
+    },
+    {
+     "label": "Capsules Bag of 5",
+     "sku": "10041",
+     "weightGrams": null,
+     "capsulesCount": 5,
+     "priceCents": 9600
+    },
+    {
+     "label": "Capsules Bag of 15",
+     "sku": "10042",
+     "weightGrams": null,
+     "capsulesCount": 15,
+     "priceCents": 26000
+    },
+    {
+     "label": "Capsules Bag of 30",
+     "sku": "10043",
+     "weightGrams": null,
+     "capsulesCount": 30,
+     "priceCents": 47000
+    },
+    {
+     "label": "Capsules Bag of 50",
+     "sku": "10044",
+     "weightGrams": null,
+     "capsulesCount": 50,
+     "priceCents": 87000
+    }
+   ],
+   "unsellable": []
+  },
+  {
+   "name": "Venice",
+   "siteSku": "DBC-WC-005",
+   "category": "Coffee Capsules",
+   "originCountry": "Colombian",
+   "processingMethod": "",
+   "roastText": "Coffee Capsules Medium Roast",
+   "roastLevel": "MEDIUM",
+   "flavorNotes": [
+    "Creamy Dark Chocolate and walnut"
+   ],
+   "elevation": "",
+   "description": "Sourced from the classy region of latin America, this high-end specialty coffee is decaffeinated using the natural Mountain Water Process, ensuring a clean and chemical-free cup. Known for its rich, nutty sweetness and smooth, low acidity, this decaf offers the classic taste of tropical climate—delightful bittersweet notes paired with hints of chocolate and roasted nuts. Whether you're seeking a relaxing cup or a rich, satisfying brew, this decaf provides all the flavor without the caffeine.",
+   "sizes": [
+    {
+     "label": "Capsules Sleeve Pack of 1",
+     "sku": "10009",
+     "weightGrams": null,
+     "capsulesCount": null,
+     "priceCents": 24000
+    },
+    {
+     "label": "Capsules Sleeve Pack of 3",
+     "sku": "10010",
+     "weightGrams": null,
+     "capsulesCount": null,
+     "priceCents": 64800
+    },
+    {
+     "label": "Capsules Sleeve Pack of 5",
+     "sku": "10011",
+     "weightGrams": null,
+     "capsulesCount": null,
+     "priceCents": 105000
+    },
+    {
+     "label": "Capsules Sleeve Pack of 10",
+     "sku": "10012",
+     "weightGrams": null,
+     "capsulesCount": null,
+     "priceCents": 204000
+    },
+    {
+     "label": "Capsules Bag of 5",
+     "sku": "10037",
+     "weightGrams": null,
+     "capsulesCount": 5,
+     "priceCents": 10000
+    },
+    {
+     "label": "Capsules Bag of 15",
+     "sku": "10038",
+     "weightGrams": null,
+     "capsulesCount": 15,
+     "priceCents": 27000
+    },
+    {
+     "label": "Capsules Bag of 30",
+     "sku": "10039",
+     "weightGrams": null,
+     "capsulesCount": 30,
+     "priceCents": 48000
+    },
+    {
+     "label": "Capsules Bag of 50",
+     "sku": "10040",
+     "weightGrams": null,
+     "capsulesCount": 50,
+     "priceCents": 89000
+    }
+   ],
+   "unsellable": []
+  },
+  {
+   "name": "Verona Ethipian Kaffa Tega specialty Coffee Beans",
+   "siteSku": "DBC-WC-017",
+   "category": "Coffee Beans",
+   "originCountry": "Ethiopia Kaffa Tega",
+   "processingMethod": "Washed",
+   "roastText": "Medium",
+   "roastLevel": "MEDIUM",
+   "flavorNotes": [
+    "Floral , Sweet Vanilla , Dried Apricot , Chocolate , Smooth Acidity , Tea-Like / Honey Body"
+   ],
+   "elevation": "1830-1890 m.a.s.l",
+   "description": "A distinguished offering from Kaffa Tega, Ethiopia, this specialty-grade Verona coffee is cultivated at elevations between 1830 and 1890 masl, and graded 86.5+ for its exceptional quality. Processed using the washed method and roasted to a medium level, it preserves the Gesha variety’s delicate, floral essence.\n\nIn the cup, Verona reveals a captivating combination of floral notes, sweet vanilla, dried apricot, and hints of chocolate, supported by a gentle smooth acidity and a tea-like, honeyed body. This elegant profile is ideal for filter brewing and those who appreciate complexity with balance.",
+   "sizes": [],
+   "unsellable": [
+    {
+     "label": "125 GM",
+     "sku": "10021",
+     "weightGrams": 125,
+     "capsulesCount": null,
+     "why": "no price"
+    },
+    {
+     "label": "250 GM",
+     "sku": "10023",
+     "weightGrams": 250,
+     "capsulesCount": null,
+     "why": "no price"
+    },
+    {
+     "label": "500 GM",
+     "sku": "10025",
+     "weightGrams": 500,
+     "capsulesCount": null,
+     "why": "no price"
+    }
+   ]
+  },
+  {
+   "name": "Florance speciality Coffee Beans",
+   "siteSku": "DBC-WC-020",
+   "category": "Coffee Beans",
+   "originCountry": "Colombia Tamara",
+   "processingMethod": "Washed",
+   "roastText": "Medium",
+   "roastLevel": "MEDIUM",
+   "flavorNotes": [
+    "Hazelnuts , Black cherry , chocolate with sweet finish , delicate acidity low , smooth body"
+   ],
+   "elevation": "1400",
+   "description": "Sourced from the highlands of Tamara, Colombia, Florance is a specialty-grade Arabica coffee grown at 1400 masl and graded 87+, reflecting its refined and consistent quality. With a washed process and medium roast, it delivers a balanced and aromatic experience.\n\nIn every cup, you’ll find inviting notes of hazelnuts, black cherry, and chocolate, complemented by a sweet finish, low delicate acidity, and a smooth, rounded body. This coffee is perfect for those seeking elegance, clarity, and a touch of sweetness in every brew — ideal for pour-over, French press, or espresso.",
+   "sizes": [],
+   "unsellable": [
+    {
+     "label": "125 GM",
+     "sku": "10022",
+     "weightGrams": 125,
+     "capsulesCount": null,
+     "why": "no price"
+    },
+    {
+     "label": "250 GM",
+     "sku": "10024",
+     "weightGrams": 250,
+     "capsulesCount": null,
+     "why": "no price"
+    },
+    {
+     "label": "500 GM",
+     "sku": "10026",
+     "weightGrams": 500,
+     "capsulesCount": null,
+     "why": "no price"
+    }
+   ]
+  },
+  {
+   "name": "Mix",
+   "siteSku": "DBC-WC-026",
+   "category": "Coffee Capsules",
+   "originCountry": "Mix",
+   "processingMethod": "",
+   "roastText": "Mix",
+   "roastLevel": "",
+   "flavorNotes": [
+    "Mix"
+   ],
+   "elevation": "",
+   "description": "",
+   "sizes": [
+    {
+     "label": "Capsules Bag of 5",
+     "sku": "10049",
+     "weightGrams": null,
+     "capsulesCount": 5,
+     "priceCents": 9600
+    },
+    {
+     "label": "Capsules Bag of 15",
+     "sku": "10050",
+     "weightGrams": null,
+     "capsulesCount": 15,
+     "priceCents": 26000
+    },
+    {
+     "label": "Capsules Bag of 30",
+     "sku": "10051",
+     "weightGrams": null,
+     "capsulesCount": 30,
+     "priceCents": 47000
+    },
+    {
+     "label": "Capsules Bag of 50",
+     "sku": "10052",
+     "weightGrams": null,
+     "capsulesCount": 50,
+     "priceCents": 87000
+    }
+   ],
+   "unsellable": []
+  },
+  {
+   "name": "GESHA Ethiopian Chaka Specialty Coffee Beans",
    "siteSku": "DBC-WC-022",
-   "new": null,
-   "variants": [],
+   "category": "Coffee Beans",
+   "originCountry": "Ethiopia Gesha",
+   "processingMethod": "Natural Anarobic",
+   "roastText": "Medium",
+   "roastLevel": "MEDIUM",
+   "flavorNotes": [
+    "Citrus Fruits , Cranberry , Floral , green apple , Guava , lemon malic acid , grape fruit, orange , red fruit , stone fruit , sweet & sugary , tart cherry"
+   ],
+   "elevation": "1911 – 2069  m.a.s.l",
+   "description": "Sourced from the high-altitude regions of Ethiopia, this exceptional GESHA variety coffee undergoes a natural anaerobic process that unlocks a highly expressive and aromatic cup. Grown at elevations ranging from 1911 to 2069 masl, it is graded 87, reflecting its premium specialty status.\n\nThis medium roast reveals an intricate flavor profile: bright citrus fruits, cranberry, and floral notes, layered with green apple, guava, and grapefruit. A sweet and sugary core is balanced by a touch of lemon malic acidity, orange zest, red and stone fruits, and finishes with a clean hint of tart cherry.\n\nAn ideal choice for filter or slow-brew enthusiasts seeking a complex, fruit-forward experience with exceptional clarity and depth.",
+   "sizes": [],
    "unsellable": [
     {
-     "label": "125g",
-     "labelAr": "١٢٥ جم",
-     "capsulesCount": null,
-     "weightGrams": 125,
-     "order": 125,
+     "label": "125 GM",
      "sku": "10053",
-     "size": "125 GM",
+     "weightGrams": 125,
+     "capsulesCount": null,
      "why": "no price"
     },
     {
-     "label": "250g",
-     "labelAr": "٢٥٠ جم",
-     "capsulesCount": null,
-     "weightGrams": 250,
-     "order": 250,
+     "label": "250 GM",
      "sku": "10054",
-     "size": "250 GM",
+     "weightGrams": 250,
+     "capsulesCount": null,
      "why": "no price"
     },
     {
-     "label": "500g",
-     "labelAr": "٥٠٠ جم",
-     "capsulesCount": null,
-     "weightGrams": 500,
-     "order": 500,
+     "label": "500 GM",
      "sku": "10055",
-     "size": "500 GM",
+     "weightGrams": 500,
+     "capsulesCount": null,
      "why": "no price"
     }
    ]
   },
   {
-   "key": "named:colombia coffee huila specialty coffee beans",
-   "sheetName": "Colombia Coffee Huila Specialty Coffee Beans",
+   "name": "Colombia Coffee Huila Specialty Coffee Beans",
    "siteSku": "DBC-WC-023",
-   "new": null,
-   "variants": [],
+   "category": "Coffee Beans",
+   "originCountry": "Colombia",
+   "processingMethod": "Natural",
+   "roastText": "Medium",
+   "roastLevel": "MEDIUM",
+   "flavorNotes": [
+    "Dried Apricot , Floral , Black Plum , with delicate acidity and round smooth body"
+   ],
+   "elevation": "1900 masl",
+   "description": "Sourced from the high-altitude farms of Huila, Colombia, this 87-grade specialty Arabica is grown at 1900 masl and naturally processed to preserve its full aromatic range.\n\nThe medium roast profile brings out vibrant layers of dried apricot, floral complexity, and black plum, with a delicate acidity and smooth, rounded body that make each cup elegant and satisfying. Ideal for manual brewing methods, this coffee is a perfect reflection of Colombia’s renowned coffee heritage.",
+   "sizes": [],
    "unsellable": [
     {
-     "label": "125g",
-     "labelAr": "١٢٥ جم",
-     "capsulesCount": null,
-     "weightGrams": 125,
-     "order": 125,
+     "label": "125 GM",
      "sku": "10056",
-     "size": "125 GM",
+     "weightGrams": 125,
+     "capsulesCount": null,
      "why": "no price"
     },
     {
-     "label": "250g",
-     "labelAr": "٢٥٠ جم",
-     "capsulesCount": null,
-     "weightGrams": 250,
-     "order": 250,
+     "label": "250 GM",
      "sku": "10057",
-     "size": "250 GM",
+     "weightGrams": 250,
+     "capsulesCount": null,
      "why": "no price"
     },
     {
-     "label": "500g",
-     "labelAr": "٥٠٠ جم",
-     "capsulesCount": null,
-     "weightGrams": 500,
-     "order": 500,
+     "label": "500 GM",
      "sku": "10058",
-     "size": "500 GM",
+     "weightGrams": 500,
+     "capsulesCount": null,
      "why": "no price"
     }
    ]
   },
   {
-   "key": "named:brazil santos specialty coffee",
-   "sheetName": "Brazil Santos Specialty Coffee",
+   "name": "Brazil Santos Specialty Coffee",
    "siteSku": "DBC-WC-024",
-   "new": null,
-   "variants": [],
+   "category": "Coffee Beans",
+   "originCountry": "Brazil",
+   "processingMethod": "Natural",
+   "roastText": "Medium",
+   "roastLevel": "MEDIUM",
+   "flavorNotes": [
+    "Roasted Hazelnut, Sugar Cane Walnut With Low Acidity And Creamy Body"
+   ],
+   "elevation": "1050 masl",
+   "description": "Sourced from the highlands of Brazil, this specialty coffee showcases the very best of natural-process Arabica, grown at 1050 meters above sea level and graded 85+ for its exceptional quality. The cup reveals an elegant mix of roasted hazelnut, sugarcane sweetness, and walnut, delivering a mellow, low-acidity profile with a luxuriously creamy body.\n\nPerfectly suited for filter or espresso, Brazil Santos offers a smooth, approachable flavor that’s both comforting and refined — a true classic in specialty coffee.",
+   "sizes": [],
    "unsellable": [
     {
-     "label": "125g",
-     "labelAr": "١٢٥ جم",
-     "capsulesCount": null,
-     "weightGrams": 125,
-     "order": 125,
+     "label": "125 GM",
      "sku": "10059",
-     "size": "125 GM",
+     "weightGrams": 125,
+     "capsulesCount": null,
      "why": "no price"
     },
     {
-     "label": "250g",
-     "labelAr": "٢٥٠ جم",
-     "capsulesCount": null,
-     "weightGrams": 250,
-     "order": 250,
+     "label": "250 GM",
      "sku": "10060",
-     "size": "250 GM",
+     "weightGrams": 250,
+     "capsulesCount": null,
      "why": "no price"
     },
     {
-     "label": "500g",
-     "labelAr": "٥٠٠ جم",
-     "capsulesCount": null,
-     "weightGrams": 500,
-     "order": 500,
+     "label": "500 GM",
      "sku": "10061",
-     "size": "500 GM",
+     "weightGrams": 500,
+     "capsulesCount": null,
      "why": "no price"
     }
    ]
   },
   {
-   "key": "named:guatemala aa shb specialty coffee",
-   "sheetName": "Guatemala AA SHB Specialty Coffee",
+   "name": "Guatemala AA SHB Specialty Coffee",
    "siteSku": "DBC-WC-021",
-   "new": null,
-   "variants": [],
+   "category": "Coffee Beans",
+   "originCountry": "GUATEMALA",
+   "processingMethod": "Washed",
+   "roastText": "Medium",
+   "roastLevel": "MEDIUM",
+   "flavorNotes": [
+    "Chocolate, Brown Sugar, Prune Toffee With Long Nutty Finish, Medium To Low Acidity With Full Body"
+   ],
+   "elevation": "1350 masl",
+   "description": "From the high-altitude regions of Guatemala, this AA SHB (Strictly Hard Bean) specialty coffee is grown at 1350 masl and graded 86, signifying its superior quality and well-balanced profile. Carefully washed and medium roasted, it offers a flavorful and full-bodied experience.\n\nIn the cup, expect rich notes of chocolate, brown sugar, and prune toffee, accompanied by a long nutty finish. The coffee presents a medium to low acidity, making it smooth yet vibrant, and ideal for those who enjoy structured depth without overwhelming brightness.\n\nPerfect for espresso or immersion brews, this Guatemalan gem delivers both comfort and complexity in every sip.",
+   "sizes": [],
    "unsellable": [
     {
-     "label": "125g",
-     "labelAr": "١٢٥ جم",
-     "capsulesCount": null,
-     "weightGrams": 125,
-     "order": 125,
+     "label": "125 GM",
      "sku": "10062",
-     "size": "125 GM",
+     "weightGrams": 125,
+     "capsulesCount": null,
      "why": "no price"
     },
     {
-     "label": "250g",
-     "labelAr": "٢٥٠ جم",
-     "capsulesCount": null,
-     "weightGrams": 250,
-     "order": 250,
+     "label": "250 GM",
      "sku": "10063",
-     "size": "250 GM",
+     "weightGrams": 250,
+     "capsulesCount": null,
      "why": "no price"
     },
     {
-     "label": "500g",
-     "labelAr": "٥٠٠ جم",
-     "capsulesCount": null,
-     "weightGrams": 500,
-     "order": 500,
+     "label": "500 GM",
      "sku": "10064",
-     "size": "500 GM",
+     "weightGrams": 500,
+     "capsulesCount": null,
      "why": "no price"
     }
    ]
   },
   {
-   "key": "named:nicaragua buenos aires specialty coffee",
-   "sheetName": "Nicaragua Buenos Aires Specialty Coffee",
+   "name": "Nicaragua Buenos Aires Specialty Coffee",
    "siteSku": "DBC-WC-019",
-   "new": null,
-   "variants": [
+   "category": "Coffee Beans",
+   "originCountry": "NICARAGUA",
+   "processingMethod": "Washed",
+   "roastText": "Medium",
+   "roastLevel": "MEDIUM",
+   "flavorNotes": [
+    "Chocolate, Walnut, Brown Sugar With Low Acidity And Full Creamy Body"
+   ],
+   "elevation": "1200 - 1700 masl",
+   "description": "Grown at altitudes ranging from 1200 to 1700 masl in the rich volcanic soils of Nicaragua, this specialty-grade coffee is carefully washed and medium roasted to preserve its natural sweetness and depth. With a cupping score of 86.75, this coffee delivers a comforting yet refined profile.\n\nExpect layered flavors of chocolate, toasted walnut, and brown sugar, balanced by low acidity and a full, creamy body. It’s a smooth and indulgent cup that appeals to both casual drinkers and specialty coffee enthusiasts, perfect for espresso or pour-over brewing methods.",
+   "sizes": [
     {
-     "label": "125g",
-     "labelAr": "١٢٥ جم",
-     "capsulesCount": null,
-     "weightGrams": 125,
-     "order": 125,
+     "label": "125 GM",
      "sku": "10065",
-     "size": "125 GM",
+     "weightGrams": 125,
+     "capsulesCount": null,
      "priceCents": 13500
     },
     {
-     "label": "250g",
-     "labelAr": "٢٥٠ جم",
-     "capsulesCount": null,
-     "weightGrams": 250,
-     "order": 250,
+     "label": "250 GM",
      "sku": "10066",
-     "size": "250 GM",
+     "weightGrams": 250,
+     "capsulesCount": null,
      "priceCents": 25000
     },
     {
-     "label": "500g",
-     "labelAr": "٥٠٠ جم",
-     "capsulesCount": null,
-     "weightGrams": 500,
-     "order": 500,
+     "label": "500 GM",
      "sku": "10067",
-     "size": "500 GM",
+     "weightGrams": 500,
+     "capsulesCount": null,
      "priceCents": 45000
     }
    ],
    "unsellable": []
   },
   {
-   "key": "named:torino espresso roasted coffee beans",
-   "sheetName": "Torino Espresso Roasted Coffee Beans",
+   "name": "Torino Espresso Roasted Coffee Beans",
    "siteSku": "DBC-WC-012",
-   "new": null,
-   "variants": [
+   "category": "Coffee Beans",
+   "originCountry": "Mix Blend",
+   "processingMethod": "",
+   "roastText": "Medium Dark",
+   "roastLevel": "MEDIUM_DARK",
+   "flavorNotes": [
+    "Cream, caramel, and roasted hazelnut,subtle hints of tobacco and pink pepper"
+   ],
+   "elevation": "",
+   "description": "ourced from the high mountains of Peru. Cultivated at altitudes ranging from 1200 to 1800 meters above sea level, these beans are known for their exceptional size and vibrant color, ensuring a cup of coffee that is both aromatic and comforting.\n\nThis medium dark roast, crafted in the Italian style, offers an enticing cocoa aroma that is both pleasant and inviting. Experience a smooth flavor profile with delightful notes of cream, caramel, and roasted hazelnut. The velvety finish reveals subtle hints of tobacco and pink pepper, creating a well-balanced cup with a medium density body.",
+   "sizes": [
     {
-     "label": "125g",
-     "labelAr": "١٢٥ جم",
-     "capsulesCount": null,
-     "weightGrams": 125,
-     "order": 125,
+     "label": "125 GM",
      "sku": "10068",
-     "size": "125 GM",
+     "weightGrams": 125,
+     "capsulesCount": null,
      "priceCents": 17500
     },
     {
-     "label": "250g",
-     "labelAr": "٢٥٠ جم",
-     "capsulesCount": null,
-     "weightGrams": 250,
-     "order": 250,
+     "label": "250 GM",
      "sku": "10069",
-     "size": "250 GM",
+     "weightGrams": 250,
+     "capsulesCount": null,
      "priceCents": 27000
     },
     {
-     "label": "500g",
-     "labelAr": "٥٠٠ جم",
-     "capsulesCount": null,
-     "weightGrams": 500,
-     "order": 500,
+     "label": "500 GM",
      "sku": "10070",
-     "size": "500 GM",
+     "weightGrams": 500,
+     "capsulesCount": null,
      "priceCents": 52000
     }
    ],
    "unsellable": []
   },
   {
-   "key": "named:aroma espresso roasted coffee beans",
-   "sheetName": "Aroma Espresso Roasted Coffee Beans",
-   "siteSku": null,
-   "new": {
-    "sku": "DBC-WC-028",
-    "name": "Aroma Espresso Roasted Coffee Beans",
-    "nameAr": "بن أروما إسبريسو محمّص",
-    "copyFrom": "DBC-WC-012"
-   },
-   "variants": [],
+   "name": "Aroma Espresso Roasted Coffee Beans",
+   "siteSku": "DBC-WC-028",
+   "category": "Coffee Beans",
+   "originCountry": "Mix Blend",
+   "processingMethod": "",
+   "roastText": "Medium Dark",
+   "roastLevel": "MEDIUM_DARK",
+   "flavorNotes": [
+    "pleasant taste of nuts and pralines, with long lasting and pleasant after taste of cereals"
+   ],
+   "elevation": "",
+   "description": "Aroma is a well-balanced and round crafted cuvee. With its medium roast, low bitterness, but slightly higher acidity this blend will emanate a pleasant taste of nuts and pralines, with long lasting and pleasant after taste of cereals. Recommended for milk-based coffee and espresso.\n\nAroma is a lavishly engineered blend, made with some of best coffee origins in the world, and roasted to perfection to allow all it sent to express their best at every sip.",
+   "sizes": [],
    "unsellable": [
     {
-     "label": "125g",
-     "labelAr": "١٢٥ جم",
-     "capsulesCount": null,
-     "weightGrams": 125,
-     "order": 125,
+     "label": "125 GM",
      "sku": "10071",
-     "size": "125 GM",
+     "weightGrams": 125,
+     "capsulesCount": null,
      "why": "Non Active"
     },
     {
-     "label": "250g",
-     "labelAr": "٢٥٠ جم",
-     "capsulesCount": null,
-     "weightGrams": 250,
-     "order": 250,
+     "label": "250 GM",
      "sku": "10072",
-     "size": "250 GM",
+     "weightGrams": 250,
+     "capsulesCount": null,
      "why": "Non Active"
     },
     {
-     "label": "500g",
-     "labelAr": "٥٠٠ جم",
-     "capsulesCount": null,
-     "weightGrams": 500,
-     "order": 500,
+     "label": "500 GM",
      "sku": "10073",
-     "size": "500 GM",
+     "weightGrams": 500,
+     "capsulesCount": null,
      "why": "Non Active"
     }
    ]
   },
   {
-   "key": "named:afandi turkish coffee",
-   "sheetName": "Afandi Turkish Coffee",
+   "name": "Afandi Turkish Coffee",
    "siteSku": "DBC-WC-015",
-   "new": null,
-   "variants": [
+   "category": "Grinded",
+   "originCountry": "Mix Blend",
+   "processingMethod": "",
+   "roastText": "Medium",
+   "roastLevel": "MEDIUM",
+   "flavorNotes": [],
+   "elevation": "",
+   "description": "Afandi is a traditional-style Turkish coffee made from a curated blend of 100% Arabica beans sourced from select origins. Roasted to a smooth medium level, it delivers a refined balance between richness and aroma, ideal for lovers of classic, finely ground Turkish brews.\n\nThis blend is crafted to produce a full-bodied cup with velvety texture, gentle bitterness, and a lingering finish — perfect for moments of calm, conversation, or cultural rituals. Whether served plain or with sugar, Afandi evokes the charm and depth of authentic Turkish coffee traditions.",
+   "sizes": [
     {
-     "label": "250g",
-     "labelAr": "٢٥٠ جم",
-     "capsulesCount": null,
-     "weightGrams": 250,
-     "order": 250,
+     "label": "250 GM",
      "sku": "10074",
-     "size": "250 GM",
+     "weightGrams": 250,
+     "capsulesCount": null,
      "priceCents": 22000
     },
     {
-     "label": "500g",
-     "labelAr": "٥٠٠ جم",
-     "capsulesCount": null,
-     "weightGrams": 500,
-     "order": 500,
+     "label": "500 GM",
      "sku": "10075",
-     "size": "500 GM",
+     "weightGrams": 500,
+     "capsulesCount": null,
      "priceCents": 40000
     }
    ],
    "unsellable": [
     {
-     "label": "125g",
-     "labelAr": "١٢٥ جم",
-     "capsulesCount": null,
-     "weightGrams": 125,
-     "order": 125,
+     "label": "125 GM",
      "sku": "10092",
-     "size": "125 GM",
+     "weightGrams": 125,
+     "capsulesCount": null,
      "why": "no price"
     }
    ]
   },
   {
-   "key": "named:afandi turkish coffee with cardamom",
-   "sheetName": "Afandi Turkish Coffee With Cardamom",
+   "name": "Afandi Turkish Coffee With Cardamom",
    "siteSku": "DBC-WC-014",
-   "new": null,
-   "variants": [
+   "category": "Grinded",
+   "originCountry": "Mix Blend",
+   "processingMethod": "",
+   "roastText": "Medium",
+   "roastLevel": "MEDIUM",
+   "flavorNotes": [],
+   "elevation": "",
+   "description": "Crafted in the traditional style, Afandi Turkish Coffee with Cardamom blends finely ground 100% Arabica beans with the warm, aromatic spice of natural cardamom. Sourced from a mixed blend of origins and roasted to a medium level, this coffee delivers a timeless fusion of depth and fragrance.\n\nRich, smooth, and deeply satisfying, each cup carries the comforting body of Turkish coffee enhanced by the herbal, slightly citrusy note of cardamom. Perfect for ceremonial coffee moments or everyday indulgence, this blend offers a sensory journey rooted in culture and flavor.\n\nThis blend is crafted to produce a full-bodied cup with velvety texture, gentle bitterness, and a lingering finish — perfect for moments of calm, conversation, or cultural rituals. Whether served plain or with sugar, Afandi evokes the charm and depth of authentic Turkish coffee traditions.",
+   "sizes": [
     {
-     "label": "250g",
-     "labelAr": "٢٥٠ جم",
-     "capsulesCount": null,
-     "weightGrams": 250,
-     "order": 250,
+     "label": "250 GM",
      "sku": "10076",
-     "size": "250 GM",
+     "weightGrams": 250,
+     "capsulesCount": null,
      "priceCents": 23500
     },
     {
-     "label": "500g",
-     "labelAr": "٥٠٠ جم",
-     "capsulesCount": null,
-     "weightGrams": 500,
-     "order": 500,
+     "label": "500 GM",
      "sku": "10077",
-     "size": "500 GM",
+     "weightGrams": 500,
+     "capsulesCount": null,
      "priceCents": 44000
     }
    ],
    "unsellable": [
     {
-     "label": "125g",
-     "labelAr": "١٢٥ جم",
-     "capsulesCount": null,
-     "weightGrams": 125,
-     "order": 125,
+     "label": "125 GM",
      "sku": "10093",
-     "size": "125 GM",
+     "weightGrams": 125,
+     "capsulesCount": null,
      "why": "no price"
     }
    ]
   },
   {
-   "key": "named:oriental arabic coffee",
-   "sheetName": "Oriental Arabic Coffee",
+   "name": "Oriental Arabic Coffee",
    "siteSku": "DBC-WC-011",
-   "new": null,
-   "variants": [],
+   "category": "Coffee Beans",
+   "originCountry": "Mix Blend",
+   "processingMethod": "",
+   "roastText": "Medium",
+   "roastLevel": "MEDIUM",
+   "flavorNotes": [],
+   "elevation": "",
+   "description": "Crafted in the spirit of tradition, Oriental Arabic Coffee is a refined 100% Arabica blend roasted to a medium level for a smooth and aromatic profile. Ground especially for classic preparation methods, this coffee captures the essence of timeless Arabic hospitality.\n\nThe cup is gentle yet flavorful, with a balanced body and soft finish that pairs beautifully with or without cardamom. Ideal for daily rituals and gatherings, it offers an authentic taste experience rooted in heritage and warmth.",
+   "sizes": [],
    "unsellable": [
     {
-     "label": "250g",
-     "labelAr": "٢٥٠ جم",
-     "capsulesCount": null,
-     "weightGrams": 250,
-     "order": 250,
+     "label": "250 GM",
      "sku": "10078",
-     "size": "250 GM",
+     "weightGrams": 250,
+     "capsulesCount": null,
      "why": "Non Active"
     },
     {
-     "label": "500g",
-     "labelAr": "٥٠٠ جم",
-     "capsulesCount": null,
-     "weightGrams": 500,
-     "order": 500,
+     "label": "500 GM",
      "sku": "10079",
-     "size": "500 GM",
+     "weightGrams": 500,
+     "capsulesCount": null,
      "why": "Non Active"
     },
     {
-     "label": "125g",
-     "labelAr": "١٢٥ جم",
-     "capsulesCount": null,
-     "weightGrams": 125,
-     "order": 125,
+     "label": "125 GM",
      "sku": "10097",
-     "size": "125 GM",
+     "weightGrams": 125,
+     "capsulesCount": null,
      "why": "no price"
     }
    ]
   },
   {
-   "key": "named:oriental arabic coffee with cardamom",
-   "sheetName": "Oriental Arabic Coffee With Cardamom",
+   "name": "Oriental Arabic Coffee With Cardamom",
    "siteSku": "DBC-WC-009",
-   "new": null,
-   "variants": [
+   "category": "Grinded",
+   "originCountry": "Mix Blend",
+   "processingMethod": "",
+   "roastText": "Medium",
+   "roastLevel": "MEDIUM",
+   "flavorNotes": [],
+   "elevation": "",
+   "description": "Blending tradition with aromatic excellence, Oriental Arabic Coffee with Cardamom is a finely crafted 100% Arabica blend roasted to a smooth medium level. Infused with natural cardamom, it brings together the deep warmth of Arabic coffee culture and the uplifting fragrance of spice.\n\nDesigned for classic brewing methods, this coffee offers a balanced, flavorful body with an aromatic profile that’s both comforting and invigorating. Ideal for serving on special occasions or as part of daily rituals, it delivers a taste that is rich in heritage and full of character.",
+   "sizes": [
     {
-     "label": "250g",
-     "labelAr": "٢٥٠ جم",
-     "capsulesCount": null,
-     "weightGrams": 250,
-     "order": 250,
+     "label": "250 GM",
      "sku": "10080",
-     "size": "250 GM",
+     "weightGrams": 250,
+     "capsulesCount": null,
      "priceCents": 34000
     }
    ],
    "unsellable": [
     {
-     "label": "500g",
-     "labelAr": "٥٠٠ جم",
-     "capsulesCount": null,
-     "weightGrams": 500,
-     "order": 500,
+     "label": "500 GM",
      "sku": "10081",
-     "size": "500 GM",
+     "weightGrams": 500,
+     "capsulesCount": null,
      "why": "Non Active"
     },
     {
-     "label": "125g",
-     "labelAr": "١٢٥ جم",
-     "capsulesCount": null,
-     "weightGrams": 125,
-     "order": 125,
+     "label": "125 GM",
      "sku": "10095",
-     "size": "125 GM",
+     "weightGrams": 125,
+     "capsulesCount": null,
      "why": "no price"
     }
    ]
   },
   {
-   "key": "named:ethiopian gesha specialty coffee beans",
-   "sheetName": "Ethiopian Gesha Specialty Coffee Beans",
+   "name": "Ethiopian Gesha Specialty Coffee Beans",
    "siteSku": "DBC-WC-018",
-   "new": null,
-   "variants": [],
+   "category": "Coffee Beans",
+   "originCountry": "Ethiopia Kaffa Tega",
+   "processingMethod": "Washed",
+   "roastText": "Medium",
+   "roastLevel": "MEDIUM",
+   "flavorNotes": [
+    "Floral , Sweet Vanilla , Dried Apricot , Chocolate , Smooth Acidity , Tea-Like / Honey Body"
+   ],
+   "elevation": "1830-1890 m.a.s.l",
+   "description": "A distinguished offering from Kaffa Tega, Ethiopia, this specialty-grade Verona coffee is cultivated at elevations between 1830 and 1890 masl, and graded 86.5+ for its exceptional quality. Processed using the washed method and roasted to a medium level, it preserves the Gesha variety’s delicate, floral essence.\n\nIn the cup, Verona reveals a captivating combination of floral notes, sweet vanilla, dried apricot, and hints of chocolate, supported by a gentle smooth acidity and a tea-like, honeyed body. This elegant profile is ideal for filter brewing and those who appreciate complexity with balance.",
+   "sizes": [],
    "unsellable": [
     {
-     "label": "125g",
-     "labelAr": "١٢٥ جم",
-     "capsulesCount": null,
-     "weightGrams": 125,
-     "order": 125,
+     "label": "125 GM",
      "sku": "10082",
-     "size": "125 GM",
+     "weightGrams": 125,
+     "capsulesCount": null,
      "why": "Non Active"
     },
     {
-     "label": "250g",
-     "labelAr": "٢٥٠ جم",
-     "capsulesCount": null,
-     "weightGrams": 250,
-     "order": 250,
+     "label": "250 GM",
      "sku": "10083",
-     "size": "250 GM",
+     "weightGrams": 250,
+     "capsulesCount": null,
      "why": "Non Active"
     },
     {
-     "label": "500g",
-     "labelAr": "٥٠٠ جم",
-     "capsulesCount": null,
-     "weightGrams": 500,
-     "order": 500,
+     "label": "500 GM",
      "sku": "10084",
-     "size": "500 GM",
+     "weightGrams": 500,
+     "capsulesCount": null,
      "why": "Non Active"
     }
    ]
   },
   {
-   "key": "named:arezzo espresso roasted coffee beans",
-   "sheetName": "Arezzo Espresso Roasted Coffee Beans",
+   "name": "Arezzo Espresso Roasted Coffee Beans",
    "siteSku": "DBC-WC-013",
-   "new": null,
-   "variants": [],
+   "category": "Coffee Beans",
+   "originCountry": "Mix Blend",
+   "processingMethod": "",
+   "roastText": "Medium Dark",
+   "roastLevel": "MEDIUM_DARK",
+   "flavorNotes": [
+    "pleasant taste of nuts and pralines, with long lasting and pleasant after taste of cereals"
+   ],
+   "elevation": "",
+   "description": "Aroma is a well-balanced and round crafted cuvee. With its medium roast, low bitterness, but slightly higher acidity this blend will emanate a pleasant taste of nuts and pralines, with long lasting and pleasant after taste of cereals. Recommended for milk-based coffee and espresso.\n\nAroma is a lavishly engineered blend, made with some of best coffee origins in the world, and roasted to perfection to allow all it sent to express their best at every sip.",
+   "sizes": [],
    "unsellable": [
     {
-     "label": "125g",
-     "labelAr": "١٢٥ جم",
-     "capsulesCount": null,
-     "weightGrams": 125,
-     "order": 125,
+     "label": "125 GM",
      "sku": "10085",
-     "size": "125 GM",
-     "why": "no price"
-    },
-    {
-     "label": "250g",
-     "labelAr": "٢٥٠ جم",
-     "capsulesCount": null,
-     "weightGrams": 250,
-     "order": 250,
-     "sku": "10086",
-     "size": "250 GM",
-     "why": "no price"
-    },
-    {
-     "label": "500g",
-     "labelAr": "٥٠٠ جم",
-     "capsulesCount": null,
-     "weightGrams": 500,
-     "order": 500,
-     "sku": "10087",
-     "size": "500 GM",
-     "why": "no price"
-    }
-   ]
-  },
-  {
-   "key": "named:afandi turkish coffee with cardamom & mastika",
-   "sheetName": "Afandi Turkish Coffee With Cardamom & Mastika",
-   "siteSku": "DBC-WC-016",
-   "new": null,
-   "variants": [],
-   "unsellable": [
-    {
-     "label": "250g",
-     "labelAr": "٢٥٠ جم",
-     "capsulesCount": null,
-     "weightGrams": 250,
-     "order": 250,
-     "sku": "10088",
-     "size": "250 GM",
-     "why": "no price"
-    },
-    {
-     "label": "500g",
-     "labelAr": "٥٠٠ جم",
-     "capsulesCount": null,
-     "weightGrams": 500,
-     "order": 500,
-     "sku": "10089",
-     "size": "500 GM",
-     "why": "no price"
-    },
-    {
-     "label": "125g",
-     "labelAr": "١٢٥ جم",
-     "capsulesCount": null,
      "weightGrams": 125,
-     "order": 125,
-     "sku": "10094",
-     "size": "125 GM",
+     "capsulesCount": null,
+     "why": "no price"
+    },
+    {
+     "label": "250 GM",
+     "sku": "10086",
+     "weightGrams": 250,
+     "capsulesCount": null,
+     "why": "no price"
+    },
+    {
+     "label": "500 GM",
+     "sku": "10087",
+     "weightGrams": 500,
+     "capsulesCount": null,
      "why": "no price"
     }
    ]
   },
   {
-   "key": "named:oriental arabic coffee with cardamom & mastika",
-   "sheetName": "Oriental Arabic Coffee With Cardamom & Mastika",
-   "siteSku": "DBC-WC-010",
-   "new": null,
-   "variants": [],
+   "name": "Afandi Turkish Coffee With Cardamom & Mastika",
+   "siteSku": "DBC-WC-016",
+   "category": "Coffee Beans",
+   "originCountry": "Mix Blend",
+   "processingMethod": "",
+   "roastText": "Medium",
+   "roastLevel": "MEDIUM",
+   "flavorNotes": [],
+   "elevation": "",
+   "description": "A unique and aromatic twist on tradition, Afandi Turkish Coffee with Cardamom & Mastika combines 100% Arabica coffee beans with the warm spice of cardamom and the subtle, resinous sweetness of mastika (mastic gum). Sourced from a carefully selected blend of origins and roasted to a medium roast, this blend delivers an immersive and culturally rich coffee experience.\n\nThe result is a cup that’s deeply fragrant, with a creamy texture, herbal complexity, and lingering sweetness. Whether served plain or sweetened, it offers a modern take on an age-old tradition, perfect for gatherings, rituals, or moments of quiet indulgence.\n\nThis blend is crafted to produce a full-bodied cup with velvety texture, gentle bitterness, and a lingering finish — perfect for moments of calm, conversation, or cultural rituals. Whether served plain or with sugar, Afandi evokes the charm and depth of authentic Turkish coffee traditions.",
+   "sizes": [],
    "unsellable": [
     {
-     "label": "250g",
-     "labelAr": "٢٥٠ جم",
-     "capsulesCount": null,
+     "label": "250 GM",
+     "sku": "10088",
      "weightGrams": 250,
-     "order": 250,
-     "sku": "10090",
-     "size": "250 GM",
+     "capsulesCount": null,
      "why": "no price"
     },
     {
-     "label": "500g",
-     "labelAr": "٥٠٠ جم",
-     "capsulesCount": null,
+     "label": "500 GM",
+     "sku": "10089",
      "weightGrams": 500,
-     "order": 500,
+     "capsulesCount": null,
+     "why": "no price"
+    },
+    {
+     "label": "125 GM",
+     "sku": "10094",
+     "weightGrams": 125,
+     "capsulesCount": null,
+     "why": "no price"
+    }
+   ]
+  },
+  {
+   "name": "Oriental Arabic Coffee With Cardamom & Mastika",
+   "siteSku": "DBC-WC-010",
+   "category": "Coffee Beans",
+   "originCountry": "Mix Blend",
+   "processingMethod": "",
+   "roastText": "Medium",
+   "roastLevel": "MEDIUM",
+   "flavorNotes": [],
+   "elevation": "",
+   "description": "Oriental Arabic Coffee With Cardamom & Mastika 100% Arabica A beautifully balanced fusion of spice and tradition, Oriental Arabic Coffee with Cardamom & Mastika brings together the bold aroma of natural cardamom and the subtle, resinous sweetness of mastika, blended with premium 100% Arabica coffee and roasted to a medium level.\n\nIdeal for traditional Arabic brewing methods, this blend offers a richly fragrant and smooth-bodied experience. With its soothing, spiced profile and cultural authenticity, it’s a perfect companion for ceremonial occasions or relaxed daily enjoyment — a timeless taste with a twist.",
+   "sizes": [],
+   "unsellable": [
+    {
+     "label": "250 GM",
+     "sku": "10090",
+     "weightGrams": 250,
+     "capsulesCount": null,
+     "why": "no price"
+    },
+    {
+     "label": "500 GM",
      "sku": "10091",
-     "size": "500 GM",
+     "weightGrams": 500,
+     "capsulesCount": null,
      "why": "Non Active"
     },
     {
-     "label": "125g",
-     "labelAr": "١٢٥ جم",
-     "capsulesCount": null,
-     "weightGrams": 125,
-     "order": 125,
+     "label": "125 GM",
      "sku": "10096",
-     "size": "125 GM",
+     "weightGrams": 125,
+     "capsulesCount": null,
      "why": "no price"
     }
    ]
   }
- ],
- "skipped": []
+ ]
 }

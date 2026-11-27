@@ -9,8 +9,9 @@ type RowKey = 'capsules' | 'beans' | 'arabic' | 'bestsellers';
 const ROWS: Array<{ key: RowKey; pick: (p: IStoreProduct) => boolean; href: string }> = [
   { key: 'capsules', pick: (p) => p.categorySlugs.includes('coffee-capsules'), href: '?tab=capsules' },
   { key: 'beans', pick: (p) => p.categorySlugs.includes('coffee-beans'), href: '?tab=beans' },
-  { key: 'arabic', pick: (p) => p.categorySlugs.includes('turkish-arabic-coffee'), href: '?tab=arabic' },
-  { key: 'bestsellers', pick: (p) => p.isFeatured, href: '' },
+  { key: 'arabic', pick: (p) => p.categorySlugs.includes('grinded'), href: '?tab=arabic' },
+  // Real best sellers: only pieces that actually sold, most sold first
+  { key: 'bestsellers', pick: (p) => p.soldCount > 0, href: '' },
 ];
 
 /** "What are you looking for?": category rows with pack shots, an espresso video, and the newsletter form */
@@ -30,9 +31,7 @@ export async function ExploreSection({ locale }: { locale: Locale }) {
       ...inRow.filter((p) => !p.hasPhotos),
     ];
     if (row.key === 'bestsellers') {
-      const withPhotos = picked.filter((p) => p.hasPhotos);
-      const extra = catalog.filter((p) => p.hasPhotos && !withPhotos.includes(p));
-      return { ...row, products: [...withPhotos, ...extra].slice(0, ROW_SIZE) };
+      return { ...row, products: [...inRow].sort((a, b) => b.soldCount - a.soldCount).slice(0, ROW_SIZE) };
     }
     return { ...row, products: picked.slice(0, ROW_SIZE) };
   }).filter((row) => row.products.length > 0);
