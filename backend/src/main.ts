@@ -1,3 +1,6 @@
+import { AllExceptionsFilter } from './common/filters/all-exceptions.filter';
+import { CacheService } from './common/utilities/caching';
+import { EmailService } from './common/utilities/emails';
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
@@ -115,6 +118,8 @@ async function bootstrap(): Promise<void> {
       },
     }),
   );
+
+  app.useGlobalFilters(new AllExceptionsFilter(app.get(EmailService), app.get(CacheService)));
 
   app.useGlobalInterceptors(
     new LoggingInterceptor(),

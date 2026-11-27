@@ -2,7 +2,7 @@ import { revalidateTag } from 'next/cache';
 import { NextRequest, NextResponse } from 'next/server';
 import { requireAdminApiContext } from '@/lib/auth';
 import { getServerEnv } from '@/lib/env';
-import { getClientIp } from '@/lib/nest-client';
+import { internalHeaders } from '@/lib/nest-client';
 
 /**
  * One proxy for the whole dashboard: /api/admin/v1/<path> → <NEST_API_URL>/<path>, with the
@@ -52,8 +52,7 @@ async function handle(request: NextRequest, { params }: Ctx): Promise<Response> 
     Authorization: `Bearer ${auth.nestToken}`,
     Accept: request.headers.get('accept') || 'application/json',
   };
-  const ip = getClientIp(request);
-  if (ip) headers['x-forwarded-for'] = ip;
+  Object.assign(headers, internalHeaders(request));
 
   let body: BodyInit | undefined;
   if (!['GET', 'HEAD'].includes(request.method)) {

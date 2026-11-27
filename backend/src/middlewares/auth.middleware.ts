@@ -1,4 +1,5 @@
 import { Injectable, NestMiddleware } from '@nestjs/common';
+import { timingSafeEqual } from 'crypto';
 import { NextFunction, Response } from 'express';
 import { TokenType } from '../common/enums';
 import { IAuthenticatedRequest } from '../common/interfaces';
@@ -28,6 +29,18 @@ export class AuthMiddleware implements NestMiddleware {
       req.guestSessionId = guestHeader.trim();
     }
     delete req.headers['x-guest-session-id'];
+
+    // Customers reach the API through the storefront server, so the connection IP is Vercel's.
+    // The storefront passes the customer's IP with a shared key; only then is it trusted.
+    const key = process.env.INTERNAL_API_KEY;
+    const sentKey = req.headers['x-internal-key'];
+    if (key && typeof sentKey === 'string' && sentKey.length === key.length && timingSafeEqual(Buffer.from(sentKey), Buffer.from(key))) {
+      req.fromStorefront = true;
+      const ip = req.headers['x-client-ip'];
+      if (typeof ip === 'string' && /^[0-9a-f:.]{3,45}$/i.test(ip.trim())) req.clientIp = ip.trim();
+    }
+    if (!req.fromStorefront) req.clientIp = req.ip || req.socket?.remoteAddress || 'unknown';
+    delete req.headers['x-internal-key'];
 
     const token = this.tokenService.extractBearerToken(
       req.headers.authorization,

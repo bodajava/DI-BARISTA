@@ -1,4 +1,7 @@
-import { Controller, Get, Headers, Injectable, Logger, Module, UnauthorizedException } from '@nestjs/common';
+import { Controller, Get, Headers, HttpStatus, Injectable, Logger, Module, Res, UnauthorizedException } from '@nestjs/common';
+import type { Response } from 'express';
+import { CacheService } from '../../common/utilities/caching';
+import { PrismaService } from '../../database/prisma.service';
 import { Interval } from '@nestjs/schedule';
 import { timingSafeEqual } from 'crypto';
 import { Public } from '../../common/decorators';
@@ -44,9 +47,42 @@ export class JobsController {
   }
 }
 
+/** Uptime check: database and cache must answer. 200 = healthy, 503 = something is down */
+@Controller('health')
+export class HealthController {
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly cache: CacheService,
+  ) {}
+
+  @Public()
+  @Get()
+  async check(@Res() res: Response) {
+    const started = Date.now();
+    const result: Record<string, string> = {};
+    try {
+      await this.prisma.$queryRaw`SELECT 1`;
+      result.database = 'ok';
+    } catch {
+      result.database = 'down';
+    }
+    try {
+      const key = 'health:ping';
+      await this.cache.set(key, 1, 30);
+      result.cache = (await this.cache.exists(key)) ? 'ok' : 'degraded';
+    } catch {
+      result.cache = 'down';
+    }
+    const healthy = result.database === 'ok';
+    res
+      .status(healthy ? HttpStatus.OK : HttpStatus.SERVICE_UNAVAILABLE)
+      .json({ status: healthy ? 'ok' : 'down', ...result, ms: Date.now() - started, at: new Date().toISOString() });
+  }
+}
+
 @Module({
   imports: [OrderModule],
-  controllers: [JobsController],
+  controllers: [JobsController, HealthController],
   providers: [JobsService],
 })
 export class JobsModule {}

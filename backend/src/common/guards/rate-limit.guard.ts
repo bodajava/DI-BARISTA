@@ -22,17 +22,23 @@ export class RateLimitGuard implements CanActivate {
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    const options = this.reflector.getAllAndOverride<IRateLimitOptions>(
+    const http = context.switchToHttp();
+    const req = http.getRequest<Request & { clientIp?: string; fromStorefront?: boolean }>();
+    const res = http.getResponse<Response>();
+    const ip = req.clientIp || req.ip || req.socket?.remoteAddress || 'unknown';
+
+    let options = this.reflector.getAllAndOverride<IRateLimitOptions>(
       RATE_LIMIT_KEY,
       [context.getHandler(), context.getClass()],
     );
-    if (!options) return true;
-
-    const http = context.switchToHttp();
-    const req = http.getRequest<Request>();
-    const res = http.getResponse<Response>();
-    const route = `${context.getClass().name}.${context.getHandler().name}`;
-    const ip = req.ip || req.socket?.remoteAddress || 'unknown';
+    let route = `${context.getClass().name}.${context.getHandler().name}`;
+    if (!options) {
+      // Default for every other endpoint: generous for people, stops scripts hammering the API.
+      // Server-side page renders from the storefront (no customer IP) are not limited.
+      if (req.fromStorefront && !req.clientIp) return true;
+      options = { limit: 300, windowSeconds: 60 };
+      route = 'global';
+    }
 
     const keys = [`${route}:ip:${ip}`];
     if (options.bodyKey) {

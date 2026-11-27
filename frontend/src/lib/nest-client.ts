@@ -45,6 +45,22 @@ export function getClientIp(request: Request): string | null {
   return first || null;
 }
 
+/**
+ * The API sees every call as coming from this server. With INTERNAL_API_KEY (same value on both
+ * projects) it trusts the customer IP sent here, so rate limits apply per customer, not per site.
+ */
+export function internalHeaders(request?: Request): Record<string, string> {
+  const out: Record<string, string> = {};
+  const key = process.env.INTERNAL_API_KEY;
+  if (key) out['x-internal-key'] = key;
+  const ip = request ? getClientIp(request) : null;
+  if (ip) {
+    out['x-client-ip'] = ip;
+    out['x-forwarded-for'] = ip;
+  }
+  return out;
+}
+
 export async function nestFetch<T>(
   path: string,
   options: INestFetchOptions = {},
@@ -63,10 +79,7 @@ export async function nestFetch<T>(
   if (options.guestSessionId) {
     headers['x-guest-session-id'] = options.guestSessionId;
   }
-  if (options.request) {
-    const clientIp = getClientIp(options.request);
-    if (clientIp) headers['x-forwarded-for'] = clientIp;
-  }
+  Object.assign(headers, internalHeaders(options.request));
 
   let payloadBody: BodyInit | undefined;
   if (options.body !== undefined) {

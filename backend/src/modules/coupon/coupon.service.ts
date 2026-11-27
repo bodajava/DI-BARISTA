@@ -170,7 +170,10 @@ export class CouponService {
     }
     emails = Array.from(new Set(emails.map((e) => e.toLowerCase().trim()).filter(Boolean)));
     if (emails.length === 0) throw new BadRequestException('Nobody to send it to');
-    if (emails.length > 5000) throw new BadRequestException('Send to 5,000 people or fewer at a time');
+    // Gmail sends about 500 emails a day; stay under it so a send never stops half way
+    if (emails.length > 450) {
+      throw new BadRequestException(`That's ${emails.length} people. Gmail allows about 500 emails a day, so send to 450 or fewer at a time.`);
+    }
 
     if (dto.restrictToRecipients) {
       await this.prisma.coupon.update({
@@ -194,10 +197,14 @@ export class CouponService {
     runInBackground(
       (async () => {
         let sent = 0;
-        for (const to of emails) {
-          if (await this.emailService.sendMail({ to, subject: template.subject, html: template.html, text: template.text })) {
-            sent += 1;
-          }
+        // 5 at a time: fast enough to finish within the serverless time limit, gentle on SMTP
+        for (let i = 0; i < emails.length; i += 5) {
+          const results = await Promise.all(
+            emails.slice(i, i + 5).map((to) =>
+              this.emailService.sendMail({ to, subject: template.subject, html: template.html, text: template.text }),
+            ),
+          );
+          sent += results.filter(Boolean).length;
         }
         this.logger.log(`Coupon ${coupon.code} emailed to ${sent}/${emails.length}`);
       })(),
