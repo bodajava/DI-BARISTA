@@ -74,7 +74,7 @@ function OrderQueue() {
       ) : empty ? (
         <Empty>{t("Nothing to handle. New orders show up here.")}</Empty>
       ) : (
-        <div className="grid gap-4 lg:grid-cols-3">
+        <div className="grid gap-5 lg:grid-cols-2 2xl:grid-cols-3">
           {STAGES.map((stage) => {
             const s = q![stage.key];
             return (
@@ -88,14 +88,14 @@ function OrderQueue() {
                   <ul className="adm-list">
                     {s.orders.map((o) => (
                       <li key={o.id} className="grid gap-2 py-3">
-                        <div className="flex items-center justify-between gap-2">
-                          <Link href={`/admin/orders/${o.id}`} className="adm-mono font-semibold hover:underline">
+                        <div className="flex min-w-0 items-center justify-between gap-2">
+                          <Link href={`/admin/orders/${o.id}`} className="adm-mono min-w-0 truncate font-semibold hover:underline">
                             {o.orderNumber}
                           </Link>
-                          <span className="text-sm tabular-nums">{money(o.totalCents)}</span>
+                          <span className="flex-none text-sm tabular-nums">{money(o.totalCents)}</span>
                         </div>
-                        <div className="flex items-center justify-between gap-2 text-sm text-[var(--muted-foreground)]">
-                          <span className="truncate">
+                        <div className="flex min-w-0 items-center justify-between gap-2 text-sm text-[var(--muted-foreground)]">
+                          <span className="min-w-0 truncate">
                             {o.customerName} · {ago(o.createdAt)}
                           </span>
                           <Button

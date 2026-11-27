@@ -9,7 +9,7 @@ import { useAdmin } from "@/lib/admin-i18n";
 function AdminLoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const redirectTarget = searchParams.get("redirect") || "/admin";
+  const redirectTarget = searchParams.get("next") || searchParams.get("redirect") || "/admin";
 
   const { t, lang, theme, setLang, setTheme } = useAdmin();
   const [email, setEmail] = useState("");
@@ -37,7 +37,7 @@ function AdminLoginForm() {
         return;
       }
 
-      const safeRedirect = redirectTarget.startsWith("/admin")
+      const safeRedirect = redirectTarget.startsWith("/admin") && !redirectTarget.startsWith("//")
         ? redirectTarget
         : "/admin";
       router.push(safeRedirect);
